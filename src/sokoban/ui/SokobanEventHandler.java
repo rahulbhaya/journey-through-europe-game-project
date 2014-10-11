@@ -46,22 +46,7 @@ public class SokobanEventHandler {
     */
     public void respondToSelectLevelRequest(String level)
     {
-//        System.out.println("in respondToSelectLevelRequest(" + level +")");
-//        ui.initSokobanUI();
-//       if(level.equals("Level 1"))
-//            fl.openfile("Level 1");
-//        if(level.equals("Level 2"))
-//            fl.openfile("Level 2");
-//        if(level.equals("Level 3"))
-//          fl.openfile("Level 3");
-//        if(level.equals("Level 4"))
-//           fl.openfile("Level 4");
-//        if(level.equals("Level 5"))
-//          fl.openfile("Level 5");
-//        if(level.equals("Level 6"))
-//           fl.openfile("Level 6");
-//        if(level.equals("Level 7"))
-//            fl.openfile("Level 7");       
+     
         ui.loadFile(level);
     }
     /**

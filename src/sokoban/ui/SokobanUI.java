@@ -59,7 +59,7 @@ public class SokobanUI extends Pane {
     private Stage primaryStage;
 
     // mainPane
-    private BorderPane mainPane;
+    public BorderPane mainPane;
     private BorderPane hmPane;
 
     // SplashScreen
@@ -81,7 +81,7 @@ public class SokobanUI extends Pane {
     private Button newGameButton;
     private HBox letterButtonsPane;
     private HashMap<Character, Button> letterButtons;
-    private BorderPane gamePanel = new BorderPane();
+    public BorderPane gamePanel = new BorderPane();
 
     //StatsPane
     private ScrollPane statsScrollPane;
@@ -109,7 +109,7 @@ public class SokobanUI extends Pane {
     private SokobanErrorHandler errorHandler;
     private SokobanDocumentManager docManager;
     
-    public SokobanFileLoader fl=new SokobanFileLoader();
+    public SokobanFileLoader fl;
     
 
     SokobanGameStateManager gsm;
@@ -119,6 +119,7 @@ public class SokobanUI extends Pane {
         eventHandler = new SokobanEventHandler(this);
         errorHandler = new SokobanErrorHandler(primaryStage);
         docManager = new SokobanDocumentManager(this);
+        fl=new SokobanFileLoader(this);
         initMainPane();
         initSplashScreen();
         

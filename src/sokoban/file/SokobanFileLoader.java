@@ -32,7 +32,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
-
+import java.util.Stack;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -87,12 +87,12 @@ public class SokobanFileLoader {
     public int gridRows;
     public int grid[][];
     public int tempgrid[][];
-    
-    public SokobanFileLoader(){
-        gridRenderer=new GridRenderer();
-    }
+    private SokobanUI uiobj;
 
-    
+    public SokobanFileLoader(SokobanUI sik) {
+        gridRenderer = new GridRenderer();
+        uiobj=sik;
+    }
 
     public void initGUI() {
         // THE PARENT PANE IS A BORDERPANE
@@ -106,7 +106,27 @@ public class SokobanFileLoader {
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
     }
+    public int[][] copyintemp(int passed[][] )
+    {
+            int tempgrd[][] = new int[gridColumns][gridRows];
+            for (int s = 0; s< gridColumns; s++)
+            {
+                for (int t = 0; t < gridRows; t++)
+                {
+                    tempgrd[s][t] = passed[s][t];
+                }
+            }
+            return (tempgrd);
+    }
 
+        Stack stack = new Stack();
+   
+ public void undo()
+        {
+
+            stack.push(copyintemp(grid));
+            grid = (int[][]) stack.pop();
+        }
     public void openfile(String level) {
 
         String root = DATA_PATH;
@@ -114,9 +134,7 @@ public class SokobanFileLoader {
 
         try {
             if (fileToOpen != null) {
-               // LET'S USE A FAST LOADING TECHNIQUE. WE'LL LOAD ALL OF THE
-                // BYTES AT ONCE INTO A BYTE ARRAY, AND THEN PICK THAT APART.
-                // THIS IS FAST BECAUSE IT ONLY HAS TO DO FILE READING ONCE
+               
 
                 byte[] bytes = new byte[Long.valueOf(fileToOpen.length()).intValue()];
                 ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
@@ -130,9 +148,7 @@ public class SokobanFileLoader {
                 // NOW WE NEED TO LOAD THE DATA FROM THE BYTE ARRAY
                 DataInputStream dis = new DataInputStream(bais);
 
-               // NOTE THAT WE NEED TO LOAD THE DATA IN THE SAME
-                // ORDER AND FORMAT AS WE SAVED IT
-                // FIRST READ THE GRID DIMENSIONS
+              
                 int initGridColumns = dis.readInt();
                 int initGridRows = dis.readInt();
                 int[][] newGrid = new int[initGridColumns][initGridRows];
@@ -197,15 +213,16 @@ public class SokobanFileLoader {
                 }
                 
             }
-            if(count==0){JOptionPane.showMessageDialog(null, "Congrats,You won the Puzzle!", DATA_PATH, cellHeight);}
+            if(count==0){JOptionPane.showMessageDialog(null, "Congrats,You won!", DATA_PATH, cellHeight);}
             
         }
+        
         public void popLoseMessage()
         {
-            JOptionPane.showMessageDialog(null, "SorryYou lost it", DATA_PATH, cellHeight);
-            sui.mainPane.getChildren().clear();
-            sui.gamePanel.getChildren().clear();
-            sui.initSplashScreen();
+            JOptionPane.showMessageDialog(null,"Sorry:( You Lost!"," ", cellHeight);
+            uiobj.mainPane.getChildren().clear();
+            uiobj.gamePanel.getChildren().clear();
+            uiobj.initSplashScreen();
         }
         public void lose()
         {
@@ -249,7 +266,7 @@ public class SokobanFileLoader {
                     for (int c1 = 0; c1 < grid[r1].length; c1++) {
                         if (grid[r1][c1] == 4) {
                             if (grid[r1][c1 - 1] == 0) {
-                                //if(grid[r1][c1-2]==0){grid[r1][c1-1]=4;grid[r1][c1]=0;break l1;}
+                                undo();
                                 grid[r1][c1 - 1] = 4;
                                 grid[r1][c1] = 0;
                                  if (tempgrid[r1][c1] == 3) {
@@ -258,6 +275,7 @@ public class SokobanFileLoader {
                                 break l1;
                             } else if (grid[r1][c1 - 1] == 2) {
                                 if (grid[r1][c1 - 2] == 0 || grid[r1][c1 - 2] == 3) {
+                                    undo();
                                     grid[r1][c1 - 2] = 2;
                                     grid[r1][c1 - 1] = 4;
                                     grid[r1][c1] = 0;
@@ -268,6 +286,7 @@ public class SokobanFileLoader {
                                 }
 
                             } else if (grid[r1][c1 - 1] == 3) {
+                                undo();
                                 grid[r1][c1 - 1] = 4;
                                 grid[r1][c1] = 0;
                                 if (tempgrid[r1][c1] == 3) {
@@ -297,6 +316,7 @@ public class SokobanFileLoader {
                         if (grid[r2][c2] == 4) {
                             if (grid[r2][c2 + 1] == 0) {
                                 //if(grid[r2][c2-2]==0){grid[r2][c2-1]=4;grid[r2][c2]=0;break l1;}
+                                undo();
                                 grid[r2][c2 + 1] = 4;
                                 grid[r2][c2] = 0;
                                  if (tempgrid[r2][c2] == 3) {
@@ -305,6 +325,7 @@ public class SokobanFileLoader {
                                 break l2;
                             } else if (grid[r2][c2 + 1] == 2) {
                                 if (grid[r2][c2 + 2] == 0 || grid[r2][c2 + 2] == 3) {
+                                    undo();
                                     grid[r2][c2 + 2] = 2;
                                     grid[r2][c2 +1] = 4;
                                     grid[r2][c2] = 0;
@@ -315,6 +336,7 @@ public class SokobanFileLoader {
                                 }
 
                             } else if (grid[r2][c2 + 1] == 3) {
+                                undo();
                                 grid[r2][c2 + 1] = 4;
                                 grid[r2][c2] = 0;
                                 if (tempgrid[r2][c2] == 3) {
@@ -344,6 +366,7 @@ public class SokobanFileLoader {
                         if (grid[r3][c3] == 4) {
                             if (grid[r3 - 1][c3] == 0) {
                                 //if(grid[r3-2][c3]==0){grid[r3-1][c3]=4;grid[r3][c3]=0; break l3;}
+                                undo();
                                 grid[r3 - 1][c3] = 4;
                                 grid[r3][c3] = 0;
                                  if (tempgrid[r3][c3] == 3) {
@@ -352,6 +375,7 @@ public class SokobanFileLoader {
                                 break l3;
                             } else if (grid[r3 - 1][c3] == 2) {
                                 if (grid[r3 - 2][c3] == 0 || grid[r3 - 2][c3] == 3) {
+                                    undo();
                                     grid[r3 - 2][c3] = 2;
                                     grid[r3 - 1][c3] = 4;
                                     grid[r3][c3] = 0;
@@ -361,7 +385,7 @@ public class SokobanFileLoader {
                                     break l3;
                                 }
                             } else if (grid[r3 - 1][c3] == 3) {
-
+                                undo();
                                 grid[r3 - 1][c3] = 4;
                                 grid[r3][c3] = 0;
                                 if (tempgrid[r3][c3] == 3) {
@@ -405,6 +429,7 @@ public class SokobanFileLoader {
                                  grid[r4][c4]=0;
                                  break;
                                  }*/
+                                undo();
                                 grid[r4 + 1][c4] = 4;
                                 grid[r4][c4] = 0;
                                 if (tempgrid[r4][c4] == 3) {
@@ -414,6 +439,7 @@ public class SokobanFileLoader {
                                 break l4;
                             } else if (grid[r4 + 1][c4] == 2) {
                                 if (grid[r4 + 2][c4] == 0 || grid[r4 + 2][c4] == 3) {
+                                    undo();
                                     grid[r4 + 2][c4] = 2;
                                     grid[r4 + 1][c4] = 4;
                                     grid[r4][c4] = 0;
@@ -423,6 +449,7 @@ public class SokobanFileLoader {
                                     break l4;
                                 }
                             } else if (grid[r4 + 1][c4] == 3) {
+                                undo();
                                 grid[r4 + 1][c4] = 4;
                                 grid[r4][c4] = 0;
                                 if (tempgrid[r4][c4] == 3) {
