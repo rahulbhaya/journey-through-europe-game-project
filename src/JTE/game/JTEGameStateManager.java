@@ -1,15 +1,15 @@
-package sokoban.game;
+package JTE.game;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import sokoban.ui.SokobanUI;
+import JTE.ui.JTEUI;
 
-public class SokobanGameStateManager {
+public class JTEGameStateManager {
 
     // THE GAME WILL ALWAYS BE IN
     // ONE OF THESE STATES
-    public enum SokobanGameState {
+    public enum JTEGameState {
         GAME_NOT_STARTED, GAME_IN_PROGRESS, GAME_OVER,
         LEVEL1, 
         LEVEL2, 
@@ -22,27 +22,27 @@ public class SokobanGameStateManager {
     }
 
     // STORES THE CURRENT STATE OF THIS GAME
-    private SokobanGameState currentGameState;
+    private JTEGameState currentGameState;
 
     // WHEN THE STATE OF THE GAME CHANGES IT WILL NEED TO BE
     // REFLECTED IN THE USER INTERFACE, SO THIS CLASS NEEDS
     // A REFERENCE TO THE UI
-    private SokobanUI ui;
+    private JTEUI ui;
 
     // THIS IS THE GAME CURRENTLY BEING PLAYED
-    private SokobanGameData gameInProgress;
+    private JTEGameData gameInProgress;
 
     // HOLDS ALL OF THE COMPLETED GAMES. NOTE THAT THE GAME
     // IN PROGRESS IS NOT ADDED UNTIL IT IS COMPLETED
-    private ArrayList<SokobanGameData> gamesHistory;
+    private ArrayList<JTEGameData> gamesHistory;
 
     private final String NEWLINE_DELIMITER = "\n";
 
-    public SokobanGameStateManager(SokobanUI initUI) {
+    public JTEGameStateManager(JTEUI initUI) {
         ui = initUI;
 
         // WE HAVE NOT STARTED A GAME YET
-        currentGameState = SokobanGameState.GAME_NOT_STARTED;
+        currentGameState = JTEGameState.GAME_NOT_STARTED;
 
         // NO GAMES HAVE BEEN PLAYED YET, BUT INITIALIZE
         // THE DATA STRCUTURE FOR PLACING COMPLETED GAMES
@@ -58,7 +58,7 @@ public class SokobanGameStateManager {
      *
      * @return The game currently being played.
      */
-    public SokobanGameData getGameInProgress() {
+    public JTEGameData getGameInProgress() {
         return gameInProgress;
     }
 
@@ -78,7 +78,7 @@ public class SokobanGameStateManager {
      * @return An Iterator that allows one to go through all the games that have
      * been played so far.
      */
-    public Iterator<SokobanGameData> getGamesHistoryIterator() {
+    public Iterator<JTEGameData> getGamesHistoryIterator() {
         return gamesHistory.iterator();
     }
 
@@ -89,7 +89,7 @@ public class SokobanGameStateManager {
      * session, false otherwise.
      */
     public boolean isGameNotStarted() {
-        return currentGameState == SokobanGameState.GAME_NOT_STARTED;
+        return currentGameState == JTEGameState.GAME_NOT_STARTED;
     }
 
     /**
@@ -98,7 +98,7 @@ public class SokobanGameStateManager {
      * @return true if the game in progress has completed, false otherwise.
      */
     public boolean isGameOver() {
-        return currentGameState == SokobanGameState.GAME_OVER;
+        return currentGameState == JTEGameState.GAME_OVER;
     }
 
     /**
@@ -107,7 +107,7 @@ public class SokobanGameStateManager {
      * @return true if a game is in progress, false otherwise.
      */
     public boolean isGameInProgress() {
-        return currentGameState == SokobanGameState.GAME_IN_PROGRESS;
+        return currentGameState == JTEGameState.GAME_IN_PROGRESS;
     }
 
     /**
@@ -118,11 +118,11 @@ public class SokobanGameStateManager {
      */
     public int getWins() {
         // ITERATE THROUGH ALL THE COMPLETED GAMES
-        Iterator<SokobanGameData> it = gamesHistory.iterator();
+        Iterator<JTEGameData> it = gamesHistory.iterator();
         int wins = 0;
         while (it.hasNext()) {
             // GET THE NEXT GAME IN THE SEQUENCE
-            SokobanGameData game = it.next();
+            JTEGameData game = it.next();
 
             // TODO
             // IF IT ENDED IN A WIN, INC THE COUNTER
@@ -141,11 +141,11 @@ public class SokobanGameStateManager {
      */
     public int getLosses() {
         // ITERATE THROUGH ALL THE COMPLETED GAMES
-        Iterator<SokobanGameData> it = gamesHistory.iterator();
+        Iterator<JTEGameData> it = gamesHistory.iterator();
         int losses = 0;
         while (it.hasNext()) {
             // GET THE NEXT GAME IN THE SEQUENCE
-            SokobanGameData game = it.next();
+            JTEGameData game = it.next();
 
             // TODO
             // IF IT ENDED IN A LOSS, INC THE COUNTER
@@ -163,7 +163,7 @@ public class SokobanGameStateManager {
      * @return The completed game that the player won requiring the least amount
      * of time.
      */
-    public SokobanGameData getFastestWin() {
+    public JTEGameData getFastestWin() {
         // IF NO GAMES HAVE BEEN PLAYED, THERE IS
         // NOTHING TO RETURN
         if (gamesHistory.isEmpty()) {
@@ -171,13 +171,13 @@ public class SokobanGameStateManager {
         }
 
         // NOTE THAT ALL THE GAMES PLAYED MAY BE LOSSES
-        SokobanGameData fastest = null;
+        JTEGameData fastest = null;
 
         // GO THROUGH ALL THE GAMES THAT HAVE BEEN PLAYED
-        Iterator<SokobanGameData> it = gamesHistory.iterator();
+        Iterator<JTEGameData> it = gamesHistory.iterator();
         while (it.hasNext()) {
             // GET THE NEXT GAME IN THE SEQUENCE
-            SokobanGameData game = it.next();
+            JTEGameData game = it.next();
 
             // WE ONLY CONSIDER GAMES THAT WERE WON
             if (game.isWon()) {
@@ -234,10 +234,10 @@ public class SokobanGameStateManager {
      */
     public void makeNewGame() {
         // TODO: create a game for a level
-        gameInProgress = new SokobanGameData(1);
+        gameInProgress = new JTEGameData(1);
 
         // THE GAME IS OFFICIALLY UNDERWAY
-        currentGameState = SokobanGameState.GAME_IN_PROGRESS;
+        currentGameState = JTEGameState.GAME_IN_PROGRESS;
     }
 
 }

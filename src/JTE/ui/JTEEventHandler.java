@@ -1,4 +1,4 @@
-package sokoban.ui;
+package JTE.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,23 +10,24 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import application.Main.SokobanPropertyType;
+import application.Main.JTEPropertyType;
 import properties_manager.PropertiesManager;
 import xml_utilities.InvalidXMLFileFormatException;
-import sokoban.file.SokobanFileLoader;
-import sokoban.game.SokobanGameStateManager;
+import JTE.file.JTEFileLoader;
+import JTE.game.JTEGameStateManager;
+import javax.swing.JEditorPane;
 
-public class SokobanEventHandler {
+public class JTEEventHandler {
 
-    private SokobanUI ui;
-//    SokobanFileLoader fl=new SokobanFileLoader();
+    private JTEUI ui;
+//    JTEFileLoader fl=new JTEFileLoader();
 
     /**
      * Constructor that simply saves the ui for later.
      *
      * @param initUI
      */
-    public SokobanEventHandler(SokobanUI initUI) {
+    public JTEEventHandler(JTEUI initUI) {
         ui = initUI;
     }
 
@@ -37,26 +38,30 @@ public class SokobanEventHandler {
      * @param uiState The ui state, or screen, that the user wishes to switch
      * to.
      */
-    public void respondToSwitchScreenRequest(SokobanUI.SokobanUIState uiState) {
+    public void respondToSwitchScreenRequest(JTEUI.JTEUIState uiState) {
 
         ui.changeWorkspace(uiState);
     }
     /*This method responds to select levels as selected by the user
     *
     */
-    public void respondToSelectLevelRequest(String level)
+    public void respondToSelectCommandRequest(String comm)
     {
      
-        ui.loadFile(level);
+        ui.doCommand(comm);
     }
     /**
      * This method responds to when the user presses the new game method.
      */
     public void respondToNewGameRequest() {
-        SokobanGameStateManager gsm = ui.getGSM();
+        JTEGameStateManager gsm = ui.getGSM();
         gsm.startNewGame();
     }
-
+     public void respondToGoHomeRequest()
+    {
+        JEditorPane aboutPage = ui.getaboutPane();
+        ui.loadPage(aboutPage, JTEPropertyType.ABOUT_FILE_NAME);
+    }
     /**
      * This method responds to when the user requests to exit the application.
      *
@@ -66,15 +71,15 @@ public class SokobanEventHandler {
         // ENGLIS IS THE DEFAULT
         String options[] = new String[]{"Yes", "No"};
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        options[0] = props.getProperty(SokobanPropertyType.DEFAULT_YES_TEXT);
-        options[1] = props.getProperty(SokobanPropertyType.DEFAULT_NO_TEXT);
-        String verifyExit = props.getProperty(SokobanPropertyType.DEFAULT_EXIT_TEXT);
+        options[0] = props.getProperty(JTEPropertyType.DEFAULT_YES_TEXT);
+        options[1] = props.getProperty(JTEPropertyType.DEFAULT_NO_TEXT);
+        String verifyExit = props.getProperty(JTEPropertyType.DEFAULT_EXIT_TEXT);
 
         // NOW WE'LL CHECK TO SEE IF LANGUAGE SPECIFIC VALUES HAVE BEEN SET
-        if (props.getProperty(SokobanPropertyType.YES_TEXT) != null) {
-            options[0] = props.getProperty(SokobanPropertyType.YES_TEXT);
-            options[1] = props.getProperty(SokobanPropertyType.NO_TEXT);
-            verifyExit = props.getProperty(SokobanPropertyType.EXIT_REQUEST_TEXT);
+        if (props.getProperty(JTEPropertyType.YES_TEXT) != null) {
+            options[0] = props.getProperty(JTEPropertyType.YES_TEXT);
+            options[1] = props.getProperty(JTEPropertyType.NO_TEXT);
+            verifyExit = props.getProperty(JTEPropertyType.EXIT_REQUEST_TEXT);
         }
 
         // FIRST MAKE SURE THE USER REALLY WANTS TO EXIT

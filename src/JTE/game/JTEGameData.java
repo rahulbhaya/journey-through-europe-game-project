@@ -1,4 +1,4 @@
-package sokoban.game;
+package JTE.game;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -9,7 +9,7 @@ import java.util.Iterator;
  * that this class works in concert with the SokobanGameStateManager, so all
  * instance variables have default (package-level) access.
  */
-public class SokobanGameData {
+public class JTEGameData {
 
     // START AND END TIME WILL BE USED TO CALCULATE THE
     // TIME IT TAKES TO PLAY THIS GAME
@@ -24,7 +24,7 @@ public class SokobanGameData {
     /*
      * Construct this object when a game begins.
      */
-    public SokobanGameData(int level) {
+    public JTEGameData(int level) {
         startTime = new GregorianCalendar();
         endTime = null;
     }

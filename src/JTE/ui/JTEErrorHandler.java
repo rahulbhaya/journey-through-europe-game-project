@@ -1,7 +1,7 @@
-package sokoban.ui;
+package JTE.ui;
 
 import properties_manager.PropertiesManager;
-import application.Main.SokobanPropertyType;
+import application.Main.JTEPropertyType;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,11 +10,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class SokobanErrorHandler {
+public class JTEErrorHandler {
 
     private Stage ui;
 
-    public SokobanErrorHandler(Stage initUI) {
+    public JTEErrorHandler(Stage initUI) {
         ui = initUI;
     }
 
@@ -26,13 +26,13 @@ public class SokobanErrorHandler {
      * @param errorType Identifies the type of error that happened, which allows
      * us to get and display different text for different errors.
      */
-    public void processError(SokobanPropertyType errorType) {
+    public void processError(JTEPropertyType errorType) {
         // GET THE FEEDBACK TEXT
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         String errorFeedbackText = props.getProperty(errorType);
 
         // NOTE THAT WE'LL USE THE SAME DIALOG TITLE FOR ALL ERROR TYPES
-        String errorTitle = props.getProperty(SokobanPropertyType.ERROR_DIALOG_TITLE_TEXT);
+        String errorTitle = props.getProperty(JTEPropertyType.ERROR_DIALOG_TITLE_TEXT);
 
         // POP OPEN A DIALOG TO DISPLAY TO THE USER
         //JOptionPane.showMessageDialog(window, errorFeedbackText, errorTitle, JOptionPane.ERROR_MESSAGE);
