@@ -130,9 +130,10 @@ String number="0";
         errorHandler = new JTEErrorHandler(primaryStage);
         docManager = new JTEDocumentManager(this);
         fl=new JTEFileLoader(this);
+        System.out.println("1");
         initMainPane();
         initSplashScreen();
-        initaboutPane();
+       initaboutPane();
         
     }
 
@@ -241,14 +242,11 @@ String number="0";
         mainPane.setBottom(commandSelectionPane);
     }
 
-    /**
-     * This method initializes the language-specific game controls, which
-     * includes the three primary game screens.
-     */
+    
     public void initJTEUI() {
         // FIRST REMOVE THE SPLASH SCREEN
         mainPane.getChildren().clear();
-        makeGridPane();
+        //makeGridPane();
         // GET THE UPDATED TITLE
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         String title = props.getProperty(JTEPropertyType.GAME_TITLE_TEXT);
@@ -263,10 +261,10 @@ String number="0";
         //
        // initStatsPane();
         //initaboutPane();
-        initHandlers();
+        //initHandlers();
         
         // WE'LL START OUT WITH THE GAME SCREEN
-        changeWorkspace(JTEUIState.PLAY_GAME_STATE);
+        //changeWorkspace(JTEUIState.PLAY_GAME_STATE);
 
     }
   
@@ -282,11 +280,14 @@ String number="0";
     
     public void doCommand(String command){
         
-        initJTEUI();
+       // initJTEUI();
        if(command.equals("Quit"))
             eventHandler.respondToExitRequest(primaryStage);
        if(command.equals("About"))
            eventHandler.respondToSwitchScreenRequest(JTEUIState.VIEW_ABOUT_STATE);
+       if(command.equals("Play"))
+           eventHandler.respondToSwitchScreenRequest(JTEUIState.PLAY_GAME_STATE);
+           
     }
     public JEditorPane getaboutPane() 
     { 
@@ -368,17 +369,17 @@ String number="0";
 	}
         private void initGameScreen() {
 		mainPane.getChildren().clear();
-                BorderPane borderPane=new BorderPane();
-                Label l= new Label("Player");
-                Image 
-                   borderPane.setAlignment(l, Pos.TOP_LEFT);
-                  
-           
-            Image centerImage = loadImage("");
+                GridPane grd = new GridPane();
+                grd.setHgap(10);
+                grd.setVgap(10);
+                 grd.setPadding(new Insets(0, 10, 0, 10));
+                 Label l=new Label("Player");
+            Image centerImage = loadImage("gameimage.jpg");
             ImageView centerImageView = new ImageView(centerImage);
-            commandImageView.setFitHeight(80.0);
-            commandImageView.setFitWidth(80.0);
-                   mainPane.setCenter(borderPane);
+            centerImageView.setFitHeight(80.0);
+            centerImageView.setFitWidth(80.0);
+            grd.add(centerImageView,1,1);
+                   mainPane.setCenter(grd);
                 
                 
     }
@@ -423,33 +424,7 @@ String number="0";
         Object playerno = cb.getSelectionModel().getSelectedItem();
        number= playerno.toString();
             System.out.println("you selected:  "+number);
-    
-});
-      goButton = initToolbarButton(northToolbar,
-                JTEPropertyType.GO_IMG_NAME);
-        
-        goButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                initGameScreen();
-                
-                
-            }
-
-        });
-
-
-       
-
-        // AND NOW PUT THE NORTH TOOLBAR IN THE FRAME
-        mainPane.setTop(northToolbar);
-        //mainPane.getChildren().add(northToolbar);
-    }
-public void makeGridPane()
-{
-    GridPane grid = new GridPane();
+            GridPane grid = new GridPane();
       grid.setHgap(10);
     grid.setVgap(10);
     grid.setPadding(new Insets(0, 10, 0, 10));
@@ -579,10 +554,38 @@ public void makeGridPane()
     v6.setSpacing(10);
     if(number.equals("6"))break lab;
     
-    
-    
-    mainPane.setCenter(grid);
     }
+    mainPane.setCenter(grid);
+            //mainPane.setCenter(gamePanel);
+            
+    
+});
+      goButton = initToolbarButton(northToolbar,
+                JTEPropertyType.GO_IMG_NAME);
+        
+        goButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                initGameScreen();
+                
+                
+            }
+
+        });
+
+
+       
+
+        // AND NOW PUT THE NORTH TOOLBAR IN THE FRAME
+        mainPane.setTop(northToolbar);
+        //mainPane.getChildren().add(northToolbar);
+       
+    }
+public void makeGridPane()
+{
+    
     //return grid;
 }
     /**
@@ -645,16 +648,20 @@ JEditorPane gamePane;
     public void changeWorkspace(JTEUIState uiScreen) {
         switch (uiScreen) {
             case VIEW_ABOUT_STATE:
-                workspace.getChildren().remove(aboutPanel);
+                System.out.println("3");
+               // workspace.getChildren().remove(aboutPanel);
               // workspace.getChildren().remove(statsScrollPane);
                 //workspace.getChildren().add(gamePanel);
-                workspace.getChildren().add(aboutPanel);
-                gamePanel.setVisible(false);
+               // workspace.getChildren().add(aboutPanel);
+                //gamePanel.setVisible(false);
+                mainPane.getChildren().clear();
                 mainPane.setCenter(aboutPanel);
                 break;
             case PLAY_GAME_STATE:
-                mainPane.setCenter(gamePanel);
-                makeGridPane();
+                System.out.println("2");
+                //mainPane.setCenter(gamePanel);
+               // makeGridPane();
+               initJTEUI();
                 break;
             case VIEW_STATS_STATE:
                 mainPane.setCenter(statsScrollPane);

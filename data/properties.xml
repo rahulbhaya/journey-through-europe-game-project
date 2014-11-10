@@ -26,7 +26,7 @@
     </property_list>
     <property_options_list>
         <property_options name="BUTTON_OPTIONS">
-            <option>Play </option>
+            <option>Play</option>
             <option>Load</option>
             <option>About</option>
             <option>Quit</option>
