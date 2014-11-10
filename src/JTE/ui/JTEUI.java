@@ -57,12 +57,13 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
+    
     public enum JTEUIState {
 
         SPLASH_SCREEN_STATE, PLAY_GAME_STATE, VIEW_STATS_STATE, VIEW_ABOUT_STATE,
         HANG1_STATE, HANG2_STATE, HANG3_STATE, HANG4_STATE, HANG5_STATE, HANG6_STATE,
     }
-
+String number="0";
     // mainStage
     private Stage primaryStage;
 
@@ -366,7 +367,20 @@ public class JTEUI extends Pane {
 		return img;
 	}
         private void initGameScreen() {
-		
+		mainPane.getChildren().clear();
+                BorderPane borderPane=new BorderPane();
+                Label l= new Label("Player");
+                Image 
+                   borderPane.setAlignment(l, Pos.TOP_LEFT);
+                  
+           
+            Image centerImage = loadImage("");
+            ImageView centerImageView = new ImageView(centerImage);
+            commandImageView.setFitHeight(80.0);
+            commandImageView.setFitWidth(80.0);
+                   mainPane.setCenter(borderPane);
+                
+                
     }
     
     /**
@@ -399,12 +413,18 @@ public class JTEUI extends Pane {
                 
             }
         });
+        
         Label lb=new Label("Number of Players");
         northToolbar.getChildren().add(lb);
         ComboBox cb=new ComboBox();
         cb.getItems().addAll("1", "2", "3","4","5","6");
         northToolbar.getChildren().add(cb);
-        
+        cb.setOnAction((event) -> {
+        Object playerno = cb.getSelectionModel().getSelectedItem();
+       number= playerno.toString();
+            System.out.println("you selected:  "+number);
+    
+});
       goButton = initToolbarButton(northToolbar,
                 JTEPropertyType.GO_IMG_NAME);
         
@@ -413,7 +433,9 @@ public class JTEUI extends Pane {
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-                //eventHandler.respondToExitRequest(primaryStage);
+                initGameScreen();
+                
+                
             }
 
         });
@@ -435,6 +457,8 @@ public void makeGridPane()
    // Image image1 = new Image("./images/flag_black.png");
    //ImageView iv1 = new ImageView();
     // iv1.setImage(image1);
+    lab:
+    {
     HBox h1=new HBox();
     HBox h2=new HBox();
     VBox v1=new VBox();
@@ -452,6 +476,7 @@ public void makeGridPane()
     v1.getChildren().addAll(h1,h2);
     grid.add(v1,1,1);
     v1.setSpacing(10);
+    if(number.equals("1"))break lab;
     
     HBox h3=new HBox();
     HBox h4=new HBox();
@@ -471,6 +496,7 @@ public void makeGridPane()
     v2.getChildren().addAll(h3,h4);
     grid.add(v2,2,1);
     v2.setSpacing(10);
+    if(number.equals("2"))break lab;
     
     HBox h5=new HBox();
     HBox h6=new HBox();
@@ -490,6 +516,7 @@ public void makeGridPane()
     v3.getChildren().addAll(h5,h6);
     grid.add(v3,3,1);
     v3.setSpacing(10);
+    if(number.equals("3"))break lab;
     
     HBox h7=new HBox();
     HBox h8=new HBox();
@@ -509,6 +536,7 @@ public void makeGridPane()
     v4.getChildren().addAll(h7,h8);
     grid.add(v4,1,2);
     v4.setSpacing(10);
+    if(number.equals("4"))break lab;
     
     HBox h9=new HBox();
     HBox h10=new HBox();
@@ -528,6 +556,7 @@ public void makeGridPane()
     v5.getChildren().addAll(h9,h10);
     grid.add(v5,2,2);
     v5.setSpacing(10);
+   if(number.equals("5"))break lab;
     
     
     HBox h11=new HBox();
@@ -542,15 +571,18 @@ public void makeGridPane()
     TextField tf6=new TextField();
     h11.getChildren().addAll(rb11,l6);
     h11.setSpacing(30);
-    h12.getChildren().addAll(rb8,tf4);
+    h12.getChildren().addAll(rb8,tf6);
     h12.setSpacing(20);
     //v1.getChildren().add
     v6.getChildren().addAll(h11,h12);
     grid.add(v6,3,2);
     v6.setSpacing(10);
+    if(number.equals("6"))break lab;
+    
     
     
     mainPane.setCenter(grid);
+    }
     //return grid;
 }
     /**
