@@ -8,6 +8,7 @@
         <property name="STATS_IMG_NAME"            value="undo.png"></property> 
         <property name="ABOUT_IMG_NAME"              value="about.png"></property>  
         <property name="GAME_IMG_NAME"            value="back.png"></property>
+        <property name="GO_IMG_NAME"            value="go.png"></property>
             <property name="EXIT_IMG_NAME"            value="time.png"></property>
         <property name="SPLASH_SCREEN_TITLE_TEXT"   value="Select a Level"></property>
         <property name="WINDOW_WIDTH"               value="820"></property>

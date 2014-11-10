@@ -24,12 +24,17 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+
+
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
@@ -42,6 +47,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javax.swing.JScrollPane;
+import javafx.scene.control.TextField;
+
 
 public class JTEUI extends Pane {
 
@@ -95,6 +102,7 @@ public class JTEUI extends Pane {
     private Button homeButton;
     private Pane workspace;
 
+    private Button goButton;
     // Padding
     private Insets marginlessInsets;
 
@@ -296,7 +304,7 @@ public class JTEUI extends Pane {
         // NOW LOAD THE about HTML
         aboutPane.setContentType("text/html");
         
-        // MAKE THE HELP BUTTON
+        // MAKE THE about BUTTON
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         String homeImgName = props.getProperty(JTEPropertyType.HOME_IMG_NAME);
         Image homeImg = loadImage(homeImgName);
@@ -366,6 +374,9 @@ public class JTEUI extends Pane {
      */
     private void initNorthToolbar() {
         // MAKE THE NORTH TOOLBAR, WHICH WILL HAVE FOUR BUTTONS
+        
+      
+        
         northToolbar = new HBox();
         northToolbar.setStyle("-fx-background-color:lightgray");
         northToolbar.setAlignment(Pos.CENTER);
@@ -388,56 +399,50 @@ public class JTEUI extends Pane {
                 
             }
         });
-
-        // MAKE AND INIT THE STATS BUTTON
-        statsButton = initToolbarButton(northToolbar,
-                JTEPropertyType.STATS_IMG_NAME);
-        //setTooltip(statsButton, JTEPropertyType.STATS_TOOLTIP);
+        Label lb=new Label("Number of Players");
+        northToolbar.getChildren().add(lb);
+        ComboBox cb=new ComboBox();
+        cb.getItems().addAll("1", "2", "3","4","5","6");
+        northToolbar.getChildren().add(cb);
         
-        statsButton.setOnAction(new EventHandler<ActionEvent>() {
+      goButton = initToolbarButton(northToolbar,
+                JTEPropertyType.GO_IMG_NAME);
+        
+        goButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-                fl.gridRenderer.pressedundo();
-                
-            }
-
-        });
-        // MAKE AND INIT THE about BUTTON
-        aboutButton = initToolbarButton(northToolbar,
-                JTEPropertyType.HELP_IMG_NAME);
-        //setTooltip(aboutButton, JTEPropertyType.HELP_TOOLTIP);
-        aboutButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-               // eventHandler
-                //        .respondToSwitchScreenRequest(JTEUIState.VIEW_HELP_STATE);
+                //eventHandler.respondToExitRequest(primaryStage);
             }
 
         });
 
-        // MAKE AND INIT THE EXIT BUTTON
-        exitButton = initToolbarButton(northToolbar,
-                JTEPropertyType.EXIT_IMG_NAME);
-        //setTooltip(exitButton, JTEPropertyType.EXIT_TOOLTIP);
-        exitButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                eventHandler.respondToExitRequest(primaryStage);
-            }
-
-        });
+       
 
         // AND NOW PUT THE NORTH TOOLBAR IN THE FRAME
         mainPane.setTop(northToolbar);
         //mainPane.getChildren().add(northToolbar);
     }
-
+public GridPane makeGridPane()
+{
+    GridPane grid = new GridPane();
+      grid.setHgap(10);
+    grid.setVgap(10);
+    grid.setPadding(new Insets(0, 10, 0, 10));
+    RadioButton rb1=new RadioButton();
+    rb1.setText("Player");
+    GridPane.setConstraints(rb1, 1, 1);
+    RadioButton rb2=new RadioButton();
+    rb2.setText("Computer");
+    GridPane.setConstraints(rb1, 1, 1);
+    TextField tf=new TextField();
+    
+    grid.getChildren().addAll(rb1,rb2,tf);
+    mainPane.setCenter(grid);
+    return grid;
+}
     /**
      * This method helps to initialize buttons for a simple toolbar.
      *
@@ -498,12 +503,12 @@ JEditorPane gamePane;
     public void changeWorkspace(JTEUIState uiScreen) {
         switch (uiScreen) {
             case VIEW_ABOUT_STATE:
-                
                 workspace.getChildren().remove(aboutPanel);
               // workspace.getChildren().remove(statsScrollPane);
-                workspace.getChildren().add(gamePanel);
+                //workspace.getChildren().add(gamePanel);
                 workspace.getChildren().add(aboutPanel);
                 gamePanel.setVisible(false);
+                mainPane.setCenter(aboutPanel);
                 break;
             case PLAY_GAME_STATE:
                 mainPane.setCenter(gamePanel);
