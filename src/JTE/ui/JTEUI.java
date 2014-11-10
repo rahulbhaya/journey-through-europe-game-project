@@ -21,6 +21,7 @@ import properties_manager.PropertiesManager;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -48,6 +49,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javax.swing.JScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextArea;
 
 
 public class JTEUI extends Pane {
@@ -97,11 +100,12 @@ String number="0";
     private JEditorPane statsPane;
 
     //aboutPane
-    private BorderPane aboutPanel;
-    private ScrollPane aboutScrollPane;
-    private JEditorPane aboutPane;
+    //private BorderPane aboutPanel;
+    //private ScrollPane aboutScrollPane;
+   // private JEditorPane aboutPane;
     private Button homeButton;
     private Pane workspace;
+    private StackPane aboutPane;
 
     private Button goButton;
     // Padding
@@ -133,7 +137,7 @@ String number="0";
         System.out.println("1");
         initMainPane();
         initSplashScreen();
-       initaboutPane();
+      // initaboutPane();
         
     }
 
@@ -157,9 +161,7 @@ String number="0";
         return errorHandler;
     }
 
-    public JEditorPane getHelpPane() {
-        return aboutPane;
-    }
+    
 
     public void initMainPane() {
         marginlessInsets = new Insets(5, 5, 5, 5);
@@ -289,66 +291,29 @@ String number="0";
            eventHandler.respondToSwitchScreenRequest(JTEUIState.PLAY_GAME_STATE);
            
     }
-    public JEditorPane getaboutPane() 
-    { 
-        return aboutPane; 
-    }
+  
     public void initaboutPane()
     {
-        // WE'LL DISPLAY ALL about INFORMATION USING HTML
-        aboutPane = new JEditorPane();
-        aboutPane.setEditable(false);
-        SwingNode swingNode = new SwingNode();
-        swingNode.setContent(aboutPane);
-        aboutScrollPane = new ScrollPane();
-        aboutScrollPane.setContent(swingNode);
-                        
-        // NOW LOAD THE about HTML
-        aboutPane.setContentType("text/html");
+        aboutPane=new StackPane();
+        TextArea ta1=new TextArea();
+        ta1.setText("Jouney Through Europe");
+        ta1.setEditable(false);
+          ta1.setStyle("-fx-background-color:transparent;");
+          TextArea ta2= new TextArea();
+          ta2.setText("Journey through Europe is a family board game published by Ravensburger\n" +
+"The board is a map of Europe with various major cities marked, for example, Athens, Amsterdam and London. \n" +
+"The players are given a home city from which they will begin and are then dealt a number of cards with various other cities on them. \n" +
+"\n" +
+"They must plan a route between each of the cities in their hand of cards.\n" +
+"On each turn they throw a die and move between the cities, \n" +
+"The winner is the first player to visit each of their cities and then return to their home base.\n" +
+"HangMan was firstly mentioned in 1894. See Wikipedia for more.");
+          ta2.setEditable(false);
+        aboutPane.getChildren().addAll(ta1,ta2);
+      
+        mainPane.setCenter(aboutPane);
         
-        // MAKE THE about BUTTON
-        PropertiesManager props = PropertiesManager.getPropertiesManager();
-        String homeImgName = props.getProperty(JTEPropertyType.HOME_IMG_NAME);
-        Image homeImg = loadImage(homeImgName);
-        ImageView homeImgIcon = new ImageView(homeImg);
-        homeButton = new Button();
-       homeButton.setGraphic(homeImgIcon);
-        //setTooltip(homeButton, JTEPropertyType.HOME_TOOLTIP);
-        homeButton.setPadding(marginlessInsets);
-        
-        // WE'LL PUT THE HOME BUTTON IN A TOOLBAR IN THE NORTH OF THIS SCREEN,
-        // UNDER THE NORTH TOOLBAR THAT'S SHARED BETWEEN THE THREE SCREENS
-        Pane aboutToolbar = new Pane();
-        aboutPanel = new BorderPane();
-        //aboutPanel.setLayout(new BorderLayout());
-        aboutPanel.setTop(aboutToolbar);
-        
-        aboutPanel.setCenter(aboutScrollPane);
-        aboutToolbar.getChildren().add(homeButton);
-        aboutToolbar.setStyle("-fx-background-color:white");
-        
-        // LOAD THE HELP PAGE
-        loadPage(aboutPane, JTEPropertyType.ABOUT_FILE_NAME);
-        
-        // LET OUR HELP PAGE GO HOME VIA THE HOME BUTTON
-        homeButton.setOnAction(new EventHandler<ActionEvent>(){
-
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
-				eventHandler.respondToGoHomeRequest();
-			}
-        	
-        });
-        
-        // LET OUR HELP SCREEN JOURNEY AROUND THE WEB VIA HYPERLINK
-        //HelpHyperlinkListener hhl = new HelpHyperlinkListener(this);
-        //aboutPane.addHyperlinkListener(hhl);         
-        
-        // ADD IT TO THE WORKSPACE
-       // workspace.add(aboutPanel, JTEUIState.VIEW_HELP_STATE.toString());
-       // workspace.getChildren().add(aboutPanel);
-    } 
+    }
     public void loadPage(JEditorPane jep, JTEPropertyType fileProperty) {
 		// GET THE FILE NAME
 		PropertiesManager props = PropertiesManager.getPropertiesManager();
@@ -655,7 +620,8 @@ JEditorPane gamePane;
                // workspace.getChildren().add(aboutPanel);
                 //gamePanel.setVisible(false);
                 mainPane.getChildren().clear();
-                mainPane.setCenter(aboutPanel);
+                initaboutPane();
+                //mainPane.setCenter(aboutPane);
                 break;
             case PLAY_GAME_STATE:
                 System.out.println("2");
