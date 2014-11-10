@@ -431,11 +431,13 @@ public void makeGridPane()
       grid.setHgap(10);
     grid.setVgap(10);
     grid.setPadding(new Insets(0, 10, 0, 10));
-    Image image1 = new Image("./images/flag_black.png");
-    ImageView iv1 = new ImageView();
-     iv1.setImage(image1);
+    grid.setGridLinesVisible(true);
+   // Image image1 = new Image("./images/flag_black.png");
+   //ImageView iv1 = new ImageView();
+    // iv1.setImage(image1);
     HBox h1=new HBox();
     HBox h2=new HBox();
+    VBox v1=new VBox();
     RadioButton rb1=new RadioButton();
     rb1.setText("Player");
     rb1.setSelected(true);
@@ -443,9 +445,111 @@ public void makeGridPane()
     rb2.setText("Computer");
     Label l1=new Label("Name:");
     TextField tf1=new TextField();
-    h1.getChildren().addAll(iv1,rb1,l1);
-    h1.setSpacing(10);
-    grid.getChildren().add(h1);
+    h1.getChildren().addAll(rb1,l1);
+    h1.setSpacing(30);
+    h2.getChildren().addAll(rb2,tf1);
+    h2.setSpacing(20);
+    v1.getChildren().addAll(h1,h2);
+    grid.add(v1,1,1);
+    v1.setSpacing(10);
+    
+    HBox h3=new HBox();
+    HBox h4=new HBox();
+    VBox v2=new VBox();
+    RadioButton rb3=new RadioButton();
+    rb3.setText("Player");
+    rb3.setSelected(true);
+    RadioButton rb4=new RadioButton();
+    rb4.setText("Computer");
+    Label l2=new Label("Name:");
+    TextField tf2=new TextField();
+    h3.getChildren().addAll(rb3,l2);
+    h3.setSpacing(30);
+    h4.getChildren().addAll(rb4,tf2);
+    h4.setSpacing(20);
+ 
+    v2.getChildren().addAll(h3,h4);
+    grid.add(v2,2,1);
+    v2.setSpacing(10);
+    
+    HBox h5=new HBox();
+    HBox h6=new HBox();
+    VBox v3=new VBox();
+    RadioButton rb5=new RadioButton();
+    rb5.setText("Player");
+    rb5.setSelected(true);
+    RadioButton rb6=new RadioButton();
+    rb6.setText("Computer");
+    Label l3=new Label("Name:");
+    TextField tf3=new TextField();
+    h5.getChildren().addAll(rb5,l3);
+    h5.setSpacing(30);
+    h6.getChildren().addAll(rb6,tf3);
+    h6.setSpacing(20);
+    //v1.getChildren().add
+    v3.getChildren().addAll(h5,h6);
+    grid.add(v3,3,1);
+    v3.setSpacing(10);
+    
+    HBox h7=new HBox();
+    HBox h8=new HBox();
+    VBox v4=new VBox();
+    RadioButton rb7=new RadioButton();
+    rb7.setText("Player");
+    rb7.setSelected(true);
+    RadioButton rb8=new RadioButton();
+    rb8.setText("Computer");
+    Label l4=new Label("Name:");
+    TextField tf4=new TextField();
+    h7.getChildren().addAll(rb7,l4);
+    h7.setSpacing(30);
+    h8.getChildren().addAll(rb8,tf4);
+    h8.setSpacing(20);
+    //v1.getChildren().add
+    v4.getChildren().addAll(h7,h8);
+    grid.add(v4,1,2);
+    v4.setSpacing(10);
+    
+    HBox h9=new HBox();
+    HBox h10=new HBox();
+    VBox v5=new VBox();
+    RadioButton rb9=new RadioButton();
+    rb9.setText("Player");
+    rb9.setSelected(true);
+    RadioButton rb10=new RadioButton();
+    rb10.setText("Computer");
+    Label l5=new Label("Name:");
+    TextField tf5=new TextField();
+    h9.getChildren().addAll(rb9,l5);
+    h9.setSpacing(30);
+    h10.getChildren().addAll(rb10,tf5);
+    h10.setSpacing(20);
+    //v1.getChildren().add
+    v5.getChildren().addAll(h9,h10);
+    grid.add(v5,2,2);
+    v5.setSpacing(10);
+    
+    
+    HBox h11=new HBox();
+    HBox h12=new HBox();
+    VBox v6=new VBox();
+    RadioButton rb11=new RadioButton();
+    rb11.setText("Player");
+    rb11.setSelected(true);
+    RadioButton rb12=new RadioButton();
+    rb12.setText("Computer");
+    Label l6=new Label("Name:");
+    TextField tf6=new TextField();
+    h11.getChildren().addAll(rb11,l6);
+    h11.setSpacing(30);
+    h12.getChildren().addAll(rb8,tf4);
+    h12.setSpacing(20);
+    //v1.getChildren().add
+    v6.getChildren().addAll(h11,h12);
+    grid.add(v6,3,2);
+    v6.setSpacing(10);
+    
+    
     mainPane.setCenter(grid);
     //return grid;
 }
