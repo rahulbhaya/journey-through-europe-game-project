@@ -247,7 +247,7 @@ public class JTEUI extends Pane {
     public void initJTEUI() {
         // FIRST REMOVE THE SPLASH SCREEN
         mainPane.getChildren().clear();
-
+        makeGridPane();
         // GET THE UPDATED TITLE
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         String title = props.getProperty(JTEPropertyType.GAME_TITLE_TEXT);
@@ -259,11 +259,11 @@ public class JTEUI extends Pane {
         // OUR WORKSPACE WILL STORE EITHER THE GAME, STATS,
         // OR HELP UI AT ANY ONE TIME
         //initWorkspace();
-        initGameScreen();
+        //
        // initStatsPane();
-        initaboutPane();
+        //initaboutPane();
         initHandlers();
-
+        
         // WE'LL START OUT WITH THE GAME SCREEN
         changeWorkspace(JTEUIState.PLAY_GAME_STATE);
 
@@ -425,23 +425,29 @@ public class JTEUI extends Pane {
         mainPane.setTop(northToolbar);
         //mainPane.getChildren().add(northToolbar);
     }
-public GridPane makeGridPane()
+public void makeGridPane()
 {
     GridPane grid = new GridPane();
       grid.setHgap(10);
     grid.setVgap(10);
     grid.setPadding(new Insets(0, 10, 0, 10));
+    Image image1 = new Image("./images/flag_black.png");
+    ImageView iv1 = new ImageView();
+     iv1.setImage(image1);
+    HBox h1=new HBox();
+    HBox h2=new HBox();
     RadioButton rb1=new RadioButton();
     rb1.setText("Player");
-    GridPane.setConstraints(rb1, 1, 1);
+    rb1.setSelected(true);
     RadioButton rb2=new RadioButton();
     rb2.setText("Computer");
-    GridPane.setConstraints(rb1, 1, 1);
-    TextField tf=new TextField();
-    
-    grid.getChildren().addAll(rb1,rb2,tf);
+    Label l1=new Label("Name:");
+    TextField tf1=new TextField();
+    h1.getChildren().addAll(iv1,rb1,l1);
+    h1.setSpacing(10);
+    grid.getChildren().add(h1);
     mainPane.setCenter(grid);
-    return grid;
+    //return grid;
 }
     /**
      * This method helps to initialize buttons for a simple toolbar.
@@ -512,6 +518,7 @@ JEditorPane gamePane;
                 break;
             case PLAY_GAME_STATE:
                 mainPane.setCenter(gamePanel);
+                makeGridPane();
                 break;
             case VIEW_STATS_STATE:
                 mainPane.setCenter(statsScrollPane);
