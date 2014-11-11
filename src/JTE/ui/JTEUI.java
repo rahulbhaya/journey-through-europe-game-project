@@ -222,8 +222,10 @@ String number="0";
         commandSelectionPane = new VBox();
         commandSelectionPane.setSpacing(10.0);
         commandSelectionPane.setAlignment(Pos.CENTER);
+        
         // add key listener
         commandButtons = new ArrayList<Button>();
+        
         
         for (int i = 0; i < commands.size(); i++) {
 
@@ -238,7 +240,7 @@ String number="0";
             // AND BUILD THE BUTTON
             Button commandButton = new Button();
             commandButton.setGraphic(commandImageView);
-            
+            commandButton.setStyle("-fx-focus-color: transparent;");
             // CONNECT THE BUTTON TO THE EVENT HANDLER
             commandButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -327,6 +329,7 @@ String number="0";
           ta2.setEditable(false);
         
       backButton = new Button("Back");
+      backButton.setStyle("-fx-focus-color: transparent;");
         //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -368,6 +371,7 @@ String number="0";
                 Image abt= loadImage("aboutjte.png");
                 ImageView view=new ImageView(abt);
                 abtButton = new Button(" ",view);
+                abtButton.setStyle("-fx-focus-color: transparent;");
         //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
         abtButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -382,8 +386,9 @@ String number="0";
         Image hist= loadImage("history.png");
                 ImageView view2=new ImageView(hist);
                 histButton = new Button(" ",view2);
+                histButton.setStyle("-fx-focus-color: transparent;");
         histButton.setOnAction(new EventHandler<ActionEvent>() {
-
+            
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
@@ -408,12 +413,12 @@ String number="0";
             ImageView imgview4 = new ImageView(img4);
               Image img5 = loadImage("die_6.jpg");
             ImageView imgview5 = new ImageView(img5);
-             Image select = loadImage("die_6.jpg");
+             Image select = loadImage("gameplay_selector.jpg");
             ImageView sel = new ImageView(select);
             
             vbox1.getChildren().add(l1);
             
-            vbox3.getChildren().addAll(l2,l3,l4,imgview5,histButton,abtButton);
+            vbox3.getChildren().addAll(l2,l3,l4,sel,imgview5,histButton,abtButton);
             vbox3.setSpacing(10);
             imgview1.setFitHeight(650.0);
             imgview1.setFitWidth(500.0);
@@ -495,23 +500,8 @@ String number="0";
         northToolbar.setAlignment(Pos.CENTER);
         northToolbar.setPadding(marginlessInsets);
         northToolbar.setSpacing(10.0);
-
-        // MAKE AND INIT THE GAME BUTTON
-        gameButton = initToolbarButton(northToolbar,
-                JTEPropertyType.GAME_IMG_NAME);
-        //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
-        gameButton.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-               mainPane.getChildren().clear();
-               gamePanel.getChildren().clear();
-               initSplashScreen();
-               
-                
-            }
-        });
+        northToolbar.setStyle("-fx-background-color: #D1B48C;");
+        
         
         Label lb=new Label("Number of Players");
         northToolbar.getChildren().add(lb);
@@ -527,6 +517,7 @@ String number="0";
     grid.setVgap(20);
     grid.setPadding(new Insets(0, 10, 0, 10));
     grid.setGridLinesVisible(true);
+    grid.setStyle("-fx-background-color: #D1B48C;");
     
   Image image1 =  loadImage("flag_black.png");
    ImageView iv1 = new ImageView();
@@ -670,7 +661,7 @@ String number="0";
     TextField tf6=new TextField();
     h11.getChildren().addAll(rb11,l6);
     h11.setSpacing(30);
-    h12.getChildren().addAll(rb8,tf6);
+    h12.getChildren().addAll(rb12,tf6);
     h12.setSpacing(20);
     //v1.getChildren().add
     v6.getChildren().addAll(h11,h12,iv6);

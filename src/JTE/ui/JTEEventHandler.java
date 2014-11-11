@@ -59,8 +59,8 @@ public class JTEEventHandler {
     }
      public void respondToGoHomeRequest()
     {
-        JEditorPane aboutPage = ui.getaboutPane();
-        ui.loadPage(aboutPage, JTEPropertyType.ABOUT_FILE_NAME);
+        //JEditorPane aboutPage = ui.getaboutPane();
+        //ui.loadPage(aboutPage, JTEPropertyType.ABOUT_FILE_NAME);
     }
     /**
      * This method responds to when the user requests to exit the application.
