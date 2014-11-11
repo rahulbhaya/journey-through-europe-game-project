@@ -14,6 +14,12 @@
         <property name="WINDOW_WIDTH"               value="820"></property>
         <property name="WINDOW_HEIGHT"              value="820"></property>
         <property name="SPLASH_SCREEN_IMAGE_NAME"   value="JTESplashScreen.png"></property>
+        <property name="YELLOWFLAGPATH"                      value="flag_black.png"></property>
+         <property name="BLACKFLAGPATH"                      value="flag_black.png"></property>
+          <property name="BLUEFLAGPATH"                      value="flag_black.png"></property>
+           <property name="GREENFLAGPATH"                      value="flag_black.png"></property>
+            <property name="REDFLAGPATH"                      value="flag_black.png"></property>
+             <property name="WHITEFLAGPATH"                      value="flag_black.png"></property>
         <property name="DATA_PATH"                  value="./data/"></property>
         <property name="IMG_PATH"                   value="./images/"></property>
         <property name="LETTERS_FONT_FAMILY"        value="monospaced"></property>

@@ -111,6 +111,7 @@ String number="0";
     // Padding
     private Insets marginlessInsets;
 
+    private Button backButton;
     // Image path
     private String ImgPath = "file:images/";
 
@@ -309,8 +310,25 @@ String number="0";
 "The winner is the first player to visit each of their cities and then return to their home base.\n" +
 "HangMan was firstly mentioned in 1894. See Wikipedia for more.");
           ta2.setEditable(false);
-        aboutPane.getChildren().addAll(ta1,ta2);
-      
+        
+      backButton = new Button("Back");
+        //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               mainPane.getChildren().clear();
+               gamePanel.getChildren().clear();
+               initSplashScreen();
+               
+                
+            }
+        });
+         Image image1 = new Image("file:flag_black.png");
+   ImageView iv1 = new ImageView();
+   iv1.setImage(image1);
+        aboutPane.getChildren().addAll(iv1,ta1,ta2,backButton);
         mainPane.setCenter(aboutPane);
         
     }
@@ -390,18 +408,20 @@ String number="0";
        number= playerno.toString();
             System.out.println("you selected:  "+number);
             GridPane grid = new GridPane();
-      grid.setHgap(10);
-    grid.setVgap(10);
+      grid.setHgap(20);
+    grid.setVgap(20);
     grid.setPadding(new Insets(0, 10, 0, 10));
     grid.setGridLinesVisible(true);
-   // Image image1 = new Image("./images/flag_black.png");
-   //ImageView iv1 = new ImageView();
-    // iv1.setImage(image1);
+    
+  
+    //iv1.setImage(image1);
     lab:
     {
     HBox h1=new HBox();
     HBox h2=new HBox();
     VBox v1=new VBox();
+    //HBox h15=new HBox();
+   // h15.getChildren().add(iv1);
     RadioButton rb1=new RadioButton();
     rb1.setText("Player");
     rb1.setSelected(true);
@@ -413,6 +433,7 @@ String number="0";
     h1.setSpacing(30);
     h2.getChildren().addAll(rb2,tf1);
     h2.setSpacing(20);
+  
     v1.getChildren().addAll(h1,h2);
     grid.add(v1,1,1);
     v1.setSpacing(10);
