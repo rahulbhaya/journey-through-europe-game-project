@@ -290,11 +290,10 @@ public class JTEFileLoader {
             }
                 
         }
-        AudioClip hit = new AudioClip("http://www.soundjay.com/button/button-09.wav");
-
+        
         public void goUp() { 
             System.out.println("Up Pressed");
-            hit.play();
+            
             
             l1:
             {
@@ -345,8 +344,7 @@ public class JTEFileLoader {
 
         public void goDown() {
             System.out.println("Down Pressed");
-            hit.play();
-         
+            
             l2:
             {
                 for (int r2 = 0; r2 < grid.length; r2++) {
@@ -397,7 +395,7 @@ public class JTEFileLoader {
         }
         public void goLeft() {
             System.out.println("Left Pressed");
-            hit.play();
+          
             
             l3:
             {
@@ -451,7 +449,7 @@ public class JTEFileLoader {
 
         public void goRight() {
             System.out.println("Right Pressed");
-            hit.play();
+            
             
             l4:
             {

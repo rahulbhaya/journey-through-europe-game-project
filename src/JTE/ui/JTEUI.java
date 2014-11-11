@@ -60,7 +60,12 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
-    
+    Pane pane=new Pane();
+    public Image loadImage(String imageName) {
+		Image img = new Image(ImgPath + imageName);
+		// System.out.print(imageName);
+		return img;
+	}
     public enum JTEUIState {
 
         SPLASH_SCREEN_STATE, PLAY_GAME_STATE, VIEW_STATS_STATE, VIEW_ABOUT_STATE,
@@ -87,6 +92,7 @@ String number="0";
     private Button statsButton;
     private Button aboutButton;
     private Button exitButton;
+    private Button abtButton;
 
     // GamePane
     private Label JTELabel;
@@ -106,8 +112,12 @@ String number="0";
     private Button homeButton;
     private Pane workspace;
     private StackPane aboutPane;
+    private StackPane abtPane;
+    
 
     private Button goButton;
+     private Button histButton;
+    private Button bckButton;
     // Padding
     private Insets marginlessInsets;
 
@@ -290,9 +300,11 @@ String number="0";
            eventHandler.respondToSwitchScreenRequest(JTEUIState.VIEW_ABOUT_STATE);
        if(command.equals("Play"))
            eventHandler.respondToSwitchScreenRequest(JTEUIState.PLAY_GAME_STATE);
+       if(command.equals("Load"))
+           mainPane.getChildren().clear();
            
     }
-  
+   
     public void initaboutPane()
     {
         aboutPane=new StackPane();
@@ -325,10 +337,8 @@ String number="0";
                 
             }
         });
-         Image image1 = new Image("file:flag_black.png");
-   ImageView iv1 = new ImageView();
-   iv1.setImage(image1);
-        aboutPane.getChildren().addAll(iv1,ta1,ta2,backButton);
+         
+        aboutPane.getChildren().addAll(ta1,ta2,backButton);
         mainPane.setCenter(aboutPane);
         
     }
@@ -345,28 +355,102 @@ String number="0";
 			errorHandler.processError(JTEPropertyType.INVALID_URL_ERROR_TEXT);
 		}
 	}
-    public Image loadImage(String imageName) {
-		Image img = new Image(ImgPath + imageName);
-		// System.out.print(imageName);
-		return img;
-	}
+   public void closehistory()
+   {
+       main
+   }
         private void initGameScreen() {
 		mainPane.getChildren().clear();
-                GridPane grd = new GridPane();
-                grd.setHgap(10);
-                grd.setVgap(10);
-                 grd.setPadding(new Insets(0, 10, 0, 10));
+                VBox vbox1=new VBox();
+                VBox vbox2=new VBox();
+                VBox vbox3=new VBox();
+                Image abt= loadImage("aboutjte.png");
+                ImageView view=new ImageView(abt);
+                abtButton = new Button(" ",view);
+        //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
+        abtButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               mainPane.getChildren().clear();
+               initabtPane();
+                
+            }
+        });
+        Image hist= loadImage("history.png");
+                ImageView view2=new ImageView(hist);
+                histButton = new Button(" ",view2);
+        histButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               mainPane.getChildren().clear();
+               closehistory();
+                
+            }
+        });
+            
                  Label l=new Label("Player");
-            Image centerImage = loadImage("gameimage.jpg");
-            ImageView centerImageView = new ImageView(centerImage);
-            centerImageView.setFitHeight(80.0);
-            centerImageView.setFitWidth(80.0);
-            grd.add(centerImageView,1,1);
-                   mainPane.setCenter(grd);
+                 vbox1.getChildren().add(l);
+                
+           Image img1 = loadImage("1.jpg");
+            ImageView imgview1 = new ImageView(img1);
+            Image img2 = loadImage("2.jpg");
+            ImageView imgview2 = new ImageView(img2);
+            Image img3 = loadImage("3.jpg");
+            ImageView imgview3 = new ImageView(img3);
+            Image img4= loadImage("4.jpg");
+            ImageView imgview4 = new ImageView(img4);
+            
+            vbox1.getChildren().add(imgview1);
+            vbox3.getChildren().addAll(histButton,abtButton);
+            //centerImageView.setFitHeight(80.0);
+           // centerImageView.setFitWidth(80.0);
+            //pane.getChildren().add(vbox1);
+            //bp.setLeft(l);
+            pane.getChildren().addAll(vbox1,vbox3);
+           mainPane.setCenter(pane);
                 
                 
     }
-    
+    public void initabtPane()
+    {
+        abtPane=new StackPane();
+        TextArea ta3=new TextArea();
+        ta3.setText("Jouney Through Europe");
+        ta3.setEditable(false);
+          ta3.setStyle("-fx-background-color:transparent;");
+          TextArea ta4= new TextArea();
+          ta4.setText("Journey through Europe is a family board game published by Ravensburger\n" +
+"The board is a map of Europe with various major cities marked, for example, Athens, Amsterdam and London. \n" +
+"The players are given a home city from which they will begin and are then dealt a number of cards with various other cities on them. \n" +
+"\n" +
+"They must plan a route between each of the cities in their hand of cards.\n" +
+"On each turn they throw a die and move between the cities, \n" +
+"The winner is the first player to visit each of their cities and then return to their home base.\n" +
+"HangMan was firstly mentioned in 1894. See Wikipedia for more.");
+          ta4.setEditable(false);
+        
+      bckButton = new Button("Back");
+      
+        //setTooltip(gameButton, JTEPropertyType.GAME_TOOLTIP);
+        bckButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               mainPane.getChildren().clear();
+               mainPane.setCenter(pane);
+                
+            }
+        });
+         
+        abtPane.getChildren().addAll(ta3,ta4,bckButton);
+        mainPane.setCenter(abtPane);
+        
+    }
     /**
      * This function initializes all the controls that go in the north toolbar.
      */
@@ -413,8 +497,30 @@ String number="0";
     grid.setPadding(new Insets(0, 10, 0, 10));
     grid.setGridLinesVisible(true);
     
-  
-    //iv1.setImage(image1);
+  Image image1 =  loadImage("flag_black.png");
+   ImageView iv1 = new ImageView();
+   iv1.setImage(image1);
+   
+    Image image2 =loadImage("flag_blue.png");
+   ImageView iv2 = new ImageView();
+   iv2.setImage(image2);
+   
+   Image image3 =loadImage("flag_green.png");
+   ImageView iv3 = new ImageView();
+   iv3.setImage(image3);
+   
+   Image image4 =loadImage("flag_red.png");
+   ImageView iv4 = new ImageView();
+   iv4.setImage(image4);
+   
+   Image image5 =loadImage("flag_white.png");
+   ImageView iv5 = new ImageView();
+   iv5.setImage(image5);
+   
+   Image image6 =loadImage("flag_yellow.png");
+   ImageView iv6 = new ImageView();
+   iv6.setImage(image6);
+   
     lab:
     {
     HBox h1=new HBox();
@@ -433,8 +539,9 @@ String number="0";
     h1.setSpacing(30);
     h2.getChildren().addAll(rb2,tf1);
     h2.setSpacing(20);
+    
   
-    v1.getChildren().addAll(h1,h2);
+    v1.getChildren().addAll(h1,h2,iv1);
     grid.add(v1,1,1);
     v1.setSpacing(10);
     if(number.equals("1"))break lab;
@@ -454,7 +561,7 @@ String number="0";
     h4.getChildren().addAll(rb4,tf2);
     h4.setSpacing(20);
  
-    v2.getChildren().addAll(h3,h4);
+    v2.getChildren().addAll(h3,h4,iv2);
     grid.add(v2,2,1);
     v2.setSpacing(10);
     if(number.equals("2"))break lab;
@@ -474,7 +581,7 @@ String number="0";
     h6.getChildren().addAll(rb6,tf3);
     h6.setSpacing(20);
     //v1.getChildren().add
-    v3.getChildren().addAll(h5,h6);
+    v3.getChildren().addAll(h5,h6,iv3);
     grid.add(v3,3,1);
     v3.setSpacing(10);
     if(number.equals("3"))break lab;
@@ -494,7 +601,7 @@ String number="0";
     h8.getChildren().addAll(rb8,tf4);
     h8.setSpacing(20);
     //v1.getChildren().add
-    v4.getChildren().addAll(h7,h8);
+    v4.getChildren().addAll(h7,h8,iv4);
     grid.add(v4,1,2);
     v4.setSpacing(10);
     if(number.equals("4"))break lab;
@@ -514,7 +621,7 @@ String number="0";
     h10.getChildren().addAll(rb10,tf5);
     h10.setSpacing(20);
     //v1.getChildren().add
-    v5.getChildren().addAll(h9,h10);
+    v5.getChildren().addAll(h9,h10,iv5);
     grid.add(v5,2,2);
     v5.setSpacing(10);
    if(number.equals("5"))break lab;
@@ -535,7 +642,7 @@ String number="0";
     h12.getChildren().addAll(rb8,tf6);
     h12.setSpacing(20);
     //v1.getChildren().add
-    v6.getChildren().addAll(h11,h12);
+    v6.getChildren().addAll(h11,h12,iv6);
     grid.add(v6,3,2);
     v6.setSpacing(10);
     if(number.equals("6"))break lab;
