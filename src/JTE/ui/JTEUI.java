@@ -60,7 +60,7 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
-    Pane pane=new Pane();
+    BorderPane pane=new BorderPane();
     public Image loadImage(String imageName) {
 		Image img = new Image(ImgPath + imageName);
 		// System.out.print(imageName);
@@ -360,6 +360,7 @@ String number="0";
 	}
    
         private void initGameScreen() {
+            
 		mainPane.getChildren().clear();
                 VBox vbox1=new VBox();
                 VBox vbox2=new VBox();
@@ -392,9 +393,11 @@ String number="0";
             }
         });
             
-                 Label l=new Label("Player");
-                 vbox1.getChildren().add(l);
+                 Label l1=new Label("Player 1");
                 
+             Label l2= new Label("Player 1 Turn");
+             Label l3= new Label("Rolled 6");
+             Label l4= new Label("Select City");
            Image img1 = loadImage("1.jpg");
             ImageView imgview1 = new ImageView(img1);
             Image img2 = loadImage("2.jpg");
@@ -403,14 +406,25 @@ String number="0";
             ImageView imgview3 = new ImageView(img3);
             Image img4= loadImage("4.jpg");
             ImageView imgview4 = new ImageView(img4);
+              Image img5 = loadImage("die_6.jpg");
+            ImageView imgview5 = new ImageView(img5);
+             Image select = loadImage("die_6.jpg");
+            ImageView sel = new ImageView(select);
             
-            vbox1.getChildren().add(imgview1);
-            vbox3.getChildren().addAll(histButton,abtButton);
-            //centerImageView.setFitHeight(80.0);
-           // centerImageView.setFitWidth(80.0);
+            vbox1.getChildren().add(l1);
+            
+            vbox3.getChildren().addAll(l2,l3,l4,imgview5,histButton,abtButton);
+            vbox3.setSpacing(10);
+            imgview1.setFitHeight(650.0);
+            imgview1.setFitWidth(500.0);
             //pane.getChildren().add(vbox1);
             //bp.setLeft(l);
-            pane.getChildren().addAll(vbox1,vbox3);
+            
+            //pane.getChildren().addAll(vbox1,vbox2,vbox3);
+            
+              pane.setLeft(vbox1);
+              pane.setCenter(imgview1);
+              pane.setRight(vbox3);
            mainPane.setCenter(pane);
                 
                 
