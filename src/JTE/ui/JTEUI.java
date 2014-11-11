@@ -113,11 +113,14 @@ String number="0";
     private Pane workspace;
     private StackPane aboutPane;
     private StackPane abtPane;
+    private StackPane histPane;
     
 
     private Button goButton;
      private Button histButton;
     private Button bckButton;
+    public Button closeButton;
+    
     // Padding
     private Insets marginlessInsets;
 
@@ -355,10 +358,7 @@ String number="0";
 			errorHandler.processError(JTEPropertyType.INVALID_URL_ERROR_TEXT);
 		}
 	}
-   public void closehistory()
-   {
-       main
-   }
+   
         private void initGameScreen() {
 		mainPane.getChildren().clear();
                 VBox vbox1=new VBox();
@@ -387,7 +387,7 @@ String number="0";
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
                mainPane.getChildren().clear();
-               closehistory();
+                   inithistPane();
                 
             }
         });
@@ -415,6 +415,23 @@ String number="0";
                 
                 
     }
+        public void inithistPane()
+        {
+            histPane=new StackPane();
+            closeButton=new Button("Close");
+       closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               mainPane.getChildren().clear();
+               mainPane.setCenter(pane);
+                
+            }
+        });
+        histPane.getChildren().add(closeButton);
+        mainPane.setCenter(histPane);
+            
+        }
     public void initabtPane()
     {
         abtPane=new StackPane();
