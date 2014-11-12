@@ -37,4 +37,8 @@ public class Cities {
      {
          return cityname;
      }
+     public int getQuadrant()
+     {
+         return quarter;
+     }
 }

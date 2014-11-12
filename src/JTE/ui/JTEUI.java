@@ -416,7 +416,7 @@ String number="0";
 GraphicsContext gc = canvas.getGraphicsContext2D();
     
                  Label l1=new Label("Player 1");
-                
+              
              Label l2= new Label("Player 1 Turn");
              Label l3= new Label("Rolled 6");
              Label l4= new Label("Select City");
@@ -446,9 +446,12 @@ GraphicsContext gc = canvas.getGraphicsContext2D();
                    {
                        if(y>(ct.getY()-10)&&y<(ct.getY()+10))
                        {
-                           String data=ct.getCityName()+ct.getX()+ct.getY();
+                           if(ct.getQuadrant()==1)
+                           {
+                           String data=ct.getCityName()+","+ct.getX()+","+ct.getY();
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,ct.getCityName());
+                           JOptionPane.showMessageDialog(null,data);
+                           }
                        }
                        
                    }
