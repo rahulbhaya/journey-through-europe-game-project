@@ -1,5 +1,6 @@
 package JTE.file;
 
+import JTE.ui.Cities;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,6 +26,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 import JTE.ui.JTEUI;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -132,8 +135,51 @@ public class JTEFileLoader {
 //        primaryStage.setScene(scene);
 //        primaryStage.show();
     }
-   
-  
+    public List<Cities> retCities()
+    {
+   String root = DATA_PATH;
+        File fileToOpen = new File(root+"cities.csv");
+         try {
+            if (fileToOpen != null) {
+                
+                FileReader fis = new FileReader(fileToOpen);
+                BufferedReader bis = new BufferedReader(fis);
+
+                // HERE IT IS, THE ONLY READY REQUEST WE NEED
+               
+                String temp="";
+                 List<Cities> list = new ArrayList<Cities>();
+                 
+                // NOW WE NEED TO LOAD THE DATA FROM THE BYTE ARRAY
+                 bis.readLine();
+                while((temp=bis.readLine())!=null)
+                {
+                    
+                    String [] st=temp.split("\t");
+                    
+                    if(st.length == 5) {
+                        int newX = Integer.parseInt(st[3]);
+                        int newY = Integer.parseInt(st[4]);
+
+                        int p = (int)(((double)newX/2010.0) * 650);
+                        int q = (int)(((double)newY/2569.0) * 500);
+
+                        Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                        list.add(c);
+                    }
+                    
+                }
+                return list;
+              
+              
+            }
+        } catch (Exception e) {
+            System.out.println("in fileOpen file path: " + fileToOpen.getAbsolutePath());
+            e.printStackTrace();
+         
+        }
+         return null;
+    }
     public void openfile(String level) {
 
         String root = DATA_PATH;

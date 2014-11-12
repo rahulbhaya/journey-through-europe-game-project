@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
+import java.util.ArrayList;
 import javax.swing.JEditorPane;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
@@ -21,14 +22,18 @@ import properties_manager.PropertiesManager;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -51,6 +56,10 @@ import javax.swing.JScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.canvas.*;
+import javafx.scene.control.RadioButton;
+import javafx.scene.input.MouseEvent;
+import javax.swing.JOptionPane;
 
 
 public class JTEUI extends Pane {
@@ -60,6 +69,7 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
+    static String DATA_PATH = "./data/";
     BorderPane pane=new BorderPane();
     public Image loadImage(String imageName) {
 		Image img = new Image(ImgPath + imageName);
@@ -131,6 +141,9 @@ String number="0";
     // mainPane weight && height
     private int paneWidth;
     private int paneHeigth;
+    
+    
+  
 
     // THIS CLASS WILL HANDLE ALL ACTION EVENTS FOR THIS PROGRAM
     private JTEEventHandler eventHandler;
@@ -138,6 +151,7 @@ String number="0";
     private JTEDocumentManager docManager;
     
     public JTEFileLoader fl;
+    public List<Cities> lis;
     
     JTEEventHandler eh;
     JTEGameStateManager gsm;
@@ -151,6 +165,7 @@ String number="0";
         System.out.println("1");
         initMainPane();
         initSplashScreen();
+        lis=fl.retCities();
       // initaboutPane();
         
     }
@@ -397,38 +412,59 @@ String number="0";
                 
             }
         });
-            
+            final Canvas canvas = new Canvas(650,500);
+GraphicsContext gc = canvas.getGraphicsContext2D();
+    
                  Label l1=new Label("Player 1");
                 
              Label l2= new Label("Player 1 Turn");
              Label l3= new Label("Rolled 6");
              Label l4= new Label("Select City");
            Image img1 = loadImage("1.jpg");
-            ImageView imgview1 = new ImageView(img1);
-            Image img2 = loadImage("2.jpg");
-            ImageView imgview2 = new ImageView(img2);
-            Image img3 = loadImage("3.jpg");
-            ImageView imgview3 = new ImageView(img3);
-            Image img4= loadImage("4.jpg");
-            ImageView imgview4 = new ImageView(img4);
+            gc.drawImage(img1,0,0,650,500);
+            
               Image img5 = loadImage("die_6.jpg");
             ImageView imgview5 = new ImageView(img5);
              Image select = loadImage("gameplay_selector.jpg");
             ImageView sel = new ImageView(select);
             
             vbox1.getChildren().add(l1);
-            
+           
             vbox3.getChildren().addAll(l2,l3,l4,sel,imgview5,histButton,abtButton);
             vbox3.setSpacing(10);
-            imgview1.setFitHeight(650.0);
-            imgview1.setFitWidth(500.0);
+             canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+           @Override
+           public void handle(MouseEvent e) {
+               int x=(int)e.getX();
+               int y=(int)e.getY();
+               
+                  System.out.println(x + " " + y);
+               for(int i=0;i<lis.size();i++)
+               {
+                   Cities ct = lis.get(i);
+                   if(x>(ct.getX()-10)&&x<(ct.getX()+10))
+                   {
+                       if(y>(ct.getY()-10)&&y<(ct.getY()+10))
+                       {
+                           String data=ct.getCityName()+ct.getX()+ct.getY();
+                           System.out.println(ct.getCityName());
+                           JOptionPane.showMessageDialog(null,ct.getCityName());
+                       }
+                       
+                   }
+                       
+               }
+               
+           }
+       });
+             
             //pane.getChildren().add(vbox1);
             //bp.setLeft(l);
             
             //pane.getChildren().addAll(vbox1,vbox2,vbox3);
             
               pane.setLeft(vbox1);
-              pane.setCenter(imgview1);
+              pane.setCenter(canvas);
               pane.setRight(vbox3);
            mainPane.setCenter(pane);
                 
