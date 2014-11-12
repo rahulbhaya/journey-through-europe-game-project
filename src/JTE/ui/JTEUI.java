@@ -448,7 +448,7 @@ GraphicsContext gc = canvas.getGraphicsContext2D();
                        {
                            if(ct.getQuadrant()==1)
                            {
-                           String data=ct.getCityName()+","+ct.getX()+","+ct.getY();
+                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
                            JOptionPane.showMessageDialog(null,data);
                            }
