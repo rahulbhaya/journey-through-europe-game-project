@@ -3,6 +3,10 @@ package JTE.ui;
 import application.Main;
 import application.Main.JTEPropertyType;
 
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,7 +64,14 @@ import javafx.scene.canvas.*;
 import javafx.scene.control.RadioButton;
 import javafx.scene.input.MouseEvent;
 import javax.swing.JOptionPane;
-
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class JTEUI extends Pane {
 
@@ -155,6 +166,10 @@ String number="0";
     
     JTEEventHandler eh;
     JTEGameStateManager gsm;
+    
+    GraphicsContext gc;
+    GraphicsContext gcCard;
+    final Canvas canvas = new Canvas(650,500);
 
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
@@ -189,8 +204,106 @@ String number="0";
     public JTEErrorHandler getErrorHandler() {
         return errorHandler;
     }
-
-    
+    /* public void moveAnimation(JTECards card)
+    {
+         
+        //Image jteImg = loadImage(jte);
+        gc = canvas.getGraphicsContext2D();
+        gcCard = canvas.getGraphicsContext2D();       
+        //gc.scale(0.3, 0.3);
+        // then multiply for the coordinates.       
+        
+        //gc.drawImage(jteImg, 0, 0);
+        
+        //Image card = loadImage(jte2);
+        //ImageView imageViewCard = new ImageView(card);
+        
+        DoubleProperty a = new SimpleDoubleProperty();
+        DoubleProperty b = new SimpleDoubleProperty();
+        DoubleProperty c = new SimpleDoubleProperty();
+        int x = 900;
+        int y = 500;
+        int w = 300;
+        int h = 300;
+        
+         Timeline timeline = new Timeline(
+                                new KeyFrame(
+                                        Duration.seconds(0),
+     //                                   new EventHandler <ActionEvent event>{
+                                             // greenCardList.get(1).getFrontImage();
+     //}
+                                        new KeyValue(c,x)),
+                                      //  new KeyValue(b, x + 2 * w),
+                                       // new KeyValue(c, 0)),
+                                new KeyFrame(Duration.seconds(3),
+                                        
+                                    new EventHandler<ActionEvent>() 
+                                    {
+                                        public void handle(ActionEvent t) {
+                                        cardButton(card);
+                                        }}, 
+                                        
+                                        
+                                     //   new KeyValue(a, 0),
+                                      //  new KeyValue(b, x + 2 * w),
+                                        new KeyValue(c, 0)));
+                        timeline.setCycleCount(1);
+                        timeline.setAutoReverse(false);
+                        
+                        
+                        
+                        
+         Timeline timeline2 = new Timeline(
+                                new KeyFrame(
+                                        Duration.seconds(0),
+                                       // new KeyValue(a, x),
+                                        new KeyValue(b, y)),
+                                       // new KeyValue(c, 0)),
+                                new KeyFrame(Duration.seconds(3),
+                                       // new KeyValue(a, 0),
+                                        new KeyValue(b, 0)));
+                                       // new KeyValue(c, w)));
+                        timeline2.setCycleCount(1);
+                        timeline2.setAutoReverse(false);
+                        
+           Timeline timeline3 = new Timeline(
+                                new KeyFrame(
+                                        Duration.seconds(0),
+     //                                   new EventHandler <ActionEvent event>{
+                                             // greenCardList.get(1).getFrontImage();
+     //}
+                                        new KeyValue(a,w)),
+                                      //  new KeyValue(b, x + 2 * w),
+                                       // new KeyValue(c, 0)),
+                     new KeyFrame(
+                                        Duration.seconds(3),
+     //                                   new EventHandler <ActionEvent event>{
+                                             // greenCardList.get(1).getFrontImage();
+     //}
+                                        new KeyValue(a,100)),
+                              
+                                new KeyFrame(Duration.seconds(3),
+                                     //   new KeyValue(a, 0),
+                                      //  new KeyValue(b, x + 2 * w),
+                                        new KeyValue(a, 0)));
+                        timeline3.setCycleCount(1);
+                        timeline3.setAutoReverse(false);
+                        
+                        
+                        AnimationTimer timer = new AnimationTimer() {
+                            @Override
+                            public void handle(long now) {
+                                gc.drawImage(jteImg, 0, 0);
+                                gcCard.drawImage(card.getFrontImage(), c.doubleValue(), 400, b.doubleValue(), a.doubleValue());
+                            }
+                        };
+                       timer.start();
+                       timeline.play();
+                       timeline2.play();
+                       timeline3.play();
+       
+    }
+    */
 
     public void initMainPane() {
         marginlessInsets = new Insets(5, 5, 5, 5);
@@ -412,25 +525,131 @@ String number="0";
                 
             }
         });
-            final Canvas canvas = new Canvas(650,500);
-GraphicsContext gc = canvas.getGraphicsContext2D();
+            
+                gc = canvas.getGraphicsContext2D();
     
                  Label l1=new Label("Player 1");
-              
              Label l2= new Label("Player 1 Turn");
              Label l3= new Label("Rolled 6");
              Label l4= new Label("Select City");
+             
            Image img1 = loadImage("1.jpg");
             gc.drawImage(img1,0,0,650,500);
+            Image img2 = loadImage("2.jpg");
+            gc.drawImage(img1,0,0,650,500);
+            Image img3 = loadImage("3.jpg");
+            gc.drawImage(img1,0,0,650,500);
+            Image img4 = loadImage("4.jpg");
+            gc.drawImage(img1,0,0,650,500);
             
-              Image img5 = loadImage("die_6.jpg");
-            ImageView imgview5 = new ImageView(img5);
-             Image select = loadImage("gameplay_selector.jpg");
-            ImageView sel = new ImageView(select);
+            
+            
+       
+            
+            GridPane grd= new GridPane();
+            Label ac= new Label("A-C");
+            Label df=new Label ("D-F");
+             Label one= new Label("1-4");
+            Label two=new Label ("5-8");
+            Button b1= new Button();
+            Button b2= new Button();
+            Button b3= new Button();
+            Button b4= new Button();
+            Button die= new Button();
+            Random rand = new Random();
+                
+            
+            Image q1=loadImage("1.jpg");
+            ImageView q1view = new ImageView(q1);
+            q1view.setFitHeight(40.0);
+            q1view.setFitWidth(60.0);
+             Image q2=loadImage("2.jpg");
+            ImageView q2view = new ImageView(q2);
+             q2view.setFitHeight(40.0);
+            q2view.setFitWidth(60.0);
+            Image q3=loadImage("3.jpg");
+            ImageView q3view = new ImageView(q3);
+            q3view.setFitHeight(40.0);
+            q3view.setFitWidth(60.0);
+            Image q4=loadImage("4.jpg");
+            ImageView q4view = new ImageView(q4);
+            q4view.setFitHeight(40.0);
+            q4view.setFitWidth(60.0);
+            b1.setGraphic(q1view);
+            b2.setGraphic(q2view);
+            b3.setGraphic(q3view);
+            b4.setGraphic(q4view);
+           
+            
+            b1.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+              gc.drawImage(img1,0,0,650,500);
+                
+            }
+        });
+               b2.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+              gc.drawImage(img2,0,0,650,500);
+                
+            }
+        });
+                  b3.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+              gc.drawImage(img3,0,0,650,500);
+                
+            }
+        });
+               b4.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+              gc.drawImage(img4,0,0,650,500);
+                
+            }
+        });
+               
+               
+                //JLabel MyImage = new JLabel(new ImageIcon("image"+randomNum+".png"));
+                die.setOnAction(new EventHandler<ActionEvent>() {
+            
+            @Override
+            public void handle(ActionEvent event) {
+                int randomNum= rand.nextInt(6)+1;
+            Image dieimage=loadImage("die_"+randomNum+".jpg");
+            ImageView dieimageview = new ImageView(dieimage);
+               die.setGraphic(dieimageview);
+                
+            }
+        });
+            
+      
+            
+            grd.add(ac, 1, 0);
+        grd.add(df, 2, 0);
+        grd.add(one, 0, 1);
+        grd.add(two, 0, 2);
+        
+        // Buttons are thrown into the grd.
+        grd.add(b1, 1, 1);
+        grd.add(b2, 2, 1);
+        grd.add(b3, 1, 2);
+        grd.add(b4, 2, 2);
+             //Image select = loadImage("gameplay_selector.jpg");
+            //ImageView sel = new ImageView(select);
             
             vbox1.getChildren().add(l1);
            
-            vbox3.getChildren().addAll(l2,l3,l4,sel,imgview5,histButton,abtButton);
+            vbox3.getChildren().addAll(l2,l3,l4,grd,die,histButton,abtButton);
             vbox3.setSpacing(10);
              canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
            @Override
@@ -447,6 +666,24 @@ GraphicsContext gc = canvas.getGraphicsContext2D();
                        if(y>(ct.getY()-10)&&y<(ct.getY()+10))
                        {
                            if(ct.getQuadrant()==1)
+                           {
+                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           System.out.println(ct.getCityName());
+                           JOptionPane.showMessageDialog(null,data);
+                           }
+                           if(ct.getQuadrant()==2)
+                           {
+                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           System.out.println(ct.getCityName());
+                           JOptionPane.showMessageDialog(null,data);
+                           }
+                           if(ct.getQuadrant()==3)
+                           {
+                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           System.out.println(ct.getCityName());
+                           JOptionPane.showMessageDialog(null,data);
+                           }
+                           if(ct.getQuadrant()==4)
                            {
                            String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
@@ -728,7 +965,7 @@ GraphicsContext gc = canvas.getGraphicsContext2D();
             }
 
         });
-
+        
 
        
 
