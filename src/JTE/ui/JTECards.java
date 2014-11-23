@@ -16,19 +16,19 @@ public class JTECards {
    Image frontimg;
    Image backimg;
    
+   int counter=0;
     public JTECards(Image front,Image back)
     {
         frontimg=front;
         backimg=back;
     }
-    public Image getFrontImg()
+    public Image getFront()
     {
         return frontimg;
         
     }
-    public Image getBackImg()
+    public Image getBack()
     {
         return backimg;
-    }
-          
+    }    
 }

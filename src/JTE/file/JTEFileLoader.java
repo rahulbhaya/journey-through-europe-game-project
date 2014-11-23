@@ -1,5 +1,5 @@
 package JTE.file;
-
+import JTE.ui.JTECards;
 import JTE.ui.Cities;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -38,6 +38,13 @@ import javafx.scene.media.AudioClip;
 import java.util.Stack;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class JTEFileLoader {
 
@@ -83,19 +90,110 @@ public class JTEFileLoader {
 
     // GRID Renderer
     
-   
+  
 
     // AND HERE IS THE GRID WE'RE MAKING
-    public int gridColumns;
-    public int gridRows;
-    public int grid[][];
-    public int tempgrid[][];
+  
     private JTEUI uiobj;
-
+    
     public JTEFileLoader(JTEUI sik) {
         
         uiobj=sik;
     }
+    public JTEFileLoader() {
+        
+        
+    } 
+    List<Cities> list = new ArrayList<Cities>();
+   public void XMLParser()
+    {
+        try {
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                Document doc = db.parse(new File("./data/cities.xml"));
+                Node root = doc.getElementsByTagName("routes").item(0);
+                NodeList cardlist = root.getChildNodes();
+                for (int i = 0; i < cardlist.getLength(); i++) 
+                {
+                    Node cardNode = cardlist.item(i);
+                    if (cardNode.getNodeType() == Node.ELEMENT_NODE) 
+                    {
+                        NodeList cardAttrs = cardNode.getChildNodes();
+                        for (int j=0;j<cardAttrs.getLength();j++) 
+                        {
+                            if (cardAttrs.item(j).getNodeType() == Node.ELEMENT_NODE) 
+                            {
+                                Node theNode = cardAttrs.item(j);
+                                switch (theNode.getNodeName()) 
+                                {
+                                  case "name":
+                                    for (Cities curCity:list)
+                                    {
+                                        if (curCity.getCityName().equals(theNode.getTextContent()))
+                                        {System.out.println(theNode.getTextContent());
+                                           Node landNeighbours;
+                                           for(int p = 0; p < cardAttrs.getLength(); p++) {
+                                               if(cardAttrs.item(p).getNodeType() == Node.ELEMENT_NODE) {
+                                                   if(cardAttrs.item(p).getNodeName().equals("land")) {
+                                                       landNeighbours = cardAttrs.item(p);
+                                                        NodeList landList = landNeighbours.getChildNodes();
+                                                        for (int k = 0; k < landList.getLength(); k++) 
+                                                        {
+                                                            if (landList.item(k).getNodeType() == Node.ELEMENT_NODE) 
+                                                            {
+                                                                System.out.println("Land neighbour: "
+												+ landList.item(k)
+														.getTextContent());
+                                                                Cities landCity = searchCity(landList.item(k).getTextContent());
+                                                                
+                                                                curCity.addLandNeighbours(landCity);
+                                                              
+                                                            }
+                                                        }
+                                                   }
+                                                   if(cardAttrs.item(p).getNodeName().equals("sea")) {
+                                                       NodeList seaList = cardAttrs.item(p).getChildNodes();
+                                                        for (int k = 0; k < seaList.getLength(); k++) 
+                                                        {
+                                                            if (seaList.item(k).getNodeType() == Node.ELEMENT_NODE) 
+                                                            {
+                                                                Cities seaCity = searchCity(seaList.item(k).getTextContent());
+                                                                curCity.addSeaNeighbours(seaCity);
+                                                                //System.out.println("Sea:"+seaCity.getCityName());
+                                                            }
+                                                        }
+
+                                                   }
+                                               }
+                                           }
+                                            
+                                            
+                                        }
+                                    }
+                                    
+                                break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+                e.printStackTrace();
+        }
+    }
+    public Cities searchCity(String cityname)
+    {
+        for(Cities curCity : list)
+        {
+            if (curCity.getCityName().equals(cityname))
+            {
+                return curCity;
+            }
+        }
+        
+        return null;
+    } 
     public static String loadTextFile(  String textFile) throws IOException
    {
        // ADD THE PATH TO THE FILE
@@ -123,6 +221,94 @@ public class JTEFileLoader {
        // RETURN THE TEXT
        return textToReturn;
    } 
+    
+    public  List<JTECards> returnGreenCards()
+    {
+        String greenpath = "./images/Cards/green/"; 
+        String imagePathGreen = "file:images/Cards/green/"; 
+        File greenfile = new File(greenpath); 
+        List<JTECards> greenList= new ArrayList<JTECards>();
+        if (greenfile.isDirectory())
+        {
+            String[] cardName = greenfile.list(); 
+            for (String card:cardName)
+            {
+                if (!card.contains("_I"))
+                {
+                    Image i1=new Image(imagePathGreen + card);
+                    System.out.println(imagePathGreen + card);
+                    Image frontImage= new Image(imagePathGreen + card);                    
+                    card = card.substring(0,card.length()- 4);
+                    card = card + "_I.jpg";                    
+                    Image backImage = new Image(imagePathGreen+card);
+                    JTECards currentCard = new JTECards(frontImage,backImage);
+                    greenList.add(currentCard);
+                }                  
+            }
+        }
+        return greenList;
+    }
+     public  List<JTECards> returnRedCards()
+    {        
+        String redpath = "./images/Cards/red/"; 
+        String imagePathRed = "file:images/Cards/red/";
+        File redfile = new File(redpath);
+        List<JTECards> redList= new ArrayList<JTECards>();
+        
+        if (redfile.isDirectory())
+        {
+            String[] cardName = redfile.list();
+            
+            for (String card : cardName)
+            {
+                System.out.println("hi r");
+                //Image currentCardImage = new Image(greenpath + card);
+                if(!card.contains("_I"))
+                {
+                    System.out.println("hi r");
+                    Image FrontImage = new Image(imagePathRed+card);                    
+                    card = card.substring(0,card.length() - 4);
+                    card = card + "_I.jpg";                    
+                    Image BackImage = new Image(imagePathRed+card);
+                    JTECards currentCard = new JTECards(FrontImage,BackImage);
+                    redList.add(currentCard);
+                }                  
+            }
+        }
+         return redList;
+    }
+    
+    
+    public  List<JTECards> returnYellowCards()
+    {
+        String yellowpath = "./images/Cards/yellow/";
+        String imagePathYellow = "file:images/Cards/yellow/";
+        File yellowfile = new File(yellowpath);
+        List<JTECards> yellowList= new ArrayList<JTECards>();
+        
+        if (yellowfile.isDirectory())
+        {
+            String[] cardName = yellowfile.list();
+            
+            for (String card : cardName)
+            {
+                //Image currentCardImage = new Image(greenCardspath + card);
+                
+                if(!card.contains("_I"))
+                {
+                    System.out.println("hi y");
+                    Image FrontImage = new Image(imagePathYellow + card);                    
+                    card = card.substring(0, card.length()- 4);
+                    card = card + "_I.jpg";                    
+                    Image BackImage = new Image(imagePathYellow + card);
+                    JTECards currentCard = new JTECards(FrontImage,BackImage);
+                    yellowList.add(currentCard);
+                }                  
+            }
+        }
+       
+         return yellowList;
+    }
     public void initGUI() {
         
     }
@@ -139,7 +325,7 @@ public class JTEFileLoader {
                 // HERE IT IS, THE ONLY READY REQUEST WE NEED
                
                 String temp="";
-                 List<Cities> list = new ArrayList<Cities>();
+                 
                  
                 // NOW WE NEED TO LOAD THE DATA FROM THE BYTE ARRAY
                  bis.readLine();
@@ -147,22 +333,61 @@ public class JTEFileLoader {
                 {
                     
                     String [] st=temp.split("\t");
-                    
+                   if(Integer.parseInt(st[2])==1)
+                   {
                     if(st.length == 5) {
                         int newX = Integer.parseInt(st[3]);
                         int newY = Integer.parseInt(st[4]);
 
-                        int p = (int)(((double)newX/2010.0) * 650);
-                        int q = (int)(((double)newY/2569.0) * 500);
+                        int p = (int)(((double)newX/2010.0) * 571);
+                        int q = (int)(((double)newY/2569.0) * 700);
 
-                        Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
                         list.add(c);
                     }
+                   }
+                   if(Integer.parseInt(st[2])==2)
+                   {
+                    if(st.length == 5) {
+                        int newX = Integer.parseInt(st[3]);
+                        int newY = Integer.parseInt(st[4]);
+
+                        int p = (int)(((double)newX/1903.0) * 571);
+                        int q = (int)(((double)newY/2585.0) * 700);
+
+                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                        list.add(c);
+                    }
+                   }
+                   if(Integer.parseInt(st[2])==3)
+                   {
+                    if(st.length == 5) {
+                        int newX = Integer.parseInt(st[3]);
+                        int newY = Integer.parseInt(st[4]);
+
+                        int p = (int)(((double)newX/1985.0) * 571);
+                        int q = (int)(((double)newY/2583.0) * 700);
+
+                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                        list.add(c);
+                    }
+                   }
+                   if(Integer.parseInt(st[2])==4)
+                   {
+                    if(st.length == 5) {
+                        int newX = Integer.parseInt(st[3]);
+                        int newY = Integer.parseInt(st[4]);
+
+                        int p = (int)(((double)newX/1927.0) * 571);
+                        int q = (int)(((double)newY/2561.0) * 700);
+
+                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                        list.add(c);
+                    }
+                   }
                     
                 }
-                return list;
-              
-              
+                return list;    
             }
         } catch (Exception e) {
             System.out.println("in fileOpen file path: " + fileToOpen.getAbsolutePath());

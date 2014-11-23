@@ -38,6 +38,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import static java.util.Collections.list;
 
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -70,8 +71,12 @@ import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+
 
 public class JTEUI extends Pane {
 
@@ -80,7 +85,9 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
+    public  int quad=1;
     static String DATA_PATH = "./data/";
+    AnimationTimer timer;
     BorderPane pane=new BorderPane();
     public Image loadImage(String imageName) {
 		Image img = new Image(ImgPath + imageName);
@@ -114,6 +121,8 @@ String number="0";
     private Button aboutButton;
     private Button exitButton;
     private Button abtButton;
+    
+    public VBox sideBar;
 
     // GamePane
     private Label JTELabel;
@@ -152,10 +161,7 @@ String number="0";
     // mainPane weight && height
     private int paneWidth;
     private int paneHeigth;
-    
-    
-  
-
+   
     // THIS CLASS WILL HANDLE ALL ACTION EVENTS FOR THIS PROGRAM
     private JTEEventHandler eventHandler;
     private JTEErrorHandler errorHandler;
@@ -163,13 +169,16 @@ String number="0";
     
     public JTEFileLoader fl;
     public List<Cities> lis;
+     public List <JTECards> greenlist;
+     public List <JTECards> redlist;
+    public List <JTECards> yellowlist;
     
     JTEEventHandler eh;
     JTEGameStateManager gsm;
     
     GraphicsContext gc;
     GraphicsContext gcCard;
-    final Canvas canvas = new Canvas(650,500);
+    final Canvas canvas = new Canvas(603,770);
 
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
@@ -177,14 +186,17 @@ String number="0";
         errorHandler = new JTEErrorHandler(primaryStage);
         docManager = new JTEDocumentManager(this);
         fl=new JTEFileLoader(this);
+        
         System.out.println("1");
         initMainPane();
         initSplashScreen();
+        initSideBar();
         lis=fl.retCities();
+        fl.XMLParser();
       // initaboutPane();
         
     }
-
+    Cities ct;
     public void SetStage(Stage stage) {
         primaryStage = stage;
     }
@@ -204,107 +216,105 @@ String number="0";
     public JTEErrorHandler getErrorHandler() {
         return errorHandler;
     }
-    /* public void moveAnimation(JTECards card)
-    {
-         
-        //Image jteImg = loadImage(jte);
-        gc = canvas.getGraphicsContext2D();
-        gcCard = canvas.getGraphicsContext2D();       
-        //gc.scale(0.3, 0.3);
-        // then multiply for the coordinates.       
-        
-        //gc.drawImage(jteImg, 0, 0);
-        
-        //Image card = loadImage(jte2);
-        //ImageView imageViewCard = new ImageView(card);
-        
-        DoubleProperty a = new SimpleDoubleProperty();
-        DoubleProperty b = new SimpleDoubleProperty();
-        DoubleProperty c = new SimpleDoubleProperty();
-        int x = 900;
-        int y = 500;
-        int w = 300;
-        int h = 300;
-        
-         Timeline timeline = new Timeline(
-                                new KeyFrame(
-                                        Duration.seconds(0),
-     //                                   new EventHandler <ActionEvent event>{
-                                             // greenCardList.get(1).getFrontImage();
-     //}
-                                        new KeyValue(c,x)),
-                                      //  new KeyValue(b, x + 2 * w),
-                                       // new KeyValue(c, 0)),
-                                new KeyFrame(Duration.seconds(3),
-                                        
-                                    new EventHandler<ActionEvent>() 
-                                    {
-                                        public void handle(ActionEvent t) {
-                                        cardButton(card);
-                                        }}, 
-                                        
-                                        
-                                     //   new KeyValue(a, 0),
-                                      //  new KeyValue(b, x + 2 * w),
-                                        new KeyValue(c, 0)));
-                        timeline.setCycleCount(1);
-                        timeline.setAutoReverse(false);
-                        
-                        
-                        
-                        
-         Timeline timeline2 = new Timeline(
-                                new KeyFrame(
-                                        Duration.seconds(0),
-                                       // new KeyValue(a, x),
-                                        new KeyValue(b, y)),
-                                       // new KeyValue(c, 0)),
-                                new KeyFrame(Duration.seconds(3),
-                                       // new KeyValue(a, 0),
-                                        new KeyValue(b, 0)));
-                                       // new KeyValue(c, w)));
-                        timeline2.setCycleCount(1);
-                        timeline2.setAutoReverse(false);
-                        
-           Timeline timeline3 = new Timeline(
-                                new KeyFrame(
-                                        Duration.seconds(0),
-     //                                   new EventHandler <ActionEvent event>{
-                                             // greenCardList.get(1).getFrontImage();
-     //}
-                                        new KeyValue(a,w)),
-                                      //  new KeyValue(b, x + 2 * w),
-                                       // new KeyValue(c, 0)),
-                     new KeyFrame(
-                                        Duration.seconds(3),
-     //                                   new EventHandler <ActionEvent event>{
-                                             // greenCardList.get(1).getFrontImage();
-     //}
-                                        new KeyValue(a,100)),
-                              
-                                new KeyFrame(Duration.seconds(3),
-                                     //   new KeyValue(a, 0),
-                                      //  new KeyValue(b, x + 2 * w),
-                                        new KeyValue(a, 0)));
-                        timeline3.setCycleCount(1);
-                        timeline3.setAutoReverse(false);
-                        
-                        
-                        AnimationTimer timer = new AnimationTimer() {
-                            @Override
-                            public void handle(long now) {
-                                gc.drawImage(jteImg, 0, 0);
-                                gcCard.drawImage(card.getFrontImage(), c.doubleValue(), 400, b.doubleValue(), a.doubleValue());
-                            }
-                        };
-                       timer.start();
-                       timeline.play();
-                       timeline2.play();
-                       timeline3.play();
-       
-    }
-    */
+    public void cardButton(JTECards card)
+        {
+//            int clickCounter = 0;
+            ImageView imgView = new ImageView(card.getFront());
+            imgView.setFitHeight(150);//280
+            imgView.setFitWidth(100);//230
+            Button leftButton = new Button();
+            leftButton.setGraphic(imgView);
+            ImageView Back = new ImageView(card.getBack());
+            leftButton.setOnAction(new EventHandler<ActionEvent>() {
 
+                @Override
+                public void handle(ActionEvent event) 
+                {
+                    
+                    if(card.counter == 0)
+                    {
+                        Back.setFitHeight(196);//280
+                        Back.setFitWidth(161);//230
+                        leftButton.setGraphic(Back);
+                        card.counter++;
+//                        System.out.println("card image back: " + Back.getImage());
+                    }
+                    else
+                    {
+                        imgView.setFitHeight(196);//280
+                        imgView.setFitWidth(161);//230
+                        leftButton.setGraphic(imgView);
+                        card.counter --;
+                    }
+                    
+                }
+
+        });
+          
+            sideBar.getChildren().add(leftButton);
+            
+        }
+ public void initSideBar()
+    {
+        sideBar = new VBox();
+        sideBar.setAlignment(Pos.BASELINE_LEFT);
+        sideBar.setPadding(marginlessInsets);
+        sideBar.setSpacing(0.0);
+    }    
+   public void cardAnimation(JTECards card)
+     {
+        ImageView Front = new ImageView(card.getFront());
+        Front.setFitHeight(200);
+        Front.setFitWidth(200);
+        ImageView Back = new ImageView(card.getBack());    
+        
+        // Creates button 
+        Button cardButton = new Button(); 
+        cardButton.setGraphic(Front);    
+        cardButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) 
+            {                
+                if(card.counter == 0)
+                {
+                    
+                    Back.setFitHeight(200);
+                    Back.setFitWidth(200);
+                    cardButton.setGraphic(Back);
+                    card.counter ++; 
+                }
+                else
+                {
+                    cardButton.setGraphic(Front);
+                    card.counter --;
+                }
+            }
+        }); 
+        sideBar.getChildren().add(cardButton); 
+        TranslateTransition translateTransition =
+            new TranslateTransition(Duration.millis(4000),cardButton);
+        translateTransition.setFromX(500);
+        translateTransition.setToX(0);
+        translateTransition.setFromY(500);
+        translateTransition.setToY(0);
+        translateTransition.setCycleCount(1);
+        translateTransition.setAutoReverse(true);
+        
+        ScaleTransition scaleTransition = 
+            new ScaleTransition(Duration.millis(4000), cardButton);
+        scaleTransition.setToX(0.8f);
+        scaleTransition.setToY(0.8f);
+        scaleTransition.setCycleCount(1);
+        scaleTransition.setAutoReverse(true);
+        
+        ParallelTransition parallelTransition   = new ParallelTransition ();
+        parallelTransition.getChildren().addAll(
+                translateTransition, scaleTransition);
+        parallelTransition.setCycleCount(1);
+        parallelTransition.setAutoReverse(true);
+        parallelTransition.play();
+     }     
+      
     public void initMainPane() {
         marginlessInsets = new Insets(5, 5, 5, 5);
         mainPane = new BorderPane();
@@ -388,7 +398,7 @@ String number="0";
         mainPane.setBottom(commandSelectionPane);
     }
 
-    
+   
     public void initJTEUI() {
         // FIRST REMOVE THE SPLASH SCREEN
         mainPane.getChildren().clear();
@@ -414,7 +424,7 @@ String number="0";
 
     }
   
-   
+  
     public void initHandlers(){
         mainPane.setOnKeyPressed(new EventHandler<KeyEvent>(){ 
             @Override
@@ -489,9 +499,32 @@ String number="0";
 			errorHandler.processError(JTEPropertyType.INVALID_URL_ERROR_TEXT);
 		}
 	}
-   
+   public void placePlayerAtHome(JTECards card)
+   {
+       String path=card.getFront().impl_getUrl();
+       String imageName = path.substring(path.lastIndexOf('/')+1,path.length()-4 );
+       System.out.println(imageName);
+      // int x=ct.getX(imageName);
+        //int y=ct.getY(imageName);
+        //System.out.println(x+","+y);
+       
+   }
         private void initGameScreen() {
             
+            Random myRandomizer = new Random();
+            greenlist = fl.returnGreenCards();
+            redlist = fl.returnRedCards();
+            yellowlist = fl.returnYellowCards(); 
+            JTECards randomGreen = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+            placePlayerAtHome(randomGreen);
+            JTECards randomRed = redlist.get(myRandomizer.nextInt(greenlist.size()));
+            //placePlayer(randomRed);
+            JTECards randomYellow = yellowlist.get(myRandomizer.nextInt(greenlist.size()));
+            //placePlayer(randomYellow);
+           cardAnimation(randomGreen);
+            cardAnimation(randomRed);
+             cardAnimation(randomYellow);
+             
 		mainPane.getChildren().clear();
                 VBox vbox1=new VBox();
                 VBox vbox2=new VBox();
@@ -525,26 +558,19 @@ String number="0";
                 
             }
         });
-            
+        
                 gc = canvas.getGraphicsContext2D();
-    
                  Label l1=new Label("Player 1");
              Label l2= new Label("Player 1 Turn");
              Label l3= new Label("Rolled 6");
              Label l4= new Label("Select City");
              
            Image img1 = loadImage("1.jpg");
-            gc.drawImage(img1,0,0,650,500);
+            gc.drawImage(img1,0,0,571,700);
             Image img2 = loadImage("2.jpg");
-            gc.drawImage(img1,0,0,650,500);
             Image img3 = loadImage("3.jpg");
-            gc.drawImage(img1,0,0,650,500);
             Image img4 = loadImage("4.jpg");
-            gc.drawImage(img1,0,0,650,500);
-            
-            
-            
-       
+         
             
             GridPane grd= new GridPane();
             Label ac= new Label("A-C");
@@ -557,8 +583,7 @@ String number="0";
             Button b4= new Button();
             Button die= new Button();
             Random rand = new Random();
-                
-            
+                 
             Image q1=loadImage("1.jpg");
             ImageView q1view = new ImageView(q1);
             q1view.setFitHeight(40.0);
@@ -579,14 +604,16 @@ String number="0";
             b2.setGraphic(q2view);
             b3.setGraphic(q3view);
             b4.setGraphic(q4view);
-           
+            Image die_6=loadImage("die_6.jpg");
+            ImageView im= new ImageView(die_6);
+            die.setGraphic(im);
             
-            b1.setOnAction(new EventHandler<ActionEvent>() {
-            
+            b1.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-              gc.drawImage(img1,0,0,650,500);
+              gc.drawImage(img1,0,0,571,700);
+              quad=1;
                 
             }
         });
@@ -595,8 +622,8 @@ String number="0";
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-              gc.drawImage(img2,0,0,650,500);
-                
+              gc.drawImage(img2,0,0,571,700);
+              quad=2;
             }
         });
                   b3.setOnAction(new EventHandler<ActionEvent>() {
@@ -604,8 +631,9 @@ String number="0";
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-              gc.drawImage(img3,0,0,650,500);
-                
+              gc.drawImage(img3,0,0,571,700);
+              quad=3;
+              
             }
         });
                b4.setOnAction(new EventHandler<ActionEvent>() {
@@ -613,12 +641,11 @@ String number="0";
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-              gc.drawImage(img4,0,0,650,500);
-                
+              gc.drawImage(img4,0,0,571,700);
+                quad=4;
+           
             }
         });
-               
-               
                 //JLabel MyImage = new JLabel(new ImageIcon("image"+randomNum+".png"));
                 die.setOnAction(new EventHandler<ActionEvent>() {
             
@@ -631,10 +658,8 @@ String number="0";
                 
             }
         });
-            
-      
-            
-            grd.add(ac, 1, 0);
+                
+        grd.add(ac, 1, 0);
         grd.add(df, 2, 0);
         grd.add(one, 0, 1);
         grd.add(two, 0, 2);
@@ -647,10 +672,12 @@ String number="0";
              //Image select = loadImage("gameplay_selector.jpg");
             //ImageView sel = new ImageView(select);
             
-            vbox1.getChildren().add(l1);
+          //  vbox1.getChildren().add(sideBar);
            
             vbox3.getChildren().addAll(l2,l3,l4,grd,die,histButton,abtButton);
             vbox3.setSpacing(10);
+             gc.setStroke(Color.RED);
+              gc.setLineWidth(5);
              canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
            @Override
            public void handle(MouseEvent e) {
@@ -660,34 +687,87 @@ String number="0";
                   System.out.println(x + " " + y);
                for(int i=0;i<lis.size();i++)
                {
-                   Cities ct = lis.get(i);
+                   ct = lis.get(i);
+                   
                    if(x>(ct.getX()-10)&&x<(ct.getX()+10))
                    {
                        if(y>(ct.getY()-10)&&y<(ct.getY()+10))
                        {
-                           if(ct.getQuadrant()==1)
+                            List <Cities> tempLandPlaces= ct.fetchLandNeighbour();
+                            List <Cities> tempSeaPlaces = ct.fetchSeaNeighbour();
+                            
+                           if(ct.getQuadrant()==1&&quad==1)
                            {
-                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                            for(Cities jteNeibors:tempLandPlaces)
+                           {
+                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(jteNeibors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                             for(Cities jteNeibors:tempSeaPlaces)
+                           {
+                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(jteNeibors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                           String data1=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data);
+                           //JOptionPane.showMessageDialog(null,data1);
+                           continue;
                            }
-                           if(ct.getQuadrant()==2)
+                           if(ct.getQuadrant()==2&&quad==2)
                            {
-                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                             for(Cities jteNeibors : tempLandPlaces)
+                           {
+                               System.out.println(jteNeibors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                             for(Cities jteNeibors:tempSeaPlaces)
+                           {
+                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(jteNeibors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                           String data2=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data);
+                           //JOptionPane.showMessageDialog(null,data2);
+                           continue;
                            }
-                           if(ct.getQuadrant()==3)
+                           if(ct.getQuadrant()==3&&quad==3)
                            {
-                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                                for(Cities jteNeibors : tempLandPlaces)
+                           {
+                               System.out.println(jteNeibors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                                for(Cities jteNeibors:tempSeaPlaces)
+                           {
+                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(jteNeibors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                           String data3=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data);
+                          // JOptionPane.showMessageDialog(null,data3);
+                           continue;
                            }
-                           if(ct.getQuadrant()==4)
+                           if(ct.getQuadrant()==4&&quad==4)
                            {
-                           String data=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                                for(Cities jteNeibors : tempLandPlaces)
+                           {
+                               System.out.println(jteNeibors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                                for(Cities jteNeibors:tempSeaPlaces)
+                           {
+                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(jteNeibors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                            }
+                           String data4=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data);
+                           //JOptionPane.showMessageDialog(null,data4);
+                           continue;
                            }
                        }
                        
@@ -697,18 +777,10 @@ String number="0";
                
            }
        });
-             
-            //pane.getChildren().add(vbox1);
-            //bp.setLeft(l);
-            
-            //pane.getChildren().addAll(vbox1,vbox2,vbox3);
-            
-              pane.setLeft(vbox1);
+             pane.setLeft(sideBar);
               pane.setCenter(canvas);
               pane.setRight(vbox3);
-           mainPane.setCenter(pane);
-                
-                
+           mainPane.setCenter(pane);    
     }
         public void inithistPane()
         {
@@ -768,9 +840,7 @@ String number="0";
      */
     private void initNorthToolbar() {
         // MAKE THE NORTH TOOLBAR, WHICH WILL HAVE FOUR BUTTONS
-        
-      
-        
+       
         northToolbar = new HBox();
         northToolbar.setStyle("-fx-background-color:lightgray");
         northToolbar.setAlignment(Pos.CENTER);
@@ -966,8 +1036,6 @@ String number="0";
 
         });
         
-
-       
 
         // AND NOW PUT THE NORTH TOOLBAR IN THE FRAME
         mainPane.setTop(northToolbar);
