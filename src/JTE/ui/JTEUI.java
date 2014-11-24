@@ -85,6 +85,7 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
+    Cities cities;
     public  int quad=1;
     static String DATA_PATH = "./data/";
     AnimationTimer timer;
@@ -102,7 +103,7 @@ public class JTEUI extends Pane {
 String number="0";
     // mainStage
     private Stage primaryStage;
-
+    double xcoord=0,ycoord=0;
     // mainPane
     public BorderPane mainPane;
     private BorderPane hmPane;
@@ -161,7 +162,7 @@ String number="0";
     // mainPane weight && height
     private int paneWidth;
     private int paneHeigth;
-   
+   public int q=0;
     // THIS CLASS WILL HANDLE ALL ACTION EVENTS FOR THIS PROGRAM
     private JTEEventHandler eventHandler;
     private JTEErrorHandler errorHandler;
@@ -169,6 +170,7 @@ String number="0";
     
     public JTEFileLoader fl;
     public List<Cities> lis;
+     public List<Cities> l;
      public List <JTECards> greenlist;
      public List <JTECards> redlist;
     public List <JTECards> yellowlist;
@@ -177,7 +179,7 @@ String number="0";
     JTEGameStateManager gsm;
     
     GraphicsContext gc;
-    GraphicsContext gcCard;
+   
     final Canvas canvas = new Canvas(603,770);
 
     public JTEUI() {
@@ -192,11 +194,12 @@ String number="0";
         initSplashScreen();
         initSideBar();
         lis=fl.retCities();
+         //l=fl.retCities();
         fl.XMLParser();
       // initaboutPane();
         
     }
-    Cities ct;
+    
     public void SetStage(Stage stage) {
         primaryStage = stage;
     }
@@ -499,24 +502,45 @@ String number="0";
 			errorHandler.processError(JTEPropertyType.INVALID_URL_ERROR_TEXT);
 		}
 	}
-   public void placePlayerAtHome(JTECards card)
+   public void setPlayerAtHome(JTECards card)
    {
        String path=card.getFront().impl_getUrl();
        String imageName = path.substring(path.lastIndexOf('/')+1,path.length()-4 );
        System.out.println(imageName);
-      // int x=ct.getX(imageName);
-        //int y=ct.getY(imageName);
-        //System.out.println(x+","+y);
        
+       
+      
+         for(int i=0;i<lis.size();i++)
+         {
+                   cities = lis.get(i);
+            if(cities.getCityName().equals(imageName))
+            {
+               
+                xcoord=cities.getX();
+                ycoord=cities.getY();
+                q=cities.getQuadrant();
+          
+            }
+            
+         }
+        
+         System.out.println(xcoord+","+ycoord);
+      
+   }
+   public void drawHomeFlags()
+   {
+        gc=canvas.getGraphicsContext2D();
+       Image blackflag = loadImage("flag_blackhq.png");
+         
+          gc.drawImage(blackflag,xcoord-30.0,ycoord-60.0);
    }
         private void initGameScreen() {
             
-            Random myRandomizer = new Random();
+             Random myRandomizer = new Random();
             greenlist = fl.returnGreenCards();
             redlist = fl.returnRedCards();
             yellowlist = fl.returnYellowCards(); 
             JTECards randomGreen = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-            placePlayerAtHome(randomGreen);
             JTECards randomRed = redlist.get(myRandomizer.nextInt(greenlist.size()));
             //placePlayer(randomRed);
             JTECards randomYellow = yellowlist.get(myRandomizer.nextInt(greenlist.size()));
@@ -567,6 +591,7 @@ String number="0";
              
            Image img1 = loadImage("1.jpg");
             gc.drawImage(img1,0,0,571,700);
+          //  placePlayerAtHome(randomGreen);
             Image img2 = loadImage("2.jpg");
             Image img3 = loadImage("3.jpg");
             Image img4 = loadImage("4.jpg");
@@ -607,14 +632,15 @@ String number="0";
             Image die_6=loadImage("die_6.jpg");
             ImageView im= new ImageView(die_6);
             die.setGraphic(im);
-            
+              setPlayerAtHome(randomGreen);
             b1.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
               gc.drawImage(img1,0,0,571,700);
               quad=1;
-                
+              if(q==1)
+               drawHomeFlags();
             }
         });
                b2.setOnAction(new EventHandler<ActionEvent>() {
@@ -624,6 +650,8 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img2,0,0,571,700);
               quad=2;
+              if(q==2)
+                   drawHomeFlags();
             }
         });
                   b3.setOnAction(new EventHandler<ActionEvent>() {
@@ -633,6 +661,8 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img3,0,0,571,700);
               quad=3;
+              if(q==3)
+                drawHomeFlags();
               
             }
         });
@@ -643,6 +673,8 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img4,0,0,571,700);
                 quad=4;
+                if(q==4)
+                 drawHomeFlags();
            
             }
         });
@@ -678,12 +710,13 @@ String number="0";
             vbox3.setSpacing(10);
              gc.setStroke(Color.RED);
               gc.setLineWidth(5);
+              
              canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
            @Override
            public void handle(MouseEvent e) {
                int x=(int)e.getX();
                int y=(int)e.getY();
-               
+               Cities ct;
                   System.out.println(x + " " + y);
                for(int i=0;i<lis.size();i++)
                {
@@ -710,9 +743,9 @@ String number="0";
                               // if(jteNeibors.getCityName()!=)
                                 gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
                             }
-                           String data1=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           String data1=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           //JOptionPane.showMessageDialog(null,data1);
+                           JOptionPane.showMessageDialog(null,data1);
                            continue;
                            }
                            if(ct.getQuadrant()==2&&quad==2)
@@ -728,9 +761,9 @@ String number="0";
                               // if(jteNeibors.getCityName()!=)
                                 gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
                             }
-                           String data2=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           String data2=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           //JOptionPane.showMessageDialog(null,data2);
+                           JOptionPane.showMessageDialog(null,data2);
                            continue;
                            }
                            if(ct.getQuadrant()==3&&quad==3)
@@ -746,9 +779,9 @@ String number="0";
                               // if(jteNeibors.getCityName()!=)
                                 gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
                             }
-                           String data3=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           String data3=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                          // JOptionPane.showMessageDialog(null,data3);
+                           JOptionPane.showMessageDialog(null,data3);
                            continue;
                            }
                            if(ct.getQuadrant()==4&&quad==4)
@@ -764,9 +797,9 @@ String number="0";
                               // if(jteNeibors.getCityName()!=)
                                 gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
                             }
-                           String data4=ct.getCityName()+","+(ct.getX()*3.0923076)+","+(5.138*ct.getY());
+                           String data4=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           //JOptionPane.showMessageDialog(null,data4);
+                           JOptionPane.showMessageDialog(null,data4);
                            continue;
                            }
                        }
@@ -777,6 +810,7 @@ String number="0";
                
            }
        });
+            
              pane.setLeft(sideBar);
               pane.setCenter(canvas);
               pane.setRight(vbox3);

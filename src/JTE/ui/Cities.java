@@ -35,6 +35,7 @@ public class Cities {
         landNeighbours = new ArrayList<Cities>();
         seaNeighbours = new ArrayList<Cities>();
     }
+     
      public int getX()
      {
          return x;
@@ -43,10 +44,7 @@ public class Cities {
      {
          return y;
      }
-     public int getX(String ctname)
-     {
-         return x;
-     }
+    
      public int getY(String ctname)
      {
          return y;
