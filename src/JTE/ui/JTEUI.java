@@ -372,6 +372,7 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                event.consume();
            }
        });
+     
  }
  
   
@@ -967,9 +968,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                              for(Cities Neighbors:tempSea)
                            {
                                System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(Neighbors.getCityName()!=)
-                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                               gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                            String data1=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
@@ -988,8 +988,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                            {
                                System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
                               // if(Neighbors.getCityName()!=)
-                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                //travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                               gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                            String data2=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
@@ -1008,8 +1008,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                            {
                                System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
                               // if(Neighbors.getCityName()!=)
-                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                               gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                            String data3=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
@@ -1028,8 +1028,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                            {
                                System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
                               // if(Neighbors.getCityName()!=)
-                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                               gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                            String data4=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
