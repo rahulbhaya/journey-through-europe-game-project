@@ -239,5 +239,6 @@ public class JTEGameStateManager {
         // THE GAME IS OFFICIALLY UNDERWAY
         currentGameState = JTEGameState.GAME_IN_PROGRESS;
     }
+    
 
 }

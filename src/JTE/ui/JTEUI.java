@@ -85,6 +85,7 @@ public class JTEUI extends Pane {
      * for the JTE game application. Depending on which state is in current
      * use, different controls will be visible.
      */
+   
     Cities cities;
     public  int quad=1;
     static String DATA_PATH = "./data/";
@@ -95,6 +96,7 @@ public class JTEUI extends Pane {
 		// System.out.print(imageName);
 		return img;
 	}
+     
     public enum JTEUIState {
 
         SPLASH_SCREEN_STATE, PLAY_GAME_STATE, VIEW_STATS_STATE, VIEW_ABOUT_STATE,
@@ -103,7 +105,9 @@ public class JTEUI extends Pane {
 String number="0";
     // mainStage
     private Stage primaryStage;
-    double xcoord=0,ycoord=0;
+    double xcoord1=0,ycoord1=0;
+     double xcoord2=0,ycoord2=0;
+      double xcoord3=0,ycoord3=0;
     // mainPane
     public BorderPane mainPane;
     private BorderPane hmPane;
@@ -162,7 +166,7 @@ String number="0";
     // mainPane weight && height
     private int paneWidth;
     private int paneHeigth;
-   public int q=0;
+   public int qa,qb,qc,qd;
     // THIS CLASS WILL HANDLE ALL ACTION EVENTS FOR THIS PROGRAM
     private JTEEventHandler eventHandler;
     private JTEErrorHandler errorHandler;
@@ -179,7 +183,8 @@ String number="0";
     JTEGameStateManager gsm;
     
     GraphicsContext gc;
-   
+   Image blackpiece;
+   ImageView blackPieceView;
     final Canvas canvas = new Canvas(603,770);
 
     public JTEUI() {
@@ -196,6 +201,7 @@ String number="0";
         lis=fl.retCities();
          //l=fl.retCities();
         fl.XMLParser();
+        
       // initaboutPane();
         
     }
@@ -263,7 +269,23 @@ String number="0";
         sideBar.setAlignment(Pos.BASELINE_LEFT);
         sideBar.setPadding(marginlessInsets);
         sideBar.setSpacing(0.0);
-    }    
+    }   
+ public void travelAnimation(ImageView piece,int fromX,int fromY,int toX,int toY)
+ {
+     //GraphicsContext gc=canvas.getGraphicsContext2D();
+     
+     mainPane.getChildren().add(piece);
+
+   TranslateTransition translateTransition =new TranslateTransition(Duration.millis(1000),piece);
+       translateTransition.setFromX(fromX);
+       translateTransition.setToX(200+toX);
+       translateTransition.setFromY(200);
+       translateTransition.setToY(200+toY);
+//translateTransition.setCycleCount(1);
+    // translateTransition.setAutoReverse(true);
+        translateTransition.play();
+        
+ }
    public void cardAnimation(JTECards card)
      {
         ImageView Front = new ImageView(card.getFront());
@@ -274,28 +296,24 @@ String number="0";
         // Creates button 
         Button cardButton = new Button(); 
         cardButton.setGraphic(Front);    
-        cardButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) 
-            {                
-                if(card.counter == 0)
-                {
-                    
-                    Back.setFitHeight(200);
-                    Back.setFitWidth(200);
-                    cardButton.setGraphic(Back);
-                    card.counter ++; 
-                }
-                else
-                {
-                    cardButton.setGraphic(Front);
-                    card.counter --;
-                }
+        cardButton.setOnAction((ActionEvent event) -> {
+            if(card.counter == 0)
+            {
+                
+                Back.setFitHeight(200);
+                Back.setFitWidth(200);
+                cardButton.setGraphic(Back);
+                card.counter ++;
+            }
+            else
+            {
+                cardButton.setGraphic(Front);
+                card.counter --;
             }
         }); 
         sideBar.getChildren().add(cardButton); 
         TranslateTransition translateTransition =
-            new TranslateTransition(Duration.millis(4000),cardButton);
+            new TranslateTransition(Duration.millis(5000),cardButton);
         translateTransition.setFromX(500);
         translateTransition.setToX(0);
         translateTransition.setFromY(500);
@@ -303,8 +321,9 @@ String number="0";
         translateTransition.setCycleCount(1);
         translateTransition.setAutoReverse(true);
         
+        
         ScaleTransition scaleTransition = 
-            new ScaleTransition(Duration.millis(4000), cardButton);
+            new ScaleTransition(Duration.millis(10000), cardButton);
         scaleTransition.setToX(0.8f);
         scaleTransition.setToY(0.8f);
         scaleTransition.setCycleCount(1);
@@ -329,6 +348,8 @@ String number="0";
                 .getProperty(JTEPropertyType.WINDOW_HEIGHT));
         mainPane.resize(paneWidth, paneHeigth);
         mainPane.setPadding(marginlessInsets);
+        blackpiece = loadImage("piece_black.png");
+     blackPieceView=new ImageView(blackpiece);
     }
 
     public void initSplashScreen() {
@@ -507,36 +528,98 @@ String number="0";
        String path=card.getFront().impl_getUrl();
        String imageName = path.substring(path.lastIndexOf('/')+1,path.length()-4 );
        System.out.println(imageName);
-       
-       
-      
+     
          for(int i=0;i<lis.size();i++)
          {
                    cities = lis.get(i);
             if(cities.getCityName().equals(imageName))
             {
                
-                xcoord=cities.getX();
-                ycoord=cities.getY();
-                q=cities.getQuadrant();
-          
+                xcoord1=cities.getX();
+                ycoord1=cities.getY();
+                qa=cities.getQuadrant();
             }
             
          }
         
-         System.out.println(xcoord+","+ycoord);
+         System.out.println(xcoord1+","+ycoord1);
       
+   }
+   public void setPlayerCoordinates1(JTECards card)
+   {
+       String path=card.getFront().impl_getUrl();
+       String imageName = path.substring(path.lastIndexOf('/')+1,path.length()-4 );
+       System.out.println(imageName);
+         for(int i=0;i<lis.size();i++)
+         {
+                   cities = lis.get(i);
+            if(cities.getCityName().equals(imageName))
+            {
+               
+                xcoord2=cities.getX();
+                ycoord2=cities.getY();
+                qb=cities.getQuadrant();
+            }
+            
+         }
+        
+         System.out.println(xcoord2+","+ycoord2);
+   }
+   public void setPlayerCoordinates2(JTECards card)
+   {
+       String path=card.getFront().impl_getUrl();
+       String imageName = path.substring(path.lastIndexOf('/')+1,path.length()-4 );
+       System.out.println(imageName);
+     
+         for(int i=0;i<lis.size();i++)
+         {
+                   cities = lis.get(i);
+            if(cities.getCityName().equals(imageName))
+            {
+                xcoord3=cities.getX();
+                ycoord3=cities.getY();
+                qc=cities.getQuadrant();
+            }
+            
+         }
+        
+         System.out.println(xcoord3+","+ycoord3);
    }
    public void drawHomeFlags()
    {
         gc=canvas.getGraphicsContext2D();
        Image blackflag = loadImage("flag_blackhq.png");
-         
-          gc.drawImage(blackflag,xcoord-30.0,ycoord-60.0);
+       Image blueflag = loadImage("flag_bluehq.png");
+       Image greenflag = loadImage("flag_greenhq.png");
+          gc.drawImage(blackflag,xcoord1-30.0,ycoord1-60.0);
+   }
+   public void drawFlag1()
+   {
+        gc=canvas.getGraphicsContext2D();
+        Image blackflag1 = loadImage("flag_blackhq.png");
+        Image blueflag1 = loadImage("flag_bluehq.png");
+       Image greenflag1 = loadImage("flag_greenhq.png");
+       gc.drawImage(blackflag1,xcoord2-30.0,ycoord2-60.0);   
+   }
+    public void drawFlag2()
+   {
+        gc=canvas.getGraphicsContext2D();
+        Image blackflag2 = loadImage("flag_blackhq.png");
+        Image blueflag2 = loadImage("flag_bluehq.png");
+       Image greenflag2 = loadImage("flag_greenhq.png");
+       gc.drawImage(blackflag2,xcoord3-30.0,ycoord3-60.0);   
+   }
+    public void drawPiece()
+   {
+        gc=canvas.getGraphicsContext2D();
+        Image blackpiece = loadImage("piece_black.png");
+       Image bluepiece = loadImage("piece_blue.png");
+       Image greenpiece = loadImage("piece_green.png");
+       gc.drawImage(blackpiece,xcoord1-15.0,ycoord1-40.0);   
    }
         private void initGameScreen() {
             
-             Random myRandomizer = new Random();
+            Random myRandomizer = new Random();
             greenlist = fl.returnGreenCards();
             redlist = fl.returnRedCards();
             yellowlist = fl.returnYellowCards(); 
@@ -633,14 +716,27 @@ String number="0";
             ImageView im= new ImageView(die_6);
             die.setGraphic(im);
               setPlayerAtHome(randomGreen);
+              setPlayerCoordinates1(randomRed);
+              setPlayerCoordinates2(randomYellow);
             b1.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
               gc.drawImage(img1,0,0,571,700);
               quad=1;
-              if(q==1)
+              if(qa==1)
+              {
                drawHomeFlags();
+               drawPiece();
+              }
+              if(qb==1)
+              {
+                  drawFlag1();
+              }
+              if(qc==1)
+              {
+                  drawFlag2();
+              }
             }
         });
                b2.setOnAction(new EventHandler<ActionEvent>() {
@@ -650,8 +746,19 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img2,0,0,571,700);
               quad=2;
-              if(q==2)
-                   drawHomeFlags();
+             if(qa==2)
+              {
+               drawHomeFlags();
+                drawPiece();
+              }
+              if(qb==2)
+              {
+                  drawFlag1();
+              }
+              if(qc==2)
+              {
+                  drawFlag2();
+              }
             }
         });
                   b3.setOnAction(new EventHandler<ActionEvent>() {
@@ -661,8 +768,19 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img3,0,0,571,700);
               quad=3;
-              if(q==3)
-                drawHomeFlags();
+              if(qa==3)
+              {
+               drawHomeFlags();
+                drawPiece();
+              }
+              if(qb==3)
+              {
+                  drawFlag1();
+              }
+              if(qc==3)
+              {
+                  drawFlag2();
+              }
               
             }
         });
@@ -673,8 +791,19 @@ String number="0";
                 // TODO Auto-generated method stub
               gc.drawImage(img4,0,0,571,700);
                 quad=4;
-                if(q==4)
-                 drawHomeFlags();
+                if(qa==4)
+              {
+               drawHomeFlags();
+                drawPiece();
+              }
+              if(qb==4)
+              {
+                  drawFlag1();
+              }
+              if(qc==4)
+              {
+                  drawFlag2();
+              }
            
             }
         });
@@ -726,80 +855,88 @@ String number="0";
                    {
                        if(y>(ct.getY()-10)&&y<(ct.getY()+10))
                        {
-                            List <Cities> tempLandPlaces= ct.fetchLandNeighbour();
-                            List <Cities> tempSeaPlaces = ct.fetchSeaNeighbour();
+                            List <Cities> tempLand= ct.fetchLandNeighbour();
+                            List <Cities> tempSea = ct.fetchSeaNeighbour();
                             
                            if(ct.getQuadrant()==1&&quad==1)
                            {
-                            for(Cities jteNeibors:tempLandPlaces)
+                            for(Cities Neighbors:tempLand)
                            {
-                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(jteNeibors.getCityName()!=)
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(Neighbors.getCityName()!=)
+                                gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
-                             for(Cities jteNeibors:tempSeaPlaces)
+                             for(Cities Neighbors:tempSea)
                            {
-                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(jteNeibors.getCityName()!=)
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(Neighbors.getCityName()!=)
+                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
                            String data1=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data1);
+                           //JOptionPane.showMessageDialog(null,data1);
                            continue;
                            }
                            if(ct.getQuadrant()==2&&quad==2)
                            {
-                             for(Cities jteNeibors : tempLandPlaces)
+                             for(Cities Neighbors : tempLand)
                            {
-                               System.out.println(jteNeibors.getX());
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
-                             for(Cities jteNeibors:tempSeaPlaces)
+                             for(Cities Neighbors:tempSea)
                            {
-                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(jteNeibors.getCityName()!=)
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(Neighbors.getCityName()!=)
+                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                //travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
                            String data2=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data2);
+                           //JOptionPane.showMessageDialog(null,data2);
                            continue;
                            }
                            if(ct.getQuadrant()==3&&quad==3)
                            {
-                                for(Cities jteNeibors : tempLandPlaces)
+                                for(Cities Neighbors : tempLand)
                            {
-                               System.out.println(jteNeibors.getX());
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
-                                for(Cities jteNeibors:tempSeaPlaces)
+                                for(Cities Neighbors:tempSea)
                            {
-                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(jteNeibors.getCityName()!=)
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(Neighbors.getCityName()!=)
+                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
                            String data3=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data3);
+                          // JOptionPane.showMessageDialog(null,data3);
                            continue;
                            }
                            if(ct.getQuadrant()==4&&quad==4)
                            {
-                                for(Cities jteNeibors : tempLandPlaces)
+                                for(Cities Neighbors : tempLand)
                            {
-                               System.out.println(jteNeibors.getX());
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX());
+                                gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
-                                for(Cities jteNeibors:tempSeaPlaces)
+                                for(Cities Neighbors:tempSea)
                            {
-                               System.out.println(jteNeibors.getX()+","+jteNeibors.getY()+","+ct.getX()+","+ct.getY());
-                              // if(jteNeibors.getCityName()!=)
-                                gc.strokeLine(ct.getX(),ct.getY(), jteNeibors.getX(), jteNeibors.getY());
+                               System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
+                              // if(Neighbors.getCityName()!=)
+                               // gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
+                               // travelAnimation(ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
                             }
                            String data4=ct.getCityName()+","+(ct.getX())+","+(ct.getY());
                            System.out.println(ct.getCityName());
-                           JOptionPane.showMessageDialog(null,data4);
+                          //JOptionPane.showMessageDialog(null,data4);
                            continue;
                            }
                        }
