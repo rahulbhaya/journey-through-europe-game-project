@@ -75,6 +75,10 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.event.EventType;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.util.Duration;
 
 
@@ -126,9 +130,11 @@ String number="0";
     private Button aboutButton;
     private Button exitButton;
     private Button abtButton;
+    private Button flightButton;
+    private Button saveButton;
     
     public VBox sideBar;
-
+    Image blackPiece;
     // GamePane
     private Label JTELabel;
     private Button newGameButton;
@@ -183,7 +189,7 @@ String number="0";
     JTEGameStateManager gsm;
     
     GraphicsContext gc;
-   Image blackpiece;
+   
    ImageView blackPieceView;
     final Canvas canvas = new Canvas(603,770);
 
@@ -201,7 +207,8 @@ String number="0";
         lis=fl.retCities();
          //l=fl.retCities();
         fl.XMLParser();
-        
+         blackPiece= loadImage("piece_black.png");
+         blackPieceView=new ImageView(blackPiece);
       // initaboutPane();
         
     }
@@ -269,23 +276,105 @@ String number="0";
         sideBar.setAlignment(Pos.BASELINE_LEFT);
         sideBar.setPadding(marginlessInsets);
         sideBar.setSpacing(0.0);
-    }   
- public void travelAnimation(ImageView piece,int fromX,int fromY,int toX,int toY)
+    } 
+public void travelAnimation(ImageView piece,int toX,int toY)
  {
      //GraphicsContext gc=canvas.getGraphicsContext2D();
      
-     mainPane.getChildren().add(piece);
-
+     
+     mainPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+           @Override
+           public void handle(MouseEvent e) {
+               int x=(int)e.getX();
+               int y=(int)e.getY();
+   
    TranslateTransition translateTransition =new TranslateTransition(Duration.millis(1000),piece);
-       translateTransition.setFromX(fromX);
-       translateTransition.setToX(200+toX);
-       translateTransition.setFromY(200);
-       translateTransition.setToY(200+toY);
+        if(quad==1)
+        {
+            double newx=toX*3.5201401050;
+            double newy=toY*3.67;
+       translateTransition.setFromX(newx);
+       translateTransition.setToX(x-30.0);
+       translateTransition.setFromY(newy);
+       translateTransition.setToY(y-60.0);
 //translateTransition.setCycleCount(1);
     // translateTransition.setAutoReverse(true);
         translateTransition.play();
         
+        mainPane.getChildren().add(piece);
+        
+        }
+        if(quad==2)
+        {
+            
+          double newx=toX*3.3327495621;
+          double newy=toY*3.67;
+          translateTransition.setFromX(newx);
+       translateTransition.setToX(x-30.0);
+       translateTransition.setFromY(newy);
+       translateTransition.setToY(y-60.0);
+//translateTransition.setCycleCount(1);
+    // translateTransition.setAutoReverse(true);
+        translateTransition.play();
+           
+        mainPane.getChildren().add(piece);
+    
+        }
+        if(quad==3)
+        {
+             double newx=toX*3.4763572679;
+            double newy=toY*3.69; 
+        
+       translateTransition.setFromX(newx);
+       translateTransition.setToX(x-30.0);
+       translateTransition.setFromY(newy);
+       translateTransition.setToY(y-60.0);
+//translateTransition.setCycleCount(1);
+    // translateTransition.setAutoReverse(true);
+        translateTransition.play();
+        
+        mainPane.getChildren().add(piece);
+        
+        }
+        if(quad==4)
+        {
+             double newx=toX*3.3747810858;
+            double newy=toY*3.6585714285; 
+       
+       translateTransition.setFromX(newx);
+       translateTransition.setToX(x-30.0);
+       translateTransition.setFromY(newy);
+       translateTransition.setToY(y-60.0);
+//translateTransition.setCycleCount(1);
+    // translateTransition.setAutoReverse(true);
+        translateTransition.play();
+   
+        mainPane.getChildren().add(piece);
+         } 
+           }
+           });
+     piece.setOnDragDetected(new EventHandler <MouseEvent>() {
+
+           @Override
+           public void handle(MouseEvent event) {
+
+               /* allow any transfer mode */
+               Dragboard db = piece.startDragAndDrop(TransferMode.MOVE);
+                
+               /* put a image on dragboard */
+               ClipboardContent content = new ClipboardContent();
+                
+               Image sourceImage = piece.getImage();
+               content.putImage(sourceImage);
+               db.setContent(content);
+               
+                
+               event.consume();
+           }
+       });
  }
+ 
+  
    public void cardAnimation(JTECards card)
      {
         ImageView Front = new ImageView(card.getFront());
@@ -348,8 +437,7 @@ String number="0";
                 .getProperty(JTEPropertyType.WINDOW_HEIGHT));
         mainPane.resize(paneWidth, paneHeigth);
         mainPane.setPadding(marginlessInsets);
-        blackpiece = loadImage("piece_black.png");
-     blackPieceView=new ImageView(blackpiece);
+        
     }
 
     public void initSplashScreen() {
@@ -593,29 +681,29 @@ String number="0";
        Image greenflag = loadImage("flag_greenhq.png");
           gc.drawImage(blackflag,xcoord1-30.0,ycoord1-60.0);
    }
-   public void drawFlag1()
-   {
-        gc=canvas.getGraphicsContext2D();
-        Image blackflag1 = loadImage("flag_blackhq.png");
-        Image blueflag1 = loadImage("flag_bluehq.png");
-       Image greenflag1 = loadImage("flag_greenhq.png");
-       gc.drawImage(blackflag1,xcoord2-30.0,ycoord2-60.0);   
-   }
-    public void drawFlag2()
-   {
-        gc=canvas.getGraphicsContext2D();
-        Image blackflag2 = loadImage("flag_blackhq.png");
-        Image blueflag2 = loadImage("flag_bluehq.png");
-       Image greenflag2 = loadImage("flag_greenhq.png");
-       gc.drawImage(blackflag2,xcoord3-30.0,ycoord3-60.0);   
-   }
+//   public void drawFlag1()
+//   {
+//        gc=canvas.getGraphicsContext2D();
+//        Image blackflag1 = loadImage("flag_blackhq.png");
+//        Image blueflag1 = loadImage("flag_bluehq.png");
+//       Image greenflag1 = loadImage("flag_greenhq.png");
+//       gc.drawImage(blackflag1,xcoord2-30.0,ycoord2-60.0);   
+//   }
+//    public void drawFlag2()
+//   {
+//        gc=canvas.getGraphicsContext2D();
+//        Image blackflag2 = loadImage("flag_blackhq.png");
+//        Image blueflag2 = loadImage("flag_bluehq.png");
+//       Image greenflag2 = loadImage("flag_greenhq.png");
+//       gc.drawImage(blackflag2,xcoord3-30.0,ycoord3-60.0);   
+//   }
     public void drawPiece()
    {
         gc=canvas.getGraphicsContext2D();
-        Image blackpiece = loadImage("piece_black.png");
+        
        Image bluepiece = loadImage("piece_blue.png");
        Image greenpiece = loadImage("piece_green.png");
-       gc.drawImage(blackpiece,xcoord1-15.0,ycoord1-40.0);   
+       gc.drawImage(blackPiece,xcoord1-15.0,ycoord1-40.0);   
    }
         private void initGameScreen() {
             
@@ -665,6 +753,15 @@ String number="0";
                 
             }
         });
+        Image flightplan= loadImage("flightplanimg.png");
+                ImageView view3=new ImageView(flightplan);
+                flightButton = new Button(" ",view3);
+                flightButton.setStyle("-fx-focus-color: transparent;");
+                
+        Image save= loadImage("save.png");
+                ImageView view4=new ImageView(save);
+                saveButton = new Button(" ",view4);
+                saveButton.setStyle("-fx-focus-color: transparent;");
         
                 gc = canvas.getGraphicsContext2D();
                  Label l1=new Label("Player 1");
@@ -731,11 +828,11 @@ String number="0";
               }
               if(qb==1)
               {
-                  drawFlag1();
+                  //drawFlag1();
               }
               if(qc==1)
               {
-                  drawFlag2();
+                 // drawFlag2();
               }
             }
         });
@@ -753,11 +850,11 @@ String number="0";
               }
               if(qb==2)
               {
-                  drawFlag1();
+                 // drawFlag1();
               }
               if(qc==2)
               {
-                  drawFlag2();
+                  //drawFlag2();
               }
             }
         });
@@ -775,11 +872,11 @@ String number="0";
               }
               if(qb==3)
               {
-                  drawFlag1();
+                  //drawFlag1();
               }
               if(qc==3)
               {
-                  drawFlag2();
+                 // drawFlag2();
               }
               
             }
@@ -798,11 +895,11 @@ String number="0";
               }
               if(qb==4)
               {
-                  drawFlag1();
+                  //drawFlag1();
               }
               if(qc==4)
               {
-                  drawFlag2();
+                  //drawFlag2();
               }
            
             }
@@ -835,7 +932,7 @@ String number="0";
             
           //  vbox1.getChildren().add(sideBar);
            
-            vbox3.getChildren().addAll(l2,l3,l4,grd,die,histButton,abtButton);
+            vbox3.getChildren().addAll(l2,l3,l4,grd,die,flightButton,histButton,abtButton,saveButton);
             vbox3.setSpacing(10);
              gc.setStroke(Color.RED);
               gc.setLineWidth(5);
@@ -865,7 +962,7 @@ String number="0";
                                System.out.println(Neighbors.getX()+","+Neighbors.getY()+","+ct.getX()+","+ct.getY());
                               // if(Neighbors.getCityName()!=)
                                 gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                              for(Cities Neighbors:tempSea)
                            {
@@ -885,7 +982,7 @@ String number="0";
                            {
                                System.out.println(Neighbors.getX());
                                 gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                              for(Cities Neighbors:tempSea)
                            {
@@ -905,7 +1002,7 @@ String number="0";
                            {
                                System.out.println(Neighbors.getX());
                                 gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                                 for(Cities Neighbors:tempSea)
                            {
@@ -925,7 +1022,7 @@ String number="0";
                            {
                                System.out.println(Neighbors.getX());
                                 gc.strokeLine(ct.getX(),ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                travelAnimation(blackPieceView,ct.getX(),ct.getY(),Neighbors.getX(),Neighbors.getY());
+                                travelAnimation(blackPieceView,ct.getX(),ct.getY());
                             }
                                 for(Cities Neighbors:tempSea)
                            {
