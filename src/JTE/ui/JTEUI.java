@@ -80,7 +80,11 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.util.Duration;
-
+import JTE.ui.Players;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.text.Text;
 
 public class JTEUI extends Pane {
 
@@ -115,6 +119,7 @@ String number="0";
     // mainPane
     public BorderPane mainPane;
     private BorderPane hmPane;
+    
 
     // SplashScreen
     private ImageView splashScreenImageView;
@@ -145,6 +150,7 @@ String number="0";
     //StatsPane
     private ScrollPane statsScrollPane;
     private JEditorPane statsPane;
+    private BorderPane canvasPane;
 
     //aboutPane
     //private BorderPane aboutPanel;
@@ -187,7 +193,7 @@ String number="0";
     
     JTEEventHandler eh;
     JTEGameStateManager gsm;
-    
+    Players players;
     GraphicsContext gc;
    
    ImageView blackPieceView;
@@ -198,8 +204,9 @@ String number="0";
         eventHandler = new JTEEventHandler(this);
         errorHandler = new JTEErrorHandler(primaryStage);
         docManager = new JTEDocumentManager(this);
+        players= new Players();
         fl=new JTEFileLoader(this);
-        
+        canvasPane=new BorderPane();
         System.out.println("1");
         initMainPane();
         initSplashScreen();
@@ -278,81 +285,66 @@ String number="0";
         sideBar.setSpacing(0.0);
     } 
 public void travelAnimation(ImageView piece,int toX,int toY)
- {
-     //GraphicsContext gc=canvas.getGraphicsContext2D();
-     
-     
-     mainPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-           @Override
-           public void handle(MouseEvent e) {
-               int x=(int)e.getX();
-               int y=(int)e.getY();
-   
+ {  
    TranslateTransition translateTransition =new TranslateTransition(Duration.millis(1000),piece);
-        if(quad==1)
-        {
-            double newx=toX*3.5201401050;
-            double newy=toY*3.67;
-       translateTransition.setFromX(newx);
-       translateTransition.setToX(x-30.0);
-       translateTransition.setFromY(newy);
-       translateTransition.setToY(y-60.0);
+              
+                           if(quad==1)
+                       {
+                         //double newx=toX*3.5201401050;
+                        // double newy=toY*3.67;
+                         translateTransition.setFromX(0);
+                         translateTransition.setToX(toX+107);
+                         translateTransition.setFromY(0);
+                         translateTransition.setToY(toY-40);
+                         translateTransition.play();
+                             canvasPane.getChildren().remove(piece);
+                           canvasPane.getChildren().add(piece);
+                         }
+                        if(quad==2)
+                        {
+                            //double newx=toX*3.3327495621;
+                            //double newy=toY*3.67;
+                            translateTransition.setFromX(0);
+                         translateTransition.setToX(toX+107);
+                         translateTransition.setFromY(0);
+                         translateTransition.setToY(toY-40);
+                            //translateTransition.setCycleCount(1);
+                             // translateTransition.setAutoReverse(true);
+                             translateTransition.play();   
+                            canvasPane.getChildren().remove(piece);
+                           canvasPane.getChildren().add(piece);
+                        }
+                         if(quad==3)
+                         {
+                        //double newx=toX*3.4763572679;
+                        //double newy=toY*3.69; 
+                      translateTransition.setFromX(0);
+                         translateTransition.setToX(toX+107);
+                         translateTransition.setFromY(0);
+                         translateTransition.setToY(toY-40);
+                        //translateTransition.setCycleCount(1);
+                         // translateTransition.setAutoReverse(true);
+                        translateTransition.play(); 
+                            canvasPane.getChildren().remove(piece);
+                           canvasPane.getChildren().add(piece);
+                        }
+                        if(quad==4)
+                        {
+                             //double newx=toX*3.3747810858;
+                              // double newy=toY*3.6585714285; 
+                              translateTransition.setFromX(0);
+                         translateTransition.setToX(toX+107);
+                         translateTransition.setFromY(0);
+                         translateTransition.setToY(toY-40);
 //translateTransition.setCycleCount(1);
     // translateTransition.setAutoReverse(true);
-        translateTransition.play();
-        
-        mainPane.getChildren().add(piece);
-        
-        }
-        if(quad==2)
-        {
-            
-          double newx=toX*3.3327495621;
-          double newy=toY*3.67;
-          translateTransition.setFromX(newx);
-       translateTransition.setToX(x-30.0);
-       translateTransition.setFromY(newy);
-       translateTransition.setToY(y-60.0);
-//translateTransition.setCycleCount(1);
-    // translateTransition.setAutoReverse(true);
-        translateTransition.play();
+                         translateTransition.play();
+                         canvasPane.getChildren().remove(piece);
+                           canvasPane.getChildren().add(piece);
+                        } 
            
-        mainPane.getChildren().add(piece);
-    
-        }
-        if(quad==3)
-        {
-             double newx=toX*3.4763572679;
-            double newy=toY*3.69; 
-        
-       translateTransition.setFromX(newx);
-       translateTransition.setToX(x-30.0);
-       translateTransition.setFromY(newy);
-       translateTransition.setToY(y-60.0);
-//translateTransition.setCycleCount(1);
-    // translateTransition.setAutoReverse(true);
-        translateTransition.play();
-        
-        mainPane.getChildren().add(piece);
-        
-        }
-        if(quad==4)
-        {
-             double newx=toX*3.3747810858;
-            double newy=toY*3.6585714285; 
-       
-       translateTransition.setFromX(newx);
-       translateTransition.setToX(x-30.0);
-       translateTransition.setFromY(newy);
-       translateTransition.setToY(y-60.0);
-//translateTransition.setCycleCount(1);
-    // translateTransition.setAutoReverse(true);
-        translateTransition.play();
-   
-        mainPane.getChildren().add(piece);
-         } 
-           }
-           });
+                
+                   
      piece.setOnDragDetected(new EventHandler <MouseEvent>() {
 
            @Override
@@ -363,19 +355,15 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                 
                /* put a image on dragboard */
                ClipboardContent content = new ClipboardContent();
-                
                Image sourceImage = piece.getImage();
                content.putImage(sourceImage);
                db.setContent(content);
-               
-                
                event.consume();
            }
        });
      
- }
+}
  
-  
    public void cardAnimation(JTECards card)
      {
         ImageView Front = new ImageView(card.getFront());
@@ -413,9 +401,9 @@ public void travelAnimation(ImageView piece,int toX,int toY)
         
         
         ScaleTransition scaleTransition = 
-            new ScaleTransition(Duration.millis(10000), cardButton);
-        scaleTransition.setToX(0.8f);
-        scaleTransition.setToY(0.8f);
+            new ScaleTransition(Duration.millis(5000), cardButton);
+        scaleTransition.setToX(0.85f);
+        scaleTransition.setToY(0.85f);
         scaleTransition.setCycleCount(1);
         scaleTransition.setAutoReverse(true);
         
@@ -547,8 +535,7 @@ public void travelAnimation(ImageView piece,int toX,int toY)
         });
     }
     
-    public void doCommand(String command){
-        
+    public void doCommand(String command){ 
        // initJTEUI();
        if(command.equals("Quit"))
             eventHandler.respondToExitRequest(primaryStage);
@@ -701,7 +688,6 @@ public void travelAnimation(ImageView piece,int toX,int toY)
     public void drawPiece()
    {
         gc=canvas.getGraphicsContext2D();
-        
        Image bluepiece = loadImage("piece_blue.png");
        Image greenpiece = loadImage("piece_green.png");
        gc.drawImage(blackPiece,xcoord1-15.0,ycoord1-40.0);   
@@ -754,10 +740,25 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                 
             }
         });
-        Image flightplan= loadImage("flightplanimg.png");
-                ImageView view3=new ImageView(flightplan);
+        Image flightbuttonimg= loadImage("flightplanimg.png");
+        
+                ImageView view3=new ImageView(flightbuttonimg);
                 flightButton = new Button(" ",view3);
                 flightButton.setStyle("-fx-focus-color: transparent;");
+                Image flightplan =loadImage("Flight_Plan.JPG");
+                ImageView flightview = new ImageView(flightplan);
+         flightButton.setOnAction(new EventHandler<ActionEvent>() {
+            
+             
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+               Stage stage = new Stage(); 
+               stage.setScene(new Scene(new Group(flightview)));
+               
+               stage.show(); 
+            }
+        });
                 
         Image save= loadImage("save.png");
                 ImageView view4=new ImageView(save);
@@ -821,6 +822,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
               gc.drawImage(img1,0,0,571,700);
+               canvasPane.getChildren().clear();
+               canvasPane.setCenter(canvas);
               quad=1;
               if(qa==1)
               {
@@ -844,6 +847,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
                 // TODO Auto-generated method stub
               gc.drawImage(img2,0,0,571,700);
               quad=2;
+              canvasPane.getChildren().clear();
+              canvasPane.setCenter(canvas);
              if(qa==2)
               {
                drawHomeFlags();
@@ -865,6 +870,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
               gc.drawImage(img3,0,0,571,700);
+              canvasPane.getChildren().clear();
+              canvasPane.setCenter(canvas);
               quad=3;
               if(qa==3)
               {
@@ -887,6 +894,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas);
               gc.drawImage(img4,0,0,571,700);
                 quad=4;
                 if(qa==4)
@@ -1046,9 +1055,10 @@ public void travelAnimation(ImageView piece,int toX,int toY)
        });
             
              pane.setLeft(sideBar);
-              pane.setCenter(canvas);
               pane.setRight(vbox3);
-           mainPane.setCenter(pane);    
+              canvasPane.setCenter(canvas);
+           pane.setCenter(canvasPane);  
+           mainPane.setCenter(pane);
     }
         public void inithistPane()
         {
@@ -1107,7 +1117,7 @@ public void travelAnimation(ImageView piece,int toX,int toY)
      * This function initializes all the controls that go in the north toolbar.
      */
     private void initNorthToolbar() {
-        // MAKE THE NORTH TOOLBAR, WHICH WILL HAVE FOUR BUTTONS
+       
        
         northToolbar = new HBox();
         northToolbar.setStyle("-fx-background-color:lightgray");
@@ -1124,7 +1134,8 @@ public void travelAnimation(ImageView piece,int toX,int toY)
         northToolbar.getChildren().add(cb);
         cb.setOnAction((event) -> {
         Object playerno = cb.getSelectionModel().getSelectedItem();
-       number= playerno.toString();
+       number= playerno.toString(); 
+       players.setNumber(Integer.parseInt(number));
             System.out.println("you selected:  "+number);
             GridPane grid = new GridPane();
       grid.setHgap(20);
@@ -1132,6 +1143,7 @@ public void travelAnimation(ImageView piece,int toX,int toY)
     grid.setPadding(new Insets(0, 10, 0, 10));
     grid.setGridLinesVisible(true);
     grid.setStyle("-fx-background-color: #D1B48C;");
+    
     
   Image image1 =  loadImage("flag_black.png");
    ImageView iv1 = new ImageView();
@@ -1297,9 +1309,7 @@ public void travelAnimation(ImageView piece,int toX,int toY)
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-                initGameScreen();
-                
-                
+                initGameScreen();    
             }
 
         });
@@ -1339,10 +1349,8 @@ public void makeGridPane()
         Button button = new Button();
         button.setGraphic(imageIcon);
         button.setPadding(marginlessInsets);
-
         // PUT IT IN THE TOOLBAR
         toolbar.getChildren().add(button);
-
         // AND SEND BACK THE BUTTON
         return button;
     }
@@ -1362,10 +1370,6 @@ public void makeGridPane()
 JEditorPane gamePane;
         
         SwingNode gameSwingNode;
-	
-
-    
-
     /**
      * This function selects the UI screen to display based on the uiScreen
      * argument. Note that we have 3 such screens: game, stats, and about.
