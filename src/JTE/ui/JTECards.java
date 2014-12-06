@@ -14,21 +14,18 @@ import javafx.scene.image.Image;
 public class JTECards {
     
    Image frontimg;
-   Image backimg;
+   
    
    int counter=0;
-    public JTECards(Image front,Image back)
+    public JTECards(Image front)
     {
         frontimg=front;
-        backimg=back;
+        
     }
     public Image getFront()
     {
         return frontimg;
         
     }
-    public Image getBack()
-    {
-        return backimg;
-    }    
+        
 }

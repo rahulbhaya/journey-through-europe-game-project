@@ -233,17 +233,14 @@ public class JTEFileLoader {
             String[] cardName = greenfile.list(); 
             for (String card:cardName)
             {
-                if (!card.contains("_I"))
-                {
+                
                     Image i1=new Image(imagePathGreen + card);
                     System.out.println(imagePathGreen + card);
                     Image frontImage= new Image(imagePathGreen + card);                    
                     card = card.substring(0,card.length()- 4);
-                    card = card + "_I.jpg";                    
-                    Image backImage = new Image(imagePathGreen+card);
-                    JTECards currentCard = new JTECards(frontImage,backImage);
+                    JTECards currentCard = new JTECards(frontImage);
                     greenList.add(currentCard);
-                }                  
+                                 
             }
         }
         return greenList;
@@ -263,16 +260,13 @@ public class JTEFileLoader {
             {
                 System.out.println("hi r");
                 //Image currentCardImage = new Image(greenpath + card);
-                if(!card.contains("_I"))
-                {
-                    System.out.println("hi r");
+                
+                    System.out.println(imagePathRed + card);
                     Image FrontImage = new Image(imagePathRed+card);                    
                     card = card.substring(0,card.length() - 4);
-                    card = card + "_I.jpg";                    
-                    Image BackImage = new Image(imagePathRed+card);
-                    JTECards currentCard = new JTECards(FrontImage,BackImage);
+                    JTECards currentCard = new JTECards(FrontImage);
                     redList.add(currentCard);
-                }                  
+                   
             }
         }
          return redList;
@@ -293,17 +287,13 @@ public class JTEFileLoader {
             for (String card : cardName)
             {
                 //Image currentCardImage = new Image(greenCardspath + card);
-                
-                if(!card.contains("_I"))
-                {
-                    System.out.println("hi y");
+             
+                    System.out.println(imagePathYellow + card);
                     Image FrontImage = new Image(imagePathYellow + card);                    
                     card = card.substring(0, card.length()- 4);
-                    card = card + "_I.jpg";                    
-                    Image BackImage = new Image(imagePathYellow + card);
-                    JTECards currentCard = new JTECards(FrontImage,BackImage);
+                    JTECards currentCard = new JTECards(FrontImage);
                     yellowList.add(currentCard);
-                }                  
+                                 
             }
         }
        
@@ -338,11 +328,9 @@ public class JTEFileLoader {
                     if(st.length == 5) {
                         int newX = Integer.parseInt(st[3]);
                         int newY = Integer.parseInt(st[4]);
-
                         int p = (int)(((double)newX/2010.0) * 571);
                         int q = (int)(((double)newY/2569.0) * 700);
-
-                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
+                        Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
                         list.add(c);
                     }
                    }
