@@ -116,6 +116,10 @@ public class JTEUI extends Pane {
     double xcoord1 = 0, ycoord1 = 0;
     double xcoord2 = 0, ycoord2 = 0;
     double xcoord3 = 0, ycoord3 = 0;
+    double xcoord4 = 0, ycoord4 = 0;
+    double xcoord5 = 0, ycoord5 = 0;
+    double xcoord6 = 0, ycoord6 = 0;
+    
     int randomNum;
     // mainPane
     public BorderPane mainPane;
@@ -345,9 +349,9 @@ public class JTEUI extends Pane {
         if (quad == 1) {
             //double newx=toX*3.5201401050;
             // double newy=toY*3.67;
-            translateTransition.setFromX(0);
+            translateTransition.setFromX(xcoord1);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(0);
+            translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
             translateTransition.play();
             canvasPane.getChildren().remove(piece);
@@ -356,9 +360,9 @@ public class JTEUI extends Pane {
         if (quad == 2) {
             //double newx=toX*3.3327495621;
             //double newy=toY*3.67;
-            translateTransition.setFromX(0);
+            translateTransition.setFromX(xcoord1);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(0);
+            translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
             //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -369,9 +373,9 @@ public class JTEUI extends Pane {
         if (quad == 3) {
             //double newx=toX*3.4763572679;
             //double newy=toY*3.69; 
-            translateTransition.setFromX(0);
+            translateTransition.setFromX(xcoord1);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(0);
+            translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
             //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -382,9 +386,9 @@ public class JTEUI extends Pane {
         if (quad == 4) {
             //double newx=toX*3.3747810858;
             // double newy=toY*3.6585714285; 
-            translateTransition.setFromX(0);
+            translateTransition.setFromX(xcoord1);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(0);
+            translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
 //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -761,34 +765,7 @@ public class JTEUI extends Pane {
         Image greenpiece = loadImage("piece_green.png");
         gc.drawImage(blackPiece, xcoord1 - 15.0, ycoord1 - 40.0);
     }
-   // public void addToSideBar()
-//    {
-//        ImageView rg1 = new ImageView(randomGreen1.getFront());
-//        ImageView rr1 = new ImageView(randomRed1.getFront());
-//        ImageView ry1 = new ImageView(randomYellow1.getFront());
-//        ImageView rg2 = new ImageView(randomGreen2.getFront());
-//        ImageView rr2 = new ImageView(randomRed2.getFront());
-//        ImageView ry2 = new ImageView(randomYellow2.getFront());
-//        ImageView rg3 = new ImageView(randomGreen3.getFront());
-//        ImageView rr3 = new ImageView(randomRed3.getFront());
-//        ImageView ry3 = new ImageView(randomYellow3.getFront());
-//        ImageView rg4 = new ImageView(randomGreen4.getFront());
-//        ImageView rr4 = new ImageView(randomRed4.getFront());
-//        ImageView ry4 = new ImageView(randomYellow4.getFront());
-//        ImageView rg5 = new ImageView(randomGreen5.getFront());
-//        ImageView rr5 = new ImageView(randomRed5.getFront());
-//        ImageView ry5 = new ImageView(randomYellow5.getFront());
-//        ImageView rg6 = new ImageView(randomGreen6.getFront());
-//        ImageView rr6 = new ImageView(randomRed6.getFront());
-//        ImageView ry6 = new ImageView(randomGreen6.getFront());
-//       player1.sideBar.getChildren().addAll(rg1,rr1,ry1);
-//        player2.sideBar.getChildren().addAll(rg2,rr2,ry2);
-//        player3.sideBar.getChildren().addAll(rg3,rr3,ry3);
-//        player4.sideBar.getChildren().addAll(rg4,rr4,ry4);
-//        player5.sideBar.getChildren().addAll(rg5,rr5,ry5);
-//        player6.sideBar.getChildren().addAll(rg6,rr6,ry6);
-//            
- // }
+   
     public void repaint()
     {
          gc = canvas.getGraphicsContext2D();
@@ -802,106 +779,7 @@ public class JTEUI extends Pane {
            if(q==4)
             gc.drawImage(img4, 0, 0, 571, 700);   
     }
-    private void initPlayerCards() {
-        
-        //addToSideBar();
-       // cardAnimation(randomGreen1,0);
-        //cardAnimation(randomRed1,1);
-       // cardAnimation(randomYellow1,2);
-        //cardAnimation(randomGreen1,randomRed1,randomYellow1,1);
-//             else if(Integer.parseInt(number)==2)
-//             {
-//                 cardAnimation(randomGreen1,0);
-//                 cardAnimation(randomRed1,1);
-//                  cardAnimation(randomYellow1,2);
-//         sideBar.getChildren().clear();
-//                 cardAnimation(randomGreen2,3);
-//                 cardAnimation(randomRed2,4);
-//                  cardAnimation(randomYellow2,5);
-//                  
-//             }
-//             else if(Integer.parseInt(number)==3)
-//             {
-//                 cardAnimation(randomGreen1,0);
-//                 cardAnimation(randomRed1,1);
-//                  cardAnimation(randomYellow1,2);
-//                sideBar.getChildren().clear();
-//                 cardAnimation(randomGreen2,3);
-//                 cardAnimation(randomRed2,4);
-//                  cardAnimation(randomYellow2,5);
-//                sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen3,6);
-//                 cardAnimation(randomRed3,7);
-//                  cardAnimation(randomYellow3,8);
-//             }
-//             else if(Integer.parseInt(number)==4)
-//             {
-//                 cardAnimation(randomGreen1,0);
-//                 cardAnimation(randomRed1,1);
-//                  cardAnimation(randomYellow1,2);
-//                 sideBar.getChildren().clear();
-//                 cardAnimation(randomGreen2,3);
-//                 cardAnimation(randomRed2,4);
-//                  cardAnimation(randomYellow2,5);
-//                  sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen3,6);
-//                 cardAnimation(randomRed3,7);
-//                  cardAnimation(randomYellow3,8);
-//                  sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen4,9);
-//                 cardAnimation(randomRed4,10);
-//                  cardAnimation(randomYellow4,11);
-//             }
-//             if(Integer.parseInt(number)==5)
-//             {
-//                 cardAnimation(randomGreen1,0);
-//                 cardAnimation(randomRed1,1);
-//                  cardAnimation(randomYellow1,2);
-//                 sideBar.getChildren().clear();
-//                 cardAnimation(randomGreen2,3);
-//                 cardAnimation(randomRed2,4);
-//                  cardAnimation(randomYellow2,5);
-//                   sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen3,6);
-//                 cardAnimation(randomRed3,7);
-//                  cardAnimation(randomYellow3,8);
-//                  sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen4,9);
-//                 cardAnimation(randomRed4,10);
-//                  cardAnimation(randomYellow4,11);
-//                  sideBar.getChildren().clear();
-//                     cardAnimation(randomGreen5,12);
-//                 cardAnimation(randomRed5,13);
-//                  cardAnimation(randomYellow5,14);
-//                      
-//             }
-//             if(Integer.parseInt(number)==6)
-//             {
-//                 cardAnimation(randomGreen1,0);
-//                 cardAnimation(randomRed1,1);
-//                  cardAnimation(randomYellow1,2);
-////                  sideBar.getChildren().clear();
-//                 cardAnimation(randomGreen2,3);
-//                 cardAnimation(randomRed2,4);
-//                  cardAnimation(randomYellow2,5);
-//                sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen3,6);
-//                 cardAnimation(randomRed3,7);
-//                  cardAnimation(randomYellow3,8);
-//                 sideBar.getChildren().clear();
-//                  cardAnimation(randomGreen4,9);
-//                 cardAnimation(randomRed4,10);
-//                  cardAnimation(randomYellow4,11);
-//                    sideBar.getChildren().clear();
-//                     cardAnimation(randomGreen5,12);
-//                 cardAnimation(randomRed5,13);
-//                  cardAnimation(randomYellow5,14);
-//                  sideBar.getChildren().clear();
-//                     cardAnimation(randomGreen6,15);
-//                 cardAnimation(randomRed6,16);
-//                  cardAnimation(randomYellow6,17);
-//             }
-    }
+    
 
     public void diceController() {
        
@@ -1641,7 +1519,7 @@ public void toggleSideBar(int playerNo)
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-                initPlayerCards();
+           
                 playerController();
                 player1.setName(tf1.getText());
                 System.out.println(player1.getName() + player1.getPlayerType());
