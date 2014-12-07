@@ -110,7 +110,7 @@ public class JTEUI extends Pane {
         SPLASH_SCREEN_STATE, PLAY_GAME_STATE, VIEW_STATS_STATE, VIEW_ABOUT_STATE,
         HANG1_STATE, HANG2_STATE, HANG3_STATE, HANG4_STATE, HANG5_STATE, HANG6_STATE,
     }
-    String number = "0";
+    String noOfPlayers = "0";
     // mainStage
     private Stage primaryStage;
     double xcoord1 = 0, ycoord1 = 0;
@@ -119,7 +119,7 @@ public class JTEUI extends Pane {
     double xcoord4 = 0, ycoord4 = 0;
     double xcoord5 = 0, ycoord5 = 0;
     double xcoord6 = 0, ycoord6 = 0;
-    
+
     int randomNum;
     // mainPane
     public BorderPane mainPane;
@@ -143,7 +143,6 @@ public class JTEUI extends Pane {
     private Button flightButton;
     private Button saveButton;
 
-    
     Image blackPiece, bluePiece, greenPiece, redPiece, whitePiece, yellowPiece;
     // GamePane
     private Label JTELabel;
@@ -203,11 +202,17 @@ public class JTEUI extends Pane {
     Player player, player1, player2, player3, player4, player5, player6;
     int playerNo = 0;
     int turn = 0;
-    int mouseClicked=0;
+    int mouseClicked = 0;
     GraphicsContext gc;
 
     ImageView blackPieceView, bluePieceView, greenPieceView, redPieceView, whitePieceView, yellowPieceView;
-    final Canvas canvas = new Canvas(603, 770);
+    //final Canvas canvas = new Canvas(603, 770);
+    final Canvas canvas1 = new Canvas(603, 770);
+    final Canvas canvas2 = new Canvas(603, 770);
+    final Canvas canvas3 = new Canvas(603, 770);
+    final Canvas canvas4 = new Canvas(603, 770);
+    final Canvas canvas5 = new Canvas(603, 770);
+    final Canvas canvas6 = new Canvas(603, 770);
     TextField tf1 = new TextField();
     TextField tf2 = new TextField();
     TextField tf3 = new TextField();
@@ -215,75 +220,76 @@ public class JTEUI extends Pane {
     TextField tf5 = new TextField();
     TextField tf6 = new TextField();
     Button b1 = new Button();
-        Button b2 = new Button();
-        Button b3 = new Button();
-        Button b4 = new Button();
-        Button die = new Button();
+    Button b2 = new Button();
+    Button b3 = new Button();
+    Button b4 = new Button();
+    public Button die = new Button();
     Random myRandomizer = new Random();
     JTECards randomGreen1;
-        JTECards randomRed1;
-        JTECards randomYellow1; 
-        JTECards randomGreen2;
-        JTECards randomRed2;
-        JTECards randomYellow2; 
-        JTECards randomGreen3;
-        JTECards randomRed3;
-        JTECards randomYellow3;
-        JTECards randomGreen4;
-        JTECards randomRed4;
-        JTECards randomYellow4;
-        JTECards randomGreen5; 
-        JTECards randomRed5;
-        JTECards randomYellow5;
-        JTECards randomGreen6 ;
-        JTECards randomRed6;
-        JTECards randomYellow6;
-        Image img1; 
-        
-        int q;
-        Image img2; 
-        Image img3; 
-        Image img4;
-        
+    JTECards randomRed1;
+    JTECards randomYellow1;
+    JTECards randomGreen2;
+    JTECards randomRed2;
+    JTECards randomYellow2;
+    JTECards randomGreen3;
+    JTECards randomRed3;
+    JTECards randomYellow3;
+    JTECards randomGreen4;
+    JTECards randomRed4;
+    JTECards randomYellow4;
+    JTECards randomGreen5;
+    JTECards randomRed5;
+    JTECards randomYellow5;
+    JTECards randomGreen6;
+    JTECards randomRed6;
+    JTECards randomYellow6;
+    Image img1;
+    Random rand = new Random();
+    int q;
+    Image img2;
+    Image img3;
+    Image img4;
+   
 
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
         eventHandler = new JTEEventHandler(this);
         errorHandler = new JTEErrorHandler(primaryStage);
         docManager = new JTEDocumentManager(this);
-        player = new Player();
+        // player = new Player();
         player1 = new Player();
         player2 = new Player();
         player3 = new Player();
         player4 = new Player();
         player5 = new Player();
         player6 = new Player();
-        
+        // player1.moves=6;
+     
         fl = new JTEFileLoader(this);
         greenlist = fl.returnGreenCards();
         redlist = fl.returnRedCards();
         yellowlist = fl.returnYellowCards();
         //  listOfCities = fl.retCities();
-         randomGreen1 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomGreen1 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
         randomRed1 = redlist.get(myRandomizer.nextInt(redlist.size()));
         //placePlayer(randomRed);
-         randomYellow1 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
+        randomYellow1 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
         //placePlayer(randomYellow)
-         randomGreen2 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-         randomRed2 = redlist.get(myRandomizer.nextInt(redlist.size()));
+        randomGreen2 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomRed2 = redlist.get(myRandomizer.nextInt(redlist.size()));
         randomYellow2 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
-         randomGreen3 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-         randomRed3 = redlist.get(myRandomizer.nextInt(redlist.size()));
-         randomYellow3 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
-         randomGreen4 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-         randomRed4 = redlist.get(myRandomizer.nextInt(redlist.size()));
-         randomYellow4 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
-         randomGreen5 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-         randomRed5 = redlist.get(myRandomizer.nextInt(redlist.size()));
-         randomYellow5 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
-         randomGreen6 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
-         randomRed6 = redlist.get(myRandomizer.nextInt(redlist.size()));
-         randomYellow6 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
+        randomGreen3 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomRed3 = redlist.get(myRandomizer.nextInt(redlist.size()));
+        randomYellow3 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
+        randomGreen4 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomRed4 = redlist.get(myRandomizer.nextInt(redlist.size()));
+        randomYellow4 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
+        randomGreen5 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomRed5 = redlist.get(myRandomizer.nextInt(redlist.size()));
+        randomYellow5 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
+        randomGreen6 = greenlist.get(myRandomizer.nextInt(greenlist.size()));
+        randomRed6 = redlist.get(myRandomizer.nextInt(redlist.size()));
+        randomYellow6 = yellowlist.get(myRandomizer.nextInt(yellowlist.size()));
         canvasPane = new BorderPane();
         System.out.println("1");
         initMainPane();
@@ -304,11 +310,13 @@ public class JTEUI extends Pane {
         whitePieceView = new ImageView(whitePiece);
         yellowPiece = loadImage("piece_yellow.png");
         yellowPieceView = new ImageView(yellowPiece);
-        img1=loadImage("1.jpg");
-         img2=loadImage("2.jpg");
-          img3=loadImage("3.jpg");
-           img4=loadImage("4.jpg");
+        img1 = loadImage("1.jpg");
+        img2 = loadImage("2.jpg");
+        img3 = loadImage("3.jpg");
+        img4 = loadImage("4.jpg");
+        setPlayerAtHome();
         // initaboutPane();
+        player6.moves=5;
 
     }
 
@@ -332,37 +340,31 @@ public class JTEUI extends Pane {
         return errorHandler;
     }
 
-   public void initSideBar()
-   {
-       sideBar = new VBox();
+    public void initSideBar() {
+        sideBar = new VBox();
         sideBar.setAlignment(Pos.BASELINE_LEFT);
         sideBar.setPadding(marginlessInsets);
         sideBar.setSpacing(0.0);
-   }
-    public void setPlayerAnimation() {
-
     }
 
     public void travelAnimation(ImageView piece, int toX, int toY) {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), piece);
 
         if (quad == 1) {
-            //double newx=toX*3.5201401050;
-            // double newy=toY*3.67;
-            translateTransition.setFromX(xcoord1);
+
+            // translateTransition.setFromX(newx1);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(ycoord1);
+            //translateTransition.setFromY(newy1);
             translateTransition.setToY(toY - 40);
             translateTransition.play();
             canvasPane.getChildren().remove(piece);
             canvasPane.getChildren().add(piece);
         }
         if (quad == 2) {
-            //double newx=toX*3.3327495621;
-            //double newy=toY*3.67;
-            translateTransition.setFromX(xcoord1);
+
+            //translateTransition.setFromX(newx2);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(ycoord1);
+            //translateTransition.setFromY(newy2);
             translateTransition.setToY(toY - 40);
             //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -371,11 +373,10 @@ public class JTEUI extends Pane {
             canvasPane.getChildren().add(piece);
         }
         if (quad == 3) {
-            //double newx=toX*3.4763572679;
-            //double newy=toY*3.69; 
-            translateTransition.setFromX(xcoord1);
+
+            //translateTransition.setFromX(newx3);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(ycoord1);
+            //translateTransition.setFromY(newy3);
             translateTransition.setToY(toY - 40);
             //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -384,11 +385,10 @@ public class JTEUI extends Pane {
             canvasPane.getChildren().add(piece);
         }
         if (quad == 4) {
-            //double newx=toX*3.3747810858;
-            // double newy=toY*3.6585714285; 
-            translateTransition.setFromX(xcoord1);
+
+            //translateTransition.setFromX(newx4);
             translateTransition.setToX(toX + 107);
-            translateTransition.setFromY(ycoord1);
+            // translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
 //translateTransition.setCycleCount(1);
             // translateTransition.setAutoReverse(true);
@@ -416,7 +416,7 @@ public class JTEUI extends Pane {
 
     }
 
-    public void cardAnimation(JTECards card1,JTECards card2,JTECards card3, int cardNumber) {
+    public void cardAnimation(JTECards card1, JTECards card2, JTECards card3, int cardNumber) {
         ImageView Front1 = new ImageView(card1.getFront());
         ImageView Front2 = new ImageView(card2.getFront());
         ImageView Front3 = new ImageView(card3.getFront());
@@ -424,11 +424,11 @@ public class JTEUI extends Pane {
         Front1.setFitWidth(200);
         Front2.setFitHeight(200);
         Front2.setFitWidth(200);
-         Front3.setFitHeight(200);
+        Front3.setFitHeight(200);
         Front3.setFitWidth(200);
-      sideBar.getChildren().add(Front1);
-         sideBar.getChildren().add(Front2);
-          sideBar.getChildren().add(Front3);
+        sideBar.getChildren().add(Front1);
+        sideBar.getChildren().add(Front2);
+        sideBar.getChildren().add(Front3);
         TranslateTransition translateTransition1
                 = new TranslateTransition(Duration.millis(5000), Front1);
         translateTransition1.setFromX(500);
@@ -444,17 +444,17 @@ public class JTEUI extends Pane {
         scaleTransition1.setToX(0.85f);
         scaleTransition1.setToY(0.85f);
         scaleTransition1.setCycleCount(1);
-       // scaleTransition.setAutoReverse(true);
+        // scaleTransition.setAutoReverse(true);
         //scaleTransition.setDelay(Duration.millis(1000));
 
         ParallelTransition parallelTransition1 = new ParallelTransition();
         parallelTransition1.getChildren().addAll(
                 translateTransition1, scaleTransition1);
         parallelTransition1.setCycleCount(1);
-       // parallelTransition.setAutoReverse(true);
+        // parallelTransition.setAutoReverse(true);
         parallelTransition1.play();
 
-         TranslateTransition translateTransition2
+        TranslateTransition translateTransition2
                 = new TranslateTransition(Duration.millis(5000), Front2);
         translateTransition2.setFromX(500);
         translateTransition2.setToX(0);
@@ -469,17 +469,17 @@ public class JTEUI extends Pane {
         scaleTransition2.setToX(0.85f);
         scaleTransition2.setToY(0.85f);
         scaleTransition2.setCycleCount(1);
-       // scaleTransition.setAutoReverse(true);
+        // scaleTransition.setAutoReverse(true);
         //scaleTransition.setDelay(Duration.millis(1000));
 
         ParallelTransition parallelTransition2 = new ParallelTransition();
         parallelTransition2.getChildren().addAll(
                 translateTransition2, scaleTransition2);
         parallelTransition2.setCycleCount(1);
-       // parallelTransition.setAutoReverse(true);
+        // parallelTransition.setAutoReverse(true);
         parallelTransition2.play();
-        
-         TranslateTransition translateTransition3
+
+        TranslateTransition translateTransition3
                 = new TranslateTransition(Duration.millis(5000), Front3);
         translateTransition3.setFromX(500);
         translateTransition3.setToX(0);
@@ -494,14 +494,14 @@ public class JTEUI extends Pane {
         scaleTransition3.setToX(0.85f);
         scaleTransition3.setToY(0.85f);
         scaleTransition3.setCycleCount(1);
-       // scaleTransition.setAutoReverse(true);
+        // scaleTransition.setAutoReverse(true);
         //scaleTransition.setDelay(Duration.millis(1000));
 
         ParallelTransition parallelTransition3 = new ParallelTransition();
         parallelTransition3.getChildren().addAll(
                 translateTransition3, scaleTransition3);
         parallelTransition3.setCycleCount(1);
-       // parallelTransition.setAutoReverse(true);
+        // parallelTransition.setAutoReverse(true);
         parallelTransition3.play();
         //parallelTransition.setDelay(Duration.millis(5000));
 //        transition.setOnFinished(new EventHandler<ActionEvent>(){
@@ -680,21 +680,75 @@ public class JTEUI extends Pane {
 
     }
 
-    public void setPlayerAtHome(JTECards card) {
-        String path = card.getFront().impl_getUrl();
-        String imageName = path.substring(path.lastIndexOf('/') + 1, path.length() - 4);
-        System.out.println(imageName);
+    public void setPlayerAtHome() {
+        String redPath1 = randomRed1.getFront().impl_getUrl();
+        String greenPath1 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath1 = randomYellow1.getFront().impl_getUrl();
+        String redPath2 = randomRed1.getFront().impl_getUrl();
+        String greenPath2 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath2 = randomYellow1.getFront().impl_getUrl();
+        String redPath3 = randomRed1.getFront().impl_getUrl();
+        String greenPath3 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath3 = randomYellow1.getFront().impl_getUrl();
+        String redPath4 = randomRed1.getFront().impl_getUrl();
+        String greenPath4 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath4 = randomYellow1.getFront().impl_getUrl();
+        String redPath5 = randomRed1.getFront().impl_getUrl();
+        String greenPath5 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath5 = randomYellow1.getFront().impl_getUrl();
+        String redPath6 = randomRed1.getFront().impl_getUrl();
+        String greenPath6 = randomGreen1.getFront().impl_getUrl();
+        String yellowPath6 = randomYellow1.getFront().impl_getUrl();
+        System.out.println(redPath1);
 
+        String redImageName1 = redPath1.substring(redPath1.lastIndexOf('/') + 1, redPath1.length() - 4);
+        String greenImageName1 = greenPath1.substring(greenPath1.lastIndexOf('/') + 1, greenPath1.length() - 4);
+        String yellowImageName1 = yellowPath1.substring(yellowPath1.lastIndexOf('/') + 1, yellowPath1.length() - 4);
+        String redImageName2 = redPath2.substring(redPath2.lastIndexOf('/') + 1, redPath2.length() - 4);
+        String greenImageName2 = greenPath2.substring(greenPath2.lastIndexOf('/') + 1, greenPath2.length() - 4);
+        String yellowImageName2 = yellowPath2.substring(yellowPath2.lastIndexOf('/') + 1, yellowPath2.length() - 4);
+        String redImageName3 = redPath3.substring(redPath3.lastIndexOf('/') + 1, redPath3.length() - 4);
+        String greenImageName3 = greenPath3.substring(greenPath3.lastIndexOf('/') + 1, greenPath3.length() - 4);
+        String yellowImageName3 = yellowPath3.substring(yellowPath3.lastIndexOf('/') + 1, yellowPath3.length() - 4);
+        String redImageName4 = redPath4.substring(redPath4.lastIndexOf('/') + 1, redPath4.length() - 4);
+        String greenImageName4 = greenPath4.substring(greenPath4.lastIndexOf('/') + 1, greenPath4.length() - 4);
+        String yellowImageName4 = yellowPath4.substring(yellowPath4.lastIndexOf('/') + 1, yellowPath4.length() - 4);
+        String redImageName5 = redPath5.substring(redPath5.lastIndexOf('/') + 1, redPath5.length() - 4);
+        String greenImageName5 = greenPath5.substring(greenPath5.lastIndexOf('/') + 1, greenPath5.length() - 4);
+        String yellowImageName5 = yellowPath5.substring(yellowPath5.lastIndexOf('/') + 1, yellowPath5.length() - 4);
+        String redImageName6 = redPath6.substring(redPath6.lastIndexOf('/') + 1, redPath6.length() - 4);
+        String greenImageName6 = greenPath6.substring(greenPath6.lastIndexOf('/') + 1, greenPath6.length() - 4);
+        String yellowImageName6 = yellowPath6.substring(yellowPath6.lastIndexOf('/') + 1, yellowPath6.length() - 4);
+
+        //  System.out.println(imageName);
         for (int i = 0; i < lis.size(); i++) {
             cities = lis.get(i);
-            if (cities.getCityName().equals(imageName)) {
-
+            if (cities.getCityName().equals(redImageName1)) {
                 xcoord1 = cities.getX();
                 ycoord1 = cities.getY();
-                qa = cities.getQuadrant();
+            }
+            if (cities.getCityName().equals(greenImageName2)) {
+                xcoord2 = cities.getX();
+                ycoord2 = cities.getY();
+            }
+            if (cities.getCityName().equals(yellowImageName3)) {
+                xcoord3 = cities.getX();
+                ycoord3 = cities.getY();
+            }
+            if (cities.getCityName().equals(redImageName4)) {
+                xcoord4 = cities.getX();
+                ycoord4 = cities.getY();
+            }
+            if (cities.getCityName().equals(greenImageName5)) {
+                xcoord5 = cities.getX();
+                ycoord5 = cities.getY();
+            }
+            if (cities.getCityName().equals(yellowImageName6)) {
+                xcoord6 = cities.getX();
+                ycoord6 = cities.getY();
             }
         }
-        gc.drawImage(redPiece, xcoord1, ycoord1);
+
         System.out.println(xcoord1 + "," + ycoord1);
 
     }
@@ -734,13 +788,30 @@ public class JTEUI extends Pane {
 //
 //        System.out.println(xcoord3 + "," + ycoord3);
 //    }
-
     public void drawHomeFlags() {
-        gc = canvas.getGraphicsContext2D();
+        gc = canvas1.getGraphicsContext2D();
+//        gc2 = canvas2.getGraphicsContext2D();
+//        gc3 = canvas3.getGraphicsContext2D();
+//        gc4 = canvas4.getGraphicsContext2D();
+//        gc5 = canvas5.getGraphicsContext2D();
+//        gc6 = canvas6.getGraphicsContext2D();
         Image blackflag = loadImage("flag_blackhq.png");
         Image blueflag = loadImage("flag_bluehq.png");
         Image greenflag = loadImage("flag_greenhq.png");
+        Image redflag = loadImage("flag_redhq.png");
+        Image whiteflag = loadImage("flag_whitehq.png");
+        Image yellowflag = loadImage("flag_hq.png");
         gc.drawImage(blackflag, xcoord1 - 30.0, ycoord1 - 60.0);
+        gc = canvas2.getGraphicsContext2D();
+        gc.drawImage(blueflag, xcoord2 - 30.0, ycoord2 - 60.0);
+        gc = canvas3.getGraphicsContext2D();
+        gc.drawImage(greenflag, xcoord3 - 30.0, ycoord3 - 60.0);
+        gc = canvas4.getGraphicsContext2D();
+        gc.drawImage(redflag, xcoord4 - 30.0, ycoord4 - 60.0);
+        gc = canvas5.getGraphicsContext2D();
+        gc.drawImage(whiteflag, xcoord5 - 30.0, ycoord5 - 60.0);
+        gc = canvas6.getGraphicsContext2D();
+        gc.drawImage(yellowflag, xcoord6 - 30.0, ycoord6 - 60.0);
     }
 //   public void drawFlag1()
 //   {
@@ -760,93 +831,200 @@ public class JTEUI extends Pane {
 //   }
 
     public void drawPiece() {
-        gc = canvas.getGraphicsContext2D();
-        Image bluepiece = loadImage("piece_blue.png");
-        Image greenpiece = loadImage("piece_green.png");
+
+        gc = canvas1.getGraphicsContext2D();
+        System.out.println("Printing in drawhomepiece" + xcoord1 + "," + ycoord1);
         gc.drawImage(blackPiece, xcoord1 - 15.0, ycoord1 - 40.0);
+        gc.drawImage(bluePiece, xcoord2 - 15.0, ycoord2 - 40.0);
+        gc.drawImage(greenPiece, xcoord3 - 15.0, ycoord3 - 40.0);
+        gc.drawImage(redPiece, xcoord4 - 15.0, ycoord4 - 40.0);
+        gc.drawImage(whitePiece, xcoord5 - 15.0, ycoord5 - 40.0);
+        gc.drawImage(yellowPiece, xcoord6 - 15.0, ycoord6 - 40.0);
+
     }
-   
-    public void repaint()
-    {
-         gc = canvas.getGraphicsContext2D();
-       
-        if(q==1)
-              gc.drawImage(img1, 0, 0, 571, 700);
-         if(q==2)
-            gc.drawImage(img2, 0, 0, 571, 700);
-          if(q==3)
-           gc.drawImage(img3, 0, 0, 571, 700);
-           if(q==4)
-            gc.drawImage(img4, 0, 0, 571, 700);   
+
+//    public void repaint() {
+//        gc = canvas1.getGraphicsContext2D();
+//
+//        if (q == 1) {
+//            gc.drawImage(img1, 0, 0, 571, 700);
+//        }
+//        if (q == 2) {
+//            gc.drawImage(img2, 0, 0, 571, 700);
+//        }
+//        if (q == 3) {
+//            gc.drawImage(img3, 0, 0, 571, 700);
+//        }
+//        if (q == 4) {
+//            gc.drawImage(img4, 0, 0, 571, 700);
+//        }
+//    }
+//    public void playerController() {
+////        //int count=0;
+////        if (player.moves == 0) {
+//////            turn++;
+////            //playerNo = turn % (Integer.parseInt(number));
+////            //count++;
+////            if (playerNo < Integer.parseInt(noOfPlayers)) {
+////                playerNo++;
+////            } else {
+////                playerNo = 1;
+////            }
+////            //toggleSideBar(playerNo);
+////            
+////
+////            //turnLabel.setText("Player"+currentPlayer + "turn");
+////            if (playerNo == 0) {
+////                playerNo++;
+////            }
+////
+////            if (playerNo == 1) {
+////                toggleSideBar(playerNo);
+////            }
+////            if (playerNo == 2) {
+////                toggleSideBar(playerNo);
+////            }
+////            if (playerNo == 3) {
+////                toggleSideBar(playerNo);
+////            }
+////            if (playerNo == 4) {
+////                toggleSideBar(playerNo);
+////            }
+////            if (playerNo == 5) {
+////                toggleSideBar(playerNo);
+////            }
+////            if (playerNo == 6) {
+////                toggleSideBar(playerNo);
+////            }
+////        }
+//        if (player1.moves == 0) {
+//            canvas = canvas2;
+//            canvasHandler2();
+//        }
+//        if (player2.moves == 0) {
+//            canvas = canvas3;
+//            canvasHandler3();
+//        }
+//        if (player3.moves == 0) {
+//            canvas = canvas4;
+//            canvasHandler4();
+//        }
+//        if (player4.moves == 0) {
+//            canvas = canvas4;
+//            canvasHandler5();
+//        }
+//        if (player5.moves == 0) {
+//            canvas = canvas5;
+//            canvasHandler6();
+//        }
+//        if (player6.moves == 0) {
+//            canvas = canvas6;
+//            canvasHandler1();
+//        }
+//
+//    }
+
+    public void enableDieButton() {
+        die.setDisable(false);
     }
+//    public void toggleSideBar(int playerNo) {
+////    player1.sideBar.setVisible(false);
+////    player2.sideBar.setVisible(false);
+////    player3.sideBar.setVisible(false);
+////    player4.sideBar.setVisible(false);
+////    player5.sideBar.setVisible(false);
+////    player6.sideBar.setVisible(false);
+//
+//        switch (playerNo) {
+//            case 1:
+//                player = player1;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//               sideBar.getChildren().clear();
+//               cardAnimation(randomRed1, randomGreen1, randomYellow1, 1);
+//                canvasController();
+//                break;
+//            case 2:
+//                player = player2;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//                enableDieButton();
+//                sideBar.getChildren().clear();
+//                
+//                canvasController();
+//                break;
+//            case 3:
+//                player = player3;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//                enableDieButton();
+//                sideBar.getChildren().clear();
+//                
+//                canvasController();
+//                break;
+//            case 4:
+//                player = player4;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//                enableDieButton();
+//                sideBar.getChildren().clear();
+//                
+//                canvasController();
+//                break;
+//            case 5:
+//                player = player5;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//                enableDieButton();
+//                sideBar.getChildren().clear();
+//               
+//                 canvasController();
+//                break;
+//            case 6:
+//                player = player6;
+//                turnLabel.setText("Player" + playerNo + "turn");
+//                enableDieButton();
+//                sideBar.getChildren().clear();
+//                
+//                  canvasController();
+//                break;
+//        }
+//    }
+
+    public void initPlayerControl() {
+
     
-
-    public void diceController() {
-       
-        if (player.moves==0) {
-//            turn++;
-            //playerNo = turn % (Integer.parseInt(number));
-           
-            if (playerNo < Integer.parseInt(number))
-                playerNo++;
-            else {
-                playerNo = 1; 
-            }
-            //toggleSideBar(playerNo);
-            turnLabel.setText("Player"+playerNo + "turn");
-               
-            //turnLabel.setText("Player"+currentPlayer + "turn");
-           
-           if (playerNo == 0)
-               playerNo++;
-             
-         if (playerNo == 1) {
-             
-                toggleSideBar(playerNo);
-           }
-            if (playerNo == 2) {
-                toggleSideBar(playerNo);
-            }
-            if (playerNo == 3) {
-                toggleSideBar(playerNo);
-            }
-            if (playerNo == 4) {
-                toggleSideBar(playerNo);
-            }
-            if (playerNo == 5) {
-                toggleSideBar(playerNo);
-            }
-            if (playerNo == 6) {
-                toggleSideBar(playerNo);
-            }
-            }
-
-    }
-public void toggleSideBar(int playerNo)
-{
-//    player1.sideBar.setVisible(false);
-//    player2.sideBar.setVisible(false);
-//    player3.sideBar.setVisible(false);
-//    player4.sideBar.setVisible(false);
-//    player5.sideBar.setVisible(false);
-//    player6.sideBar.setVisible(false);
-    
-    switch(playerNo) {
-        case 1: sideBar.getChildren().clear(); cardAnimation(randomRed1,randomGreen1,randomYellow1,1); break;
-            case 2: sideBar.getChildren().clear();  cardAnimation(randomGreen2,randomYellow2,randomRed2,1); break;
-                case 3: sideBar.getChildren().clear();  cardAnimation(randomYellow3,randomRed3,randomGreen3,1); break;
-                    case 4: sideBar.getChildren().clear();  cardAnimation(randomRed4,randomGreen4,randomYellow5,1); break;
-                        case 5:sideBar.getChildren().clear();  cardAnimation(randomGreen5,randomYellow5,randomRed5,1);  break;
-        case 6: sideBar.getChildren().clear();  cardAnimation(randomYellow6,randomRed6,randomGreen6,1);break;
-    }
-}
-    public void playerController() {
-        player = player1;
-        initGameScreen(player);
-        diceController();
+        initGameScreen();
+        cardAnimation1();
+         //playerController();
     }
 
-    private void initGameScreen(Player currentPlayer) {
+    public void cardAnimation1() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomRed1, randomGreen1, randomYellow1, 1);
+    }
+
+    public void cardAnimation2() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomGreen2, randomYellow2, randomRed2, 1);
+    }
+
+    public void cardAnimation3() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomYellow3, randomRed3, randomGreen3, 1);
+    }
+
+    public void cardAnimation4() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomRed4, randomGreen4, randomYellow5, 1);
+    }
+
+    public void cardAnimation5() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomGreen5, randomYellow5, randomRed5, 1);
+    }
+
+    public void cardAnimation6() {
+        sideBar.getChildren().clear();
+        cardAnimation(randomYellow6, randomRed6, randomGreen6, 1);
+    }
+
+    private void initGameScreen() {
 
         //toggleSideBar(1);
         mainPane.getChildren().clear();
@@ -902,19 +1080,18 @@ public void toggleSideBar(int playerNo)
         ImageView view4 = new ImageView(save);
         saveButton = new Button(" ", view4);
         saveButton.setStyle("-fx-focus-color: transparent;");
-        gc = canvas.getGraphicsContext2D();
-       
+        gc = canvas1.getGraphicsContext2D();
+
         gc.drawImage(img1, 0, 0, 571, 700);
         //  placePlayerAtHome(randomGreen);
-      
 
         GridPane grd = new GridPane();
         Label ac = new Label("A-C");
         Label df = new Label("D-F");
         Label one = new Label("1-4");
         Label two = new Label("5-8");
+
         
-        Random rand = new Random();
 
         Image q1 = loadImage("1.jpg");
         ImageView q1view = new ImageView(q1);
@@ -942,106 +1119,9 @@ public void toggleSideBar(int playerNo)
 //        setPlayerAtHome(randomGreen);
 //        setPlayerCoordinates1(randomRed);
 //        setPlayerCoordinates2(randomYellow);
-        b1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                gc.drawImage(img1, 0, 0, 571, 700);
-                canvasPane.getChildren().clear();
-                canvasPane.setCenter(canvas);
-                quad = 1;
-                if (qa == 1) {
-                    drawHomeFlags();
-                    drawPiece();
-                }
-                if (qb == 1) {
-                    //drawFlag1();
-                }
-                if (qc == 1) {
-                    // drawFlag2();
-                }
-            }
-        });
-        b2.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                gc.drawImage(img2, 0, 0, 571, 700);
-                quad = 2;
-                canvasPane.getChildren().clear();
-                canvasPane.setCenter(canvas);
-                if (qa == 2) {
-                    drawHomeFlags();
-                    drawPiece();
-                }
-                if (qb == 2) {
-                    // drawFlag1();
-                }
-                if (qc == 2) {
-                    //drawFlag2();
-                }
-            }
-        });
-        b3.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                gc.drawImage(img3, 0, 0, 571, 700);
-                canvasPane.getChildren().clear();
-                canvasPane.setCenter(canvas);
-                quad = 3;
-                if (qa == 3) {
-                    drawHomeFlags();
-                    drawPiece();
-                }
-                if (qb == 3) {
-                    //drawFlag1();
-                }
-                if (qc == 3) {
-                    // drawFlag2();
-                }
-
-            }
-        });
-        b4.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                canvasPane.getChildren().clear();
-                canvasPane.setCenter(canvas);
-                gc.drawImage(img4, 0, 0, 571, 700);
-                quad = 4;
-                if (qa == 4) {
-                    drawHomeFlags();
-                    drawPiece();
-                }
-                if (qb == 4) {
-                    //drawFlag1();
-                }
-                if (qc == 4) {
-                    //drawFlag2();
-                }
-
-            }
-        });
         //JLabel MyImage = new JLabel(new ImageIcon("image"+randomNum+".png"));
-        die.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                randomNum = rand.nextInt(6) + 1;
-                Image dieimage = loadImage("die_" + randomNum + ".jpg");
-                ImageView dieimageview = new ImageView(dieimage);
-                die.setGraphic(dieimageview);
-                die.setDisable(true);
-                currentPlayer.moves = randomNum;
-                System.out.println(currentPlayer.moves);
-
-            }
-        });
+       
 
         grd.add(ac, 1, 0);
         grd.add(df, 2, 0);
@@ -1060,7 +1140,7 @@ public void toggleSideBar(int playerNo)
             public void handle(ActionEvent event) {
                 //setDice();
                 //turn++;
-               // playerNo = turn % (Integer.parseInt(number));
+                // playerNo = turn % (Integer.parseInt(number));
                 //turnLabel.setText("Player " + (playerNo + 1) + " turn");
             }
 
@@ -1068,26 +1148,99 @@ public void toggleSideBar(int playerNo)
 
         vbox.getChildren().addAll(turnLabel, endTurn, grd, die, flightButton, histButton, abtButton, saveButton);
         vbox.setSpacing(10);
-        if(mouseClicked!=0)
-        {
-            canvasHandler(currentPlayer);
-        }
-        else
-        {
-            repaint();
-            canvasHandler(currentPlayer);
-        }
-             pane.setLeft(sideBar);
-             pane.setRight(vbox);
+        canvasHandler1();
+        pane.setLeft(sideBar);
+        pane.setRight(vbox);
         //pane.setLeft(player.sideBar);
-            mainPane.setCenter(pane);
-        
+        mainPane.setCenter(pane);
+
     }
-    public void canvasHandler(Player curPlayer)
-    {
+
+   
+
+    public void canvasHandler1() {
+        
+        gc=canvas1.getGraphicsContext2D();
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player1.moves = randomNum;
+                System.out.println(player1.moves);
+
+            }
+        });
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas1);
+                quad = 1;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas1);
+                
+                    drawHomeFlags();
+                    drawPiece();
+            }
+               
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas1);
+                quad = 3;
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas1);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
         gc.setStroke(Color.RED);
         gc.setLineWidth(4);
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        canvas1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
                 int x = (int) e.getX();
@@ -1097,130 +1250,1292 @@ public void toggleSideBar(int playerNo)
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                     diceController();
-                    if(curPlayer.moves>0)
-                    {
-                    if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
-                        if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
-                            List<Cities> tempLand = ct.fetchLandNeighbour();
-                            List<Cities> tempSea = ct.fetchSeaNeighbour();
-
-                            if (ct.getQuadrant() == 1 && quad == 1) {
-                                 curPlayer.moves--;
-                                  
-                                  q=1;
-                                for (Cities Neighbors : tempLand) {
-                                    System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
-                                    // if(Neighbors.getCityName()!=)
-                                    b1.fire();
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                    
+                    if (player1.moves > 0&&(Integer.parseInt(noOfPlayers)>1)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player1.moves--;
                                     
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    System.out.println(player.moves);
-                                }
-                                
-                                for (Cities Neighbors : tempSea) {
-                                    System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    //curPlayer.moves--;
-                                   // System.out.println(player.moves);
-                                 
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        //b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
 
-                                }
-                                String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
-                                System.out.println(ct.getCityName());
-                                curPlayer.citiesVisited.add(ct.getCityName());
+                                        System.out.println(player1.moves);
+                                    }
 
-                                //JOptionPane.showMessageDialog(null,data1);
-                                continue;
-                            }
-                            if (ct.getQuadrant() == 2 && quad == 2) {
-                                 curPlayer.moves--;
-                                 q=2;
-                                for (Cities Neighbors : tempLand) {
-                                    System.out.println(Neighbors.getX());
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                   b2.fire();
-                                    System.out.println(player.moves);
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        //player.moves--;
+                                        // System.out.println(player.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player1.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player1.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        //b2.fire();
+                                        System.out.println(player1.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        //player1.moves--;
+                                        //System.out.println(player1.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player1.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+
+                                       // b3.fire();
+                                        System.out.println(player1.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        //player1.moves--;
+                                        System.out.println(player1.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player1.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player1.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        //player1.moves--;
+                                        System.out.println(player1.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
                                     
                                 }
-                                for (Cities Neighbors : tempSea) {
-                                    System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
-                                    // if(Neighbors.getCityName()!=)
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    //curPlayer.moves--;
-                                    //System.out.println(player.moves);
-                                   // diceController();
-                                }
-                                String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
-                                System.out.println(ct.getCityName());
-                                //JOptionPane.showMessageDialog(null,data2);
-                                continue;
-                            }
-                            if (ct.getQuadrant() == 3 && quad == 3) {
-                                curPlayer.moves--;
-                                 q=0;
-                                for (Cities Neighbors : tempLand) {
-                                    System.out.println(Neighbors.getX());
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    b3.fire();
-                                    System.out.println(player.moves);
-                                   
-                                }
-                                for (Cities Neighbors : tempSea) {
-                                   
-                                    System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
-                                    // if(Neighbors.getCityName()!=)
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    //curPlayer.moves--;
-                                    System.out.println(player.moves);
-                                    
-                                }
-                                String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
-                                System.out.println(ct.getCityName());
-                                // JOptionPane.showMessageDialog(null,data3);
-                                continue;
-                            }
-                            if (ct.getQuadrant() == 4 && quad == 4) {
-                                 curPlayer.moves--;
-                                 q=0;
-                                for (Cities Neighbors : tempLand) {
-                                    System.out.println(Neighbors.getX());
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    System.out.println(player.moves);
-                                   b4.fire();
-                                }
-                                for (Cities Neighbors : tempSea) {
-                                    System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
-                                    // if(Neighbors.getCityName()!=)
-                                    gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-                                    travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                    //curPlayer.moves--;
-                                    System.out.println(player.moves);
-                                  
-                                }
-                                String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
-                                System.out.println(ct.getCityName());
-                                //JOptionPane.showMessageDialog(null,data4);
-                                continue;
                             }
                         }
                     }
+                        if(player1.moves==0)
+                    {
+                        die.setDisable(false);
+                        canvasHandler2();
+                        //travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                        break;
+                    }
+                }
+                                
+            }
+        });
+        canvasPane.setCenter(canvas1);
+        pane.setCenter(canvasPane);
+    }
+
+    public void canvasHandler2() {
+        gc=canvas2.getGraphicsContext2D();
+        gc.drawImage(img1, 0, 0, 571, 700);
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player2.moves = randomNum;
+                
+                System.out.println("in canvas handler 2"+player2.moves);
+
+            }
+        });
+        
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas2);
+                quad = 1;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas2);
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas2);
+                quad = 3;
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas2);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+               
+
+            }
+        });
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(4);
+        canvas2.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                mouseClicked++;
+                Cities ct;
+                System.out.println(x + " " + y);
+                for (int i = 0; i < lis.size(); i++) {
+                    ct = lis.get(i);
+                    if(player2.moves==0&&(Integer.parseInt(noOfPlayers)>1))
+                    {
+                        if(Integer.parseInt(noOfPlayers)<3)
+                        {
+                            canvasHandler1();
+                            break;
+                        }
+                        die.setDisable(false);
+                        canvasHandler3();
+                        break;
+                    }
+                    if (player2.moves > 0&&(Integer.parseInt(noOfPlayers)>1)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player2.moves--;
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                       // b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player2.moves);
+                                    }
+
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+                                        //player2.moves--;
+                                        // System.out.println(player2.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player2.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player2.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+
+                                        //b2.fire();
+                                        System.out.println(player2.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+                                        //player2.moves--;
+                                        //System.out.println(player2.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player2.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+
+                                      //  b3.fire();
+                                        System.out.println(player2.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+                                        //player2.moves--;
+                                        System.out.println(player2.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player2.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player2.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(bluePieceView, ct.getX(), ct.getY());
+                                        //player2.moves--;
+                                        System.out.println(player2.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
+                                    continue;
+                                }
+                            }
+                        }
                     }
 
                 }
 
             }
         });
-         canvasPane.setCenter(canvas);
+        canvasPane.setCenter(canvas2);
         pane.setCenter(canvasPane);
     }
+
+    public void canvasHandler3() {
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player3.moves = randomNum;
+                System.out.println(player3.moves);
+
+            }
+        });
+        gc=canvas3.getGraphicsContext2D();
+        gc.drawImage(img1, 0, 0, 571, 700);
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas3);
+                quad = 1;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas3);
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas3);
+                quad = 3;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas3);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+
+            }
+        });
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(4);
+        canvas3.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                mouseClicked++;
+                Cities ct;
+                System.out.println(x + " " + y);
+                for (int i = 0; i < lis.size(); i++) {
+                    ct = lis.get(i);
+                    if(player3.moves==0&&(Integer.parseInt(noOfPlayers)>2))
+                    {
+                        if(Integer.parseInt(noOfPlayers)<4)
+                        {
+                            canvasHandler1();
+                            break;
+                        }
+                        die.setDisable(false);
+                        travelAnimation(randomRed4,randomGreen4,randomYellow4);
+                        canvasHandler4();
+                        break;
+                    }
+                    if (player3.moves > 0&&(Integer.parseInt(noOfPlayers)>2)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player3.moves--;
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        //b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player3.moves);
+                                    }
+
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        //player3.moves--;
+                                        // System.out.println(player3.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player3.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player3.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+
+                                       // b2.fire();
+                                        System.out.println(player3.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        //player3.moves--;
+                                        //System.out.println(player3.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player3.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+
+                                       // b3.fire();
+                                        System.out.println(player3.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        //player3.moves--;
+                                        System.out.println(player3.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player3.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player3.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        //player3.moves--;
+                                        System.out.println(player3.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        });
+        canvasPane.setCenter(canvas3);
+        pane.setCenter(canvasPane);
+    }
+
+    public void canvasHandler4() {
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player4.moves = randomNum;
+                System.out.println(player4.moves);
+
+            }
+        });
+        gc=canvas4.getGraphicsContext2D();
+        gc.drawImage(img1, 0, 0, 571, 700);
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas4);
+                quad = 1;
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas4);
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+            }
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas4);
+                quad = 3;
+              
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas4);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(4);
+        canvas4.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                mouseClicked++;
+                Cities ct;
+                System.out.println(x + " " + y);
+                for (int i = 0; i < lis.size(); i++) {
+                    ct = lis.get(i);
+                   if(player4.moves==0&&(Integer.parseInt(noOfPlayers)>3))
+                    {
+                         if(Integer.parseInt(noOfPlayers)<5)
+                        {
+                            canvasHandler1();
+                            break;
+                        }
+                       
+                        travelAnimation(randomGreen5,randomYellow5,randomRed5);
+                        die.setDisable(false);
+                        canvasHandler5();
+                        break;
+                    }
+                    if (player4.moves > 0&&(Integer.parseInt(noOfPlayers)>3)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player4.moves--;
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                       // b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player4.moves);
+                                    }
+
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        //player4.moves--;
+                                        // System.out.println(player4.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player4.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player4.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+
+                                       // b2.fire();
+                                        System.out.println(player4.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        //player4.moves--;
+                                        //System.out.println(player4.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player4.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+
+                                        //b3.fire();
+                                        System.out.println(player4.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        //player4.moves--;
+                                        System.out.println(player4.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player4.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player4.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        //player4.moves--;
+                                        System.out.println(player4.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        });
+        canvasPane.setCenter(canvas4);
+        pane.setCenter(canvasPane);
+    }
+
+    public void canvasHandler5() {
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player5.moves = randomNum;
+                System.out.println(player5.moves);
+
+            }
+        });
+        gc=canvas5.getGraphicsContext2D();
+        gc.drawImage(img1, 0, 0, 571, 700);
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas5);
+                quad = 1;
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas5);
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+            }
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas5);
+                quad = 3;
+              
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas5);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(4);
+        canvas5.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                mouseClicked++;
+                Cities ct;
+                System.out.println(x + " " + y);
+                for (int i = 0; i < lis.size(); i++) {
+                    ct = lis.get(i);
+                   if(player5.moves==0&&(Integer.parseInt(noOfPlayers)>4))
+                    {
+                        if(Integer.parseInt(noOfPlayers)<6)
+                        {
+                            canvasHandler1();
+                            break;
+                        }
+                        travelAnimation(randomYellow6,randomRed6,randomGreen6);
+                        die.setDisable(false);
+                        canvasHandler6();
+                        break;
+                    }
+                    if (player5.moves > 0&&(Integer.parseInt(noOfPlayers)>4)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player5.moves--;
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                       // b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player5.moves);
+                                    }
+
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        //player5.moves--;
+                                        // System.out.println(player5.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player5.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player5.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+
+                                       // b2.fire();
+                                        System.out.println(player5.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        //player5.moves--;
+                                        //System.out.println(player5.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player5.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+
+                                      //  b3.fire();
+                                        System.out.println(player5.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        //player5.moves--;
+                                        System.out.println(player5.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player5.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player5.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        //player5.moves--;
+                                        System.out.println(player5.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        });
+        canvasPane.setCenter(canvas5);
+        pane.setCenter(canvasPane);
+    }
+public void canvasHandler6() {
+         die.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                randomNum = rand.nextInt(6) + 1;
+                Image dieimage = loadImage("die_" + randomNum + ".jpg");
+                ImageView dieimageview = new ImageView(dieimage);
+                die.setGraphic(dieimageview);
+                die.setDisable(true);
+                player6.moves = randomNum;
+                System.out.println(player6.moves);
+
+            }
+        });
+        gc=canvas6.getGraphicsContext2D();
+        gc.drawImage(img1, 0, 0, 571, 700);
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img1, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas6);
+                quad = 1;
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+            }
+        });
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img2, 0, 0, 571, 700);
+                quad = 2;
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas6);
+               
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+            }
+        });
+        b3.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                gc.drawImage(img3, 0, 0, 571, 700);
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas6);
+                quad = 3;
+              
+                    drawHomeFlags();
+                    drawPiece();
+                
+               
+
+            }
+        });
+        b4.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                canvasPane.getChildren().clear();
+                canvasPane.setCenter(canvas6);
+                gc.drawImage(img4, 0, 0, 571, 700);
+                quad = 4;
+                
+                    drawHomeFlags();
+                    drawPiece();
+                
+                
+
+            }
+        });
+        gc.setStroke(Color.RED);
+        gc.setLineWidth(4);
+        canvas6.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent e) {
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                mouseClicked++;
+                Cities ct;
+                System.out.println(x + " " + y);
+                for (int i = 0; i < lis.size(); i++) {
+                    ct = lis.get(i);
+                   if(player6.moves==0&&(Integer.parseInt(noOfPlayers)>5))
+                    {
+                        
+                        travelAnimation(randomRed1,randomGreen1,randomYellow1);
+                        die.setDisable(false);
+                        canvasHandler1();
+                        break;
+                    }
+                    if (player6.moves > 0&&(Integer.parseInt(noOfPlayers)>5)) {
+                        if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
+                            if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                List<Cities> tempLand = ct.fetchLandNeighbour();
+                                List<Cities> tempSea = ct.fetchSeaNeighbour();
+                                if (ct.getQuadrant() == 1 && quad == 1) {
+                                    player6.moves--;
+                                    q = 1;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                       // b1.fire();
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player6.moves);
+                                    }
+
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        //player6.moves--;
+                                        // System.out.println(player6.moves);
+
+                                    }
+                                    String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    player6.citiesVisited.add(ct.getCityName());
+
+                                    //JOptionPane.showMessageDialog(null,data1);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 2 && quad == 2) {
+                                    player6.moves--;
+                                    q = 2;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+
+                                       // b2.fire();
+                                        System.out.println(player6.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        //player6.moves--;
+                                        //System.out.println(player6.moves);
+                                        // diceController();
+                                    }
+                                    String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data2);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 3 && quad == 3) {
+                                    player6.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+
+                                      //  b3.fire();
+                                        System.out.println(player6.moves);
+
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        //player6.moves--;
+                                        System.out.println(player6.moves);
+
+                                    }
+                                    String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    // JOptionPane.showMessageDialog(null,data3);
+                                    continue;
+                                }
+                                if (ct.getQuadrant() == 4 && quad == 4) {
+                                    player6.moves--;
+                                    q = 0;
+                                    for (Cities Neighbors : tempLand) {
+                                        System.out.println(Neighbors.getX());
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+
+                                        System.out.println(player6.moves);
+                                        // b4.fire();
+                                    }
+                                    for (Cities Neighbors : tempSea) {
+                                        System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
+                                        // if(Neighbors.getCityName()!=)
+                                        gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        //player6.moves--;
+                                        System.out.println(player6.moves);
+
+                                    }
+                                    String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
+                                    System.out.println(ct.getCityName());
+                                    //JOptionPane.showMessageDialog(null,data4);
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        });
+        canvasPane.setCenter(canvas6);
+        pane.setCenter(canvasPane);
+    }
+    
 //    public void displayCards()
 //    {
 //        pane.setLeft(sideBar);
@@ -1298,15 +2613,15 @@ public void toggleSideBar(int playerNo)
         northToolbar.getChildren().add(cb);
         cb.setOnAction((event) -> {
             Object playerno = cb.getSelectionModel().getSelectedItem();
-            number = playerno.toString();
+            noOfPlayers = playerno.toString();
 
-            player1.setNumber(Integer.parseInt(number));
-            player2.setNumber(Integer.parseInt(number));
-            player3.setNumber(Integer.parseInt(number));
-            player4.setNumber(Integer.parseInt(number));
-            player5.setNumber(Integer.parseInt(number));
-            player6.setNumber(Integer.parseInt(number));
-            System.out.println("you selected:  " + number);
+            player1.setNumber(Integer.parseInt(noOfPlayers));
+            player2.setNumber(Integer.parseInt(noOfPlayers));
+            player3.setNumber(Integer.parseInt(noOfPlayers));
+            player4.setNumber(Integer.parseInt(noOfPlayers));
+            player5.setNumber(Integer.parseInt(noOfPlayers));
+            player6.setNumber(Integer.parseInt(noOfPlayers));
+            System.out.println("you selected:  " + noOfPlayers);
             GridPane grid = new GridPane();
             grid.setHgap(20);
             grid.setVgap(20);
@@ -1366,7 +2681,7 @@ public void toggleSideBar(int playerNo)
                 v1.getChildren().addAll(h1, h2, iv1);
                 grid.add(v1, 1, 1);
                 v1.setSpacing(10);
-                if (number.equals("1")) {
+                if (noOfPlayers.equals("1")) {
                     break lab;
                 }
 
@@ -1394,7 +2709,7 @@ public void toggleSideBar(int playerNo)
                 v2.getChildren().addAll(h3, h4, iv2);
                 grid.add(v2, 2, 1);
                 v2.setSpacing(10);
-                if (number.equals("2")) {
+                if (noOfPlayers.equals("2")) {
                     break lab;
                 }
 
@@ -1421,7 +2736,7 @@ public void toggleSideBar(int playerNo)
                 v3.getChildren().addAll(h5, h6, iv3);
                 grid.add(v3, 3, 1);
                 v3.setSpacing(10);
-                if (number.equals("3")) {
+                if (noOfPlayers.equals("3")) {
                     break lab;
                 }
 
@@ -1448,7 +2763,7 @@ public void toggleSideBar(int playerNo)
                 v4.getChildren().addAll(h7, h8, iv4);
                 grid.add(v4, 1, 2);
                 v4.setSpacing(10);
-                if (number.equals("4")) {
+                if (noOfPlayers.equals("4")) {
                     break lab;
                 }
 
@@ -1475,7 +2790,7 @@ public void toggleSideBar(int playerNo)
                 v5.getChildren().addAll(h9, h10, iv5);
                 grid.add(v5, 2, 2);
                 v5.setSpacing(10);
-                if (number.equals("5")) {
+                if (noOfPlayers.equals("5")) {
                     break lab;
                 }
 
@@ -1502,7 +2817,7 @@ public void toggleSideBar(int playerNo)
                 v6.getChildren().addAll(h11, h12, iv6);
                 grid.add(v6, 3, 2);
                 v6.setSpacing(10);
-                if (number.equals("6")) {
+                if (noOfPlayers.equals("6")) {
                     break lab;
                 }
 
@@ -1519,8 +2834,8 @@ public void toggleSideBar(int playerNo)
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-           
-                playerController();
+
+                initPlayerControl();
                 player1.setName(tf1.getText());
                 System.out.println(player1.getName() + player1.getPlayerType());
                 player2.setName(tf2.getText());
