@@ -278,7 +278,39 @@ public class JTEFileLoader {
         }
          
     }
+    public void townFileLoader()
+    {
+        String root = DATA_PATH;
+       
+        File file = new File(root+"town.txt");
+         try {
+            if (file != null) {
+                
+                FileReader fis1 = new FileReader(file);
+                BufferedReader bis1 = new BufferedReader(fis1);
+                // HERE IT IS, THE ONLY READY REQUEST WE NEED      
+                String temp="";
+                // NOW WE NEED TO LOAD THE DATA FROM THE BYTE ARRAY
+                 bis1.readLine();
+                while((temp=bis1.readLine())!=null)
+                {
+                    String [] st=temp.split("#");
+                     
+                    System.out.println(st[0]+" "+st[1]);
+                  
+                        
+                        uiobj.checkTownInfo(st[0],st[1]); 
+                        
+                }
+            }
+                    
+        } 
+        catch (Exception e) {
+            System.out.println("in fileOpen file path: " + file.getAbsolutePath());
+            e.printStackTrace();
          
+        }
+    }
     
      public  List<JTECards> returnRedCards()
     {        

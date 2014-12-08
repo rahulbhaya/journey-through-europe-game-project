@@ -176,11 +176,14 @@ public class JTEUI extends Pane {
     private StackPane aboutPane;
     private StackPane abtPane;
     public ScrollPane histPane;
+    public ScrollPane townInfoPane;
 
     private Button goButton;
     private Button histButton;
     private Button bckButton;
     public Button closeButton;
+    public Button towninfo;
+   
 
     // Padding
     private Insets marginlessInsets;
@@ -205,6 +208,9 @@ public class JTEUI extends Pane {
     public List<JTECards> redlist;
     public List<JTECards> yellowlist;
     public List<JTECards> listOfCities;
+    public List<String> towninfor;
+    public List<String> cityname;
+    
 
     JTEEventHandler eh;
     JTEGameStateManager gsm;
@@ -234,6 +240,7 @@ public class JTEUI extends Pane {
     Button b2 = new Button();
     Button b3 = new Button();
     Button b4 = new Button();
+    
     public Button die = new Button();
     Random myRandomizer = new Random();
     JTECards randomGreen1;
@@ -267,7 +274,8 @@ public class JTEUI extends Pane {
     AnchorPane flightplan;
     Cities c;
     List <String>airportCityClicked=new ArrayList<String>();
-
+    Label playerNameLabel;
+    TextArea townArea;
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
         eventHandler = new JTEEventHandler(this);
@@ -281,7 +289,10 @@ public class JTEUI extends Pane {
         player5 = new Player();
         player6 = new Player();
         // player1.moves=6;
-        
+        Image towninfoimage=loadImage("towninfo.png");
+        ImageView towninfoView=new ImageView(towninfoimage);
+        towninfo=new Button();
+        towninfo.setGraphic(towninfoView);
         fl = new JTEFileLoader(this);
         greenlist = fl.returnGreenCards();
         redlist = fl.returnRedCards();
@@ -332,11 +343,19 @@ public class JTEUI extends Pane {
         img3 = loadImage("3.jpg");
         img4 = loadImage("4.jpg");
         histArea=new TextArea();
+        townArea=new TextArea();
         setPlayerAtHome();
         // initaboutPane();
         player6.movesLeft=5;
         flightplan=new AnchorPane();
+        towninfor=new ArrayList<String>();
+        cityname=new ArrayList<String>();
         loadAirports();
+        
+        fl.townFileLoader();
+         playerNameLabel=new Label();
+         
+         
         for (int i = 0; i < lis.size(); i++) 
                     c = lis.get(i);
                     
@@ -361,7 +380,14 @@ public class JTEUI extends Pane {
     public JTEErrorHandler getErrorHandler() {
         return errorHandler;
     }
-
+    public void initTownInfoPane()
+    {
+        townInfoPane=new ScrollPane();
+        townArea.setEditable(false);
+        townInfoPane.setContent(townArea);
+        
+        
+    }
     public void initSideBar() {
         sideBar = new VBox();
         sideBar.setAlignment(Pos.BASELINE_LEFT);
@@ -669,14 +695,36 @@ public class JTEUI extends Pane {
 
  public void loadAirports(){
         
-                
-               
                 AnchorPane.setTopAnchor(flightview, 0.0);
                 AnchorPane.setLeftAnchor(flightview,0.0);
                 flightplan.getChildren().add(flightview);
                 fl.loadAirportCities();
     }
-    
+    public void checkTownInfo(String city,String info)
+    {
+        
+                
+       towninfo.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                initTownInfoPane();
+                
+                  
+               Stage stage = new Stage();
+                stage.setScene(new Scene(new Group(townInfoPane)));
+                stage.show();
+                
+            }
+        });
+       cityname.add(city);
+       towninfor.add(info);
+        System.out.println(city+"\n"+"Info:"+info);
+
+               
+            
+    }
     public void addFlightButtons(String city,String x,String y){
        
        Button b=new Button();
@@ -701,7 +749,7 @@ public class JTEUI extends Pane {
                 {
                     player1.movesLeft=player1.movesLeft-2;
                     fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
-                    if(c.getCityName()==city)
+                    if(c.getCityName().equals(city))
                     {    
                     travelAnimation(blackPieceView,c.getX(),c.getY());
                     }
@@ -740,6 +788,7 @@ public class JTEUI extends Pane {
         });
        
     }
+    
     public void initaboutPane() {
         aboutPane = new StackPane();
         TextArea ta1 = new TextArea();
@@ -1194,6 +1243,7 @@ public class JTEUI extends Pane {
 
             }
         });
+       
         Image flightbuttonimg = loadImage("flightplanimg.png");
 
         ImageView view3 = new ImageView(flightbuttonimg);
@@ -1281,7 +1331,7 @@ public class JTEUI extends Pane {
 
         });
 
-        vbox.getChildren().addAll(turnLabel, grd, fixedMovesLabel,die, flightButton, histButton, abtButton, saveButton);
+        vbox.getChildren().addAll(turnLabel,playerNameLabel, grd, fixedMovesLabel,die,towninfo, flightButton, histButton, abtButton, saveButton);
         vbox.setSpacing(10);
         canvasHandler1();
         pane.setLeft(sideBar);
@@ -1293,6 +1343,7 @@ public class JTEUI extends Pane {
 
    public void canvasHandler1() {
        canvas=canvas1;
+       playerNameLabel.setText(player1.playerName);
         if(player1.turn!=1)
         {
            xhist1=player1.citiesVisitedXCoord.get(player1.citiesVisitedXCoord.size()-1);
@@ -1313,6 +1364,7 @@ public class JTEUI extends Pane {
                 player1.movesLeft = randomNum;
                 System.out.println("In die handler player 1: "+player1.movesLeft);
                 fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+                playerNameLabel.setText(player1.playerName);
             }
         });
         b1.setOnAction(new EventHandler<ActionEvent>() {
@@ -1426,6 +1478,13 @@ public class JTEUI extends Pane {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player1.movesLeft--;
+                                    for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
 //                                    if(ct.getCityName()==airportCityClicked.get(0))
 //                                    {
@@ -1467,6 +1526,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                    player1.movesLeft--;
+                                   for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                    histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
 //                                   if(ct.getCityName()==airportCityClicked.get(0))
 //                                    {
@@ -1512,6 +1578,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player1.movesLeft--;
+                                    for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
 //                                     if(ct.getCityName()==airportCityClicked.get(0))
 //                                    {
@@ -1557,6 +1630,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                       player1.movesLeft--;
+                                      for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                       histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
                                       fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
 //                                      if(ct.getCityName()==airportCityClicked.get(0))
@@ -1613,6 +1693,8 @@ public class JTEUI extends Pane {
 
     public void canvasHandler2() {
         canvas=canvas2;
+        
+        playerNameLabel.setText(player2.playerName);
         if(player2.turn!=1)
         {
            xhist2=player2.citiesVisitedXCoord.get(player2.citiesVisitedXCoord.size()-1);
@@ -1713,9 +1795,12 @@ public class JTEUI extends Pane {
         gc.setLineWidth(2);
         canvas2.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
+           
             public void handle(MouseEvent e) {
+                
                 int x = (int) e.getX();
                 int y = (int) e.getY();
+                 
                 mouseClicked++;
                 Cities ct;
                 System.out.println(x + " " + y);
@@ -1745,6 +1830,13 @@ public class JTEUI extends Pane {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player2.movesLeft--;
+                                    for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      histArea.appendText("\nPlayer 2 moved to "+ct.getCityName());
                                     fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
                                     q = 1;
@@ -1782,6 +1874,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                     player2.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
                                     histArea.appendText("\nPlayer 2 moved to "+ct.getCityName());
                                     q = 2;
@@ -1819,6 +1918,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player2.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
                                     histArea.appendText("\nPlayer 2 moved to"+ct.getCityName());
                                     q = 0;
@@ -1857,6 +1963,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                       player2.movesLeft--;
+                                        for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                       fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
                                        histArea.appendText("\nPlayer 2 moved to"+ct.getCityName());
                                     q = 0;
@@ -1895,9 +2008,9 @@ public class JTEUI extends Pane {
                             }
                         }
                     }
-
+                
                 }
-
+             
             }
         });
         canvasPane.setCenter(canvas2);
@@ -2037,6 +2150,13 @@ public class JTEUI extends Pane {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player3.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
                                     fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 1;
@@ -2074,6 +2194,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                     player3.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
                                      fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 2;
@@ -2109,6 +2236,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player3.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                      histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
                                     q = 0;
@@ -2146,6 +2280,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                     player3.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
                                      fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 0;
@@ -2323,6 +2464,13 @@ public class JTEUI extends Pane {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player4.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                      fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                     q = 1;
@@ -2361,6 +2509,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                     player4.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                      fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                     q = 2;
@@ -2397,6 +2552,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player4.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                       histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                     q = 0;
@@ -2434,6 +2596,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                     player4.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                      histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                     q = 0;
@@ -2607,6 +2776,13 @@ public class JTEUI extends Pane {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player5.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
                                      histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 1;
@@ -2644,6 +2820,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                     player5.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
                                      histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 2;
@@ -2679,6 +2862,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player5.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                      histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                      fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
                                     q = 0;
@@ -2716,6 +2906,13 @@ public class JTEUI extends Pane {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                     player5.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
                                      histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 0;
@@ -2885,6 +3082,13 @@ public void canvasHandler6() {
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player6.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
                                     histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 1;
@@ -2922,6 +3126,13 @@ public void canvasHandler6() {
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                     player6.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
                                     histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 2;
@@ -2958,6 +3169,13 @@ public void canvasHandler6() {
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player6.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
                                     histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 0;
@@ -2995,6 +3213,13 @@ public void canvasHandler6() {
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
                                     player6.movesLeft--;
+                                     for(int k=0;k<cityname.size();k++)
+                                    {
+                                        if(ct.getCityName().equals(cityname.get(k)))
+                                        {
+                                            townArea.appendText(towninfor.get(k));
+                                        }
+                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
                                     histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 0;
@@ -3175,6 +3400,7 @@ public void canvasHandler6() {
                 h1.getChildren().addAll(rb1, l1);
                 h1.setSpacing(30);
                 h2.getChildren().addAll(rb2, tf1);
+                player1.setName(tf1.getText());
                 h2.setSpacing(20);
 
                 v1.getChildren().addAll(h1, h2, iv1);
@@ -3206,6 +3432,7 @@ public void canvasHandler6() {
                 h3.getChildren().addAll(rb3, l2);
                 h3.setSpacing(30);
                 h4.getChildren().addAll(rb4, tf2);
+                 player2.setName(tf2.getText());
                 h4.setSpacing(20);
 
                 v2.getChildren().addAll(h3, h4, iv2);
@@ -3233,6 +3460,7 @@ public void canvasHandler6() {
                 h5.setSpacing(30);
                 h6.getChildren().addAll(rb6, tf3);
                 h6.setSpacing(20);
+                 player3.setName(tf3.getText());
                 if (rb5.isSelected() == true) {
                     player3.setPlayerType(1);
                 } else {
@@ -3268,6 +3496,7 @@ public void canvasHandler6() {
                 h7.setSpacing(30);
                 h8.getChildren().addAll(rb8, tf4);
                 h8.setSpacing(20);
+                 player4.setName(tf4.getText());
                 //v1.getChildren().add
                 v4.getChildren().addAll(h7, h8, iv4);
                 grid.add(v4, 1, 2);
@@ -3291,6 +3520,7 @@ public void canvasHandler6() {
                 h9.getChildren().addAll(rb9, l5);
                 h9.setSpacing(30);
                 h10.getChildren().addAll(rb10, tf5);
+                 player5.setName(tf5.getText());
                 h10.setSpacing(20);
                 if (rb9.isSelected() == true) {
                     player5.setPlayerType(1);
@@ -3322,6 +3552,7 @@ public void canvasHandler6() {
                 h12.getChildren().addAll(rb12, tf6);
                 h12.setSpacing(20);
                 //v1.getChildren().add
+                 player6.setName(tf6.getText());
                 if (rb11.isSelected() == true) {
                     player6.setPlayerType(1);
                 } else {
