@@ -252,67 +252,27 @@ public class JTEFileLoader {
          try {
             if (file != null) {
                 
-                FileReader fis = new FileReader(file);
-                BufferedReader bis = new BufferedReader(fis);
+                FileReader fis1 = new FileReader(file);
+                BufferedReader bis1 = new BufferedReader(fis1);
                 // HERE IT IS, THE ONLY READY REQUEST WE NEED      
                 String temp="";
                 // NOW WE NEED TO LOAD THE DATA FROM THE BYTE ARRAY
-                 bis.readLine();
-                while((temp=bis.readLine())!=null)
+                 bis1.readLine();
+                while((temp=bis1.readLine())!=null)
                 {
-                    String [] st=temp.split("\t");
-                   
-                    if(st.length == 4) {
+                    String [] st=temp.split(" ");
+                     
+                    System.out.println(st[0]+" "+st[1]+st[2]);
+                  
                         
-                        uiobj.addFlightButtons(st[0],Integer.parseInt(st[1]),Integer.parseInt(st[2]));
+                        uiobj.addFlightButtons(st[0],st[1],st[2]); 
                         
-                    }
-                   }
-                   if(Integer.parseInt(st[2])==2)
-                   {
-                    if(st.length == 5) {
-                        int newX = Integer.parseInt(st[3]);
-                        int newY = Integer.parseInt(st[4]);
-
-                        int p = (int)(((double)newX/1903.0) * 571);
-                        int q = (int)(((double)newY/2585.0) * 700);
-
-                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
-                        list.add(c);
-                    }
-                   }
-                   if(Integer.parseInt(st[2])==3)
-                   {
-                    if(st.length == 5) {
-                        int newX = Integer.parseInt(st[3]);
-                        int newY = Integer.parseInt(st[4]);
-
-                        int p = (int)(((double)newX/1985.0) * 571);
-                        int q = (int)(((double)newY/2583.0) * 700);
-
-                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
-                        list.add(c);
-                    }
-                   }
-                   if(Integer.parseInt(st[2])==4)
-                   {
-                    if(st.length == 5) {
-                        int newX = Integer.parseInt(st[3]);
-                        int newY = Integer.parseInt(st[4]);
-
-                        int p = (int)(((double)newX/1927.0) * 571);
-                        int q = (int)(((double)newY/2561.0) * 700);
-
-                       Cities c=new Cities(st[0],st[1],Integer.parseInt(st[2]),p,q);
-                        list.add(c);
-                    }
-                   }
-                    
                 }
-                return list;    
             }
-        } catch (Exception e) {
-            System.out.println("in fileOpen file path: " + fileToOpen.getAbsolutePath());
+                    
+        } 
+        catch (Exception e) {
+            System.out.println("in fileOpen file path: " + file.getAbsolutePath());
             e.printStackTrace();
          
         }

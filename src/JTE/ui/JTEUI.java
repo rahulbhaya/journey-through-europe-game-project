@@ -217,13 +217,13 @@ public class JTEUI extends Pane {
     GraphicsContext gc;
 
     ImageView blackPieceView, bluePieceView, greenPieceView, redPieceView, whitePieceView, yellowPieceView;
-    final Canvas canvas = new Canvas(603, 770);
-    final Canvas canvas1 = new Canvas(603, 770);
-    final Canvas canvas2 = new Canvas(603, 770);
-    final Canvas canvas3 = new Canvas(603, 770);
-    final Canvas canvas4 = new Canvas(603, 770);
-    final Canvas canvas5 = new Canvas(603, 770);
-    final Canvas canvas6 = new Canvas(603, 770);
+     Canvas canvas = new Canvas(603, 770);
+     Canvas canvas1 = new Canvas(603, 770);
+     Canvas canvas2 = new Canvas(603, 770);
+     Canvas canvas3 = new Canvas(603, 770);
+     Canvas canvas4 = new Canvas(603, 770);
+     Canvas canvas5 = new Canvas(603, 770);
+     Canvas canvas6 = new Canvas(603, 770);
     TextField tf1 = new TextField();
     TextField tf2 = new TextField();
     TextField tf3 = new TextField();
@@ -263,8 +263,10 @@ public class JTEUI extends Pane {
     int qp1,qp2,qp3,qp4,qp5,qp6;
     TextArea histArea;
     Image flightplanimg = loadImage("Flight_Plan.JPG");
-        ImageView flightview = new ImageView(flightplanimg);
-        AnchorPane flightplan;
+    ImageView flightview = new ImageView(flightplanimg);
+    AnchorPane flightplan;
+    Cities c;
+    List <String>airportCityClicked=new ArrayList<String>();
 
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
@@ -334,7 +336,10 @@ public class JTEUI extends Pane {
         // initaboutPane();
         player6.movesLeft=5;
         flightplan=new AnchorPane();
-
+        loadAirports();
+        for (int i = 0; i < lis.size(); i++) 
+                    c = lis.get(i);
+                    
     }
 
     public void SetStage(Stage stage) {
@@ -662,18 +667,19 @@ public class JTEUI extends Pane {
     }
  
 
- private void loadairportlocation(){
-           
-            
-                    fl.loadAirportCities();
-                flightplan=new AnchorPane();
+ public void loadAirports(){
+        
+                
+               
                 AnchorPane.setTopAnchor(flightview, 0.0);
                 AnchorPane.setLeftAnchor(flightview,0.0);
                 flightplan.getChildren().add(flightview);
+                fl.loadAirportCities();
     }
     
-    private void addFlightButtons(String city,double x,double y){
-        Button b=new Button();
+    public void addFlightButtons(String city,String x,String y){
+       
+       Button b=new Button();
        b.setTooltip(new Tooltip(city));
        b.setMaxHeight(15);
        b.setMinHeight(15);
@@ -681,10 +687,58 @@ public class JTEUI extends Pane {
        b.setMinWidth(15);
        b.setStyle("-fx-border-radius:40");
        b.setStyle("-fx-background-radius:50");
-       
-       AnchorPane.setTopAnchor(b,y);
-       AnchorPane.setLeftAnchor(b,x);
+       AnchorPane.setTopAnchor(b,Double.parseDouble(y)/2-7);
+       AnchorPane.setLeftAnchor(b,Double.parseDouble(x)/2-6);
        flightplan.getChildren().add(b);
+       b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
+                airportCityClicked.add(city);
+                
+                System.out.println(airportCityClicked.get(0));
+                if(canvas==canvas1)
+                {
+                    player1.movesLeft=player1.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+                    if(c.getCityName()==city)
+                    {    
+                    travelAnimation(blackPieceView,c.getX(),c.getY());
+                    }
+                }
+                if(canvas==canvas2)
+                {
+                    player2.movesLeft=player2.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
+                    
+                }
+                if(canvas==canvas3)
+                {
+                    player3.movesLeft=player3.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
+                }
+                
+                if(canvas==canvas4)
+                {
+                    player4.movesLeft=player4.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
+                }
+                if(canvas==canvas5)
+                {
+                    player5.movesLeft=player5.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
+                }
+                
+                if(canvas==canvas6)
+                {
+                    player6.movesLeft=player6.movesLeft-2;
+                    fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
+                }
+                
+                
+            }
+        });
+       
     }
     public void initaboutPane() {
         aboutPane = new StackPane();
@@ -1227,7 +1281,7 @@ public class JTEUI extends Pane {
 
         });
 
-        vbox.getChildren().addAll(turnLabel, endTurn, grd, fixedMovesLabel,die, flightButton, histButton, abtButton, saveButton);
+        vbox.getChildren().addAll(turnLabel, grd, fixedMovesLabel,die, flightButton, histButton, abtButton, saveButton);
         vbox.setSpacing(10);
         canvasHandler1();
         pane.setLeft(sideBar);
@@ -1238,6 +1292,7 @@ public class JTEUI extends Pane {
     }
 
    public void canvasHandler1() {
+       canvas=canvas1;
         if(player1.turn!=1)
         {
            xhist1=player1.citiesVisitedXCoord.get(player1.citiesVisitedXCoord.size()-1);
@@ -1372,7 +1427,13 @@ public class JTEUI extends Pane {
                                 if (ct.getQuadrant() == 1 && quad == 1) {
                                     player1.movesLeft--;
                                     histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
+//                                    if(ct.getCityName()==airportCityClicked.get(0))
+//                                    {
+//                                        player1.movesLeft=player1.movesLeft-2;
+//                                        travelAnimation(blackPieceView,ct.getX(),ct.getY());
+//                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+                                    
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
@@ -1407,7 +1468,13 @@ public class JTEUI extends Pane {
                                 if (ct.getQuadrant() == 2 && quad == 2) {
                                    player1.movesLeft--;
                                    histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
+//                                   if(ct.getCityName()==airportCityClicked.get(0))
+//                                    {
+//                                        player1.movesLeft=player1.movesLeft-2;
+//                                        travelAnimation(blackPieceView,ct.getX(),ct.getY());
+//                                    }
                                    fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+                                   
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
@@ -1446,7 +1513,13 @@ public class JTEUI extends Pane {
                                 if (ct.getQuadrant() == 3 && quad == 3) {
                                     player1.movesLeft--;
                                      histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
+//                                     if(ct.getCityName()==airportCityClicked.get(0))
+//                                    {
+//                                        player1.movesLeft=player1.movesLeft-2;
+//                                        travelAnimation(blackPieceView,ct.getX(),ct.getY());
+//                                    }
                                     fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+                                    
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
@@ -1486,7 +1559,13 @@ public class JTEUI extends Pane {
                                       player1.movesLeft--;
                                       histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
                                       fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
+//                                      if(ct.getCityName()==airportCityClicked.get(0))
+//                                    {
+//                                        player1.movesLeft=player1.movesLeft-2;
+//                                        travelAnimation(blackPieceView,ct.getX(),ct.getY());
+//                                    }
                                     q = 0;
+                                    
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
@@ -1533,6 +1612,7 @@ public class JTEUI extends Pane {
     
 
     public void canvasHandler2() {
+        canvas=canvas2;
         if(player2.turn!=1)
         {
            xhist2=player2.citiesVisitedXCoord.get(player2.citiesVisitedXCoord.size()-1);
@@ -1825,6 +1905,7 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler3() {
+        canvas=canvas3;
         if(player3.turn!=1)
         {
            xhist3=player3.citiesVisitedXCoord.get(player3.citiesVisitedXCoord.size()-1);
@@ -2110,6 +2191,7 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler4() {
+        canvas=canvas4;
          if(player4.turn!=1)
         {
            xhist4=player4.citiesVisitedXCoord.get(player4.citiesVisitedXCoord.size()-1);
@@ -2398,6 +2480,7 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler5() {
+        canvas=canvas5;
          if(player5.turn!=1)
         {
            xhist5=player5.citiesVisitedXCoord.get(player5.citiesVisitedXCoord.size()-1);
@@ -2678,6 +2761,7 @@ public class JTEUI extends Pane {
     }
     public void drawHomeFlags(){}
 public void canvasHandler6() {
+    canvas=canvas6;
      if(player6.turn!=1)
         {
            xhist6=player6.citiesVisitedXCoord.get(player6.citiesVisitedXCoord.size()-1);
@@ -3074,15 +3158,18 @@ public void canvasHandler6() {
                 // h15.getChildren().add(iv1);
                 final ToggleGroup group1 = new ToggleGroup();
                 RadioButton rb1 = new RadioButton();
+                rb1.setToggleGroup(group1);
                 rb1.setText("Player   ");
                 rb1.setSelected(true);
                 RadioButton rb2 = new RadioButton();
+                rb2.setToggleGroup(group1);
                 rb2.setText("Computer");
                 if (rb1.isSelected() == true) {
                     player1.setPlayerType(1);
                 } else {
                     player1.setPlayerType(0);
                 }
+                
                 Label l1 = new Label("Name:");
 
                 h1.getChildren().addAll(rb1, l1);
@@ -3100,10 +3187,13 @@ public void canvasHandler6() {
                 HBox h3 = new HBox();
                 HBox h4 = new HBox();
                 VBox v2 = new VBox();
+                final ToggleGroup group2 = new ToggleGroup();
                 RadioButton rb3 = new RadioButton();
+                rb3.setToggleGroup(group2);
                 rb3.setText("Player   ");
                 rb3.setSelected(true);
                 RadioButton rb4 = new RadioButton();
+                rb4.setToggleGroup(group2);
                 rb4.setText("Computer");
                 if (rb3.isSelected() == true) {
                     player2.setPlayerType(1);
@@ -3128,10 +3218,14 @@ public void canvasHandler6() {
                 HBox h5 = new HBox();
                 HBox h6 = new HBox();
                 VBox v3 = new VBox();
+                
+                final ToggleGroup group3 = new ToggleGroup();
                 RadioButton rb5 = new RadioButton();
+                rb5.setToggleGroup(group3);
                 rb5.setText("Player   ");
                 rb5.setSelected(true);
                 RadioButton rb6 = new RadioButton();
+                rb6.setToggleGroup(group3);
                 rb6.setText("Computer");
                 Label l3 = new Label("Name:");
 
@@ -3155,10 +3249,13 @@ public void canvasHandler6() {
                 HBox h7 = new HBox();
                 HBox h8 = new HBox();
                 VBox v4 = new VBox();
+                final ToggleGroup group4 = new ToggleGroup();
                 RadioButton rb7 = new RadioButton();
+                rb7.setToggleGroup(group4);
                 rb7.setText("Player   ");
                 rb7.setSelected(true);
                 RadioButton rb8 = new RadioButton();
+                rb8.setToggleGroup(group4);
                 rb8.setText("Computer");
                 Label l4 = new Label("Name:");
 
@@ -3178,14 +3275,16 @@ public void canvasHandler6() {
                 if (noOfPlayers.equals("4")) {
                     break lab;
                 }
-
+                final ToggleGroup group5 = new ToggleGroup();
                 HBox h9 = new HBox();
                 HBox h10 = new HBox();
                 VBox v5 = new VBox();
                 RadioButton rb9 = new RadioButton();
                 rb9.setText("Player   ");
                 rb9.setSelected(true);
+                rb9.setToggleGroup(group5);
                 RadioButton rb10 = new RadioButton();
+                rb10.setToggleGroup(group5);
                 rb10.setText("Computer");
                 Label l5 = new Label("Name:");
 
@@ -3205,14 +3304,16 @@ public void canvasHandler6() {
                 if (noOfPlayers.equals("5")) {
                     break lab;
                 }
-
+                final ToggleGroup group6 = new ToggleGroup();
                 HBox h11 = new HBox();
                 HBox h12 = new HBox();
                 VBox v6 = new VBox();
                 RadioButton rb11 = new RadioButton();
                 rb11.setText("Player   ");
                 rb11.setSelected(true);
+                rb11.setToggleGroup(group6);
                 RadioButton rb12 = new RadioButton();
+                rb12.setToggleGroup(group6);
                 rb12.setText("Computer");
                 Label l6 = new Label("Name:");
 
