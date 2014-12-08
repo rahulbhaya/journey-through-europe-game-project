@@ -20,10 +20,13 @@ public class Player {
     String playerName="";
     String originCity="";
     String curCity="";
-    int moves=0;
+    int movesLeft=0;
     int turn=1;
+    
     List <String>citiesToVisit=new ArrayList<String>();
     List <String>citiesVisited=new ArrayList<String>();
+    List <Integer> citiesVisitedXCoord=new ArrayList<Integer>();
+    List <Integer> citiesVisitedYCoord=new ArrayList<Integer>();
     
     VBox sideBar;
     public Player(int number,int comp,String name)

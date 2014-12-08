@@ -80,10 +80,14 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.util.Duration;
 import JTE.ui.Player;
+import java.io.FileNotFoundException;
+import java.io.Writer;
+import java.util.Scanner;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 public class JTEUI extends Pane {
@@ -119,13 +123,20 @@ public class JTEUI extends Pane {
     double xcoord4 = 0, ycoord4 = 0;
     double xcoord5 = 0, ycoord5 = 0;
     double xcoord6 = 0, ycoord6 = 0;
+    int xhist1=0,yhist1=0;
+     int xhist2=0,yhist2=0;
+      int xhist3=0,yhist3=0;
+       int xhist4=0,yhist4=0;
+        int xhist5=0,yhist5=0;
+         int xhist6=0,yhist6=0;
+    
 
     int randomNum;
     // mainPane
     public BorderPane mainPane;
     private BorderPane hmPane;
     Label turnLabel = new Label("Player 1 turn");
-
+    Label fixedMovesLabel= new Label("Moves Left:");
     // SplashScreen
     private ImageView splashScreenImageView;
     private Pane splashScreenPane;
@@ -164,7 +175,7 @@ public class JTEUI extends Pane {
     private Pane workspace;
     private StackPane aboutPane;
     private StackPane abtPane;
-    private StackPane histPane;
+    public ScrollPane histPane;
 
     private Button goButton;
     private Button histButton;
@@ -181,7 +192,7 @@ public class JTEUI extends Pane {
     // mainPane weight && height
     private int paneWidth;
     private int paneHeigth;
-    public int qa, qb, qc, qd;
+    
     // THIS CLASS WILL HANDLE ALL ACTION EVENTS FOR THIS PROGRAM
     private JTEEventHandler eventHandler;
     private JTEErrorHandler errorHandler;
@@ -206,7 +217,7 @@ public class JTEUI extends Pane {
     GraphicsContext gc;
 
     ImageView blackPieceView, bluePieceView, greenPieceView, redPieceView, whitePieceView, yellowPieceView;
-    //final Canvas canvas = new Canvas(603, 770);
+    final Canvas canvas = new Canvas(603, 770);
     final Canvas canvas1 = new Canvas(603, 770);
     final Canvas canvas2 = new Canvas(603, 770);
     final Canvas canvas3 = new Canvas(603, 770);
@@ -245,11 +256,15 @@ public class JTEUI extends Pane {
     JTECards randomYellow6;
     Image img1;
     Random rand = new Random();
-    int q;
+   int q;
     Image img2;
     Image img3;
     Image img4;
-   
+    int qp1,qp2,qp3,qp4,qp5,qp6;
+    TextArea histArea;
+    Image flightplanimg = loadImage("Flight_Plan.JPG");
+        ImageView flightview = new ImageView(flightplanimg);
+        AnchorPane flightplan;
 
     public JTEUI() {
         gsm = new JTEGameStateManager(this);
@@ -264,7 +279,7 @@ public class JTEUI extends Pane {
         player5 = new Player();
         player6 = new Player();
         // player1.moves=6;
-     
+        
         fl = new JTEFileLoader(this);
         greenlist = fl.returnGreenCards();
         redlist = fl.returnRedCards();
@@ -314,9 +329,11 @@ public class JTEUI extends Pane {
         img2 = loadImage("2.jpg");
         img3 = loadImage("3.jpg");
         img4 = loadImage("4.jpg");
+        histArea=new TextArea();
         setPlayerAtHome();
         // initaboutPane();
-        player6.moves=5;
+        player6.movesLeft=5;
+        flightplan=new AnchorPane();
 
     }
 
@@ -350,16 +367,17 @@ public class JTEUI extends Pane {
     public void travelAnimation(ImageView piece, int toX, int toY) {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(1000), piece);
 
-        if (quad == 1) {
-
-            // translateTransition.setFromX(newx1);
+     
+            if(quad==1)
+            {
+            // translateTransition.setFromX(xcoord1);
             translateTransition.setToX(toX + 107);
-            //translateTransition.setFromY(newy1);
+           // translateTransition.setFromY(ycoord1);
             translateTransition.setToY(toY - 40);
             translateTransition.play();
             canvasPane.getChildren().remove(piece);
             canvasPane.getChildren().add(piece);
-        }
+           }
         if (quad == 2) {
 
             //translateTransition.setFromX(newx2);
@@ -420,17 +438,17 @@ public class JTEUI extends Pane {
         ImageView Front1 = new ImageView(card1.getFront());
         ImageView Front2 = new ImageView(card2.getFront());
         ImageView Front3 = new ImageView(card3.getFront());
-        Front1.setFitHeight(200);
-        Front1.setFitWidth(200);
-        Front2.setFitHeight(200);
-        Front2.setFitWidth(200);
-        Front3.setFitHeight(200);
-        Front3.setFitWidth(200);
+        Front1.setFitHeight(250);
+        Front1.setFitWidth(250);
+        Front2.setFitHeight(250);
+        Front2.setFitWidth(250);
+        Front3.setFitHeight(250);
+        Front3.setFitWidth(250);
         sideBar.getChildren().add(Front1);
         sideBar.getChildren().add(Front2);
         sideBar.getChildren().add(Front3);
         TranslateTransition translateTransition1
-                = new TranslateTransition(Duration.millis(5000), Front1);
+                = new TranslateTransition(Duration.millis(3000), Front1);
         translateTransition1.setFromX(500);
         translateTransition1.setToX(0);
         translateTransition1.setFromY(500);
@@ -440,7 +458,7 @@ public class JTEUI extends Pane {
         // translateTransition.setDelay(Duration.millis(500*cardNumber));
 
         ScaleTransition scaleTransition1
-                = new ScaleTransition(Duration.millis(5000), Front1);
+                = new ScaleTransition(Duration.millis(3000), Front1);
         scaleTransition1.setToX(0.85f);
         scaleTransition1.setToY(0.85f);
         scaleTransition1.setCycleCount(1);
@@ -455,7 +473,7 @@ public class JTEUI extends Pane {
         parallelTransition1.play();
 
         TranslateTransition translateTransition2
-                = new TranslateTransition(Duration.millis(5000), Front2);
+                = new TranslateTransition(Duration.millis(3000), Front2);
         translateTransition2.setFromX(500);
         translateTransition2.setToX(0);
         translateTransition2.setFromY(500);
@@ -465,7 +483,7 @@ public class JTEUI extends Pane {
         // translateTransition.setDelay(Duration.millis(500*cardNumber));
 
         ScaleTransition scaleTransition2
-                = new ScaleTransition(Duration.millis(5000), Front2);
+                = new ScaleTransition(Duration.millis(3000), Front2);
         scaleTransition2.setToX(0.85f);
         scaleTransition2.setToY(0.85f);
         scaleTransition2.setCycleCount(1);
@@ -480,7 +498,7 @@ public class JTEUI extends Pane {
         parallelTransition2.play();
 
         TranslateTransition translateTransition3
-                = new TranslateTransition(Duration.millis(5000), Front3);
+                = new TranslateTransition(Duration.millis(3000), Front3);
         translateTransition3.setFromX(500);
         translateTransition3.setToX(0);
         translateTransition3.setFromY(500);
@@ -490,7 +508,7 @@ public class JTEUI extends Pane {
         // translateTransition.setDelay(Duration.millis(500*cardNumber));
 
         ScaleTransition scaleTransition3
-                = new ScaleTransition(Duration.millis(5000), Front3);
+                = new ScaleTransition(Duration.millis(3000), Front3);
         scaleTransition3.setToX(0.85f);
         scaleTransition3.setToY(0.85f);
         scaleTransition3.setCycleCount(1);
@@ -503,7 +521,7 @@ public class JTEUI extends Pane {
         parallelTransition3.setCycleCount(1);
         // parallelTransition.setAutoReverse(true);
         parallelTransition3.play();
-        //parallelTransition.setDelay(Duration.millis(5000));
+        //parallelTransition.setDelay(Duration.millis(3000));
 //        transition.setOnFinished(new EventHandler<ActionEvent>(){
 // 
 //            @Override
@@ -642,7 +660,32 @@ public class JTEUI extends Pane {
         }
 
     }
+ 
 
+ private void loadairportlocation(){
+           
+            
+                    fl.loadAirportCities();
+                flightplan=new AnchorPane();
+                AnchorPane.setTopAnchor(flightview, 0.0);
+                AnchorPane.setLeftAnchor(flightview,0.0);
+                flightplan.getChildren().add(flightview);
+    }
+    
+    private void addFlightButtons(String city,double x,double y){
+        Button b=new Button();
+       b.setTooltip(new Tooltip(city));
+       b.setMaxHeight(15);
+       b.setMinHeight(15);
+       b.setMaxWidth(15);
+       b.setMinWidth(15);
+       b.setStyle("-fx-border-radius:40");
+       b.setStyle("-fx-background-radius:50");
+       
+       AnchorPane.setTopAnchor(b,y);
+       AnchorPane.setLeftAnchor(b,x);
+       flightplan.getChildren().add(b);
+    }
     public void initaboutPane() {
         aboutPane = new StackPane();
         TextArea ta1 = new TextArea();
@@ -726,26 +769,33 @@ public class JTEUI extends Pane {
             if (cities.getCityName().equals(redImageName1)) {
                 xcoord1 = cities.getX();
                 ycoord1 = cities.getY();
+                qp1=cities.getQuadrant();
+                
             }
             if (cities.getCityName().equals(greenImageName2)) {
                 xcoord2 = cities.getX();
                 ycoord2 = cities.getY();
+                  qp2=cities.getQuadrant();
             }
             if (cities.getCityName().equals(yellowImageName3)) {
                 xcoord3 = cities.getX();
                 ycoord3 = cities.getY();
+                  qp3=cities.getQuadrant();
             }
             if (cities.getCityName().equals(redImageName4)) {
                 xcoord4 = cities.getX();
                 ycoord4 = cities.getY();
+                  qp4=cities.getQuadrant();
             }
             if (cities.getCityName().equals(greenImageName5)) {
                 xcoord5 = cities.getX();
                 ycoord5 = cities.getY();
+                  qp5=cities.getQuadrant();
             }
             if (cities.getCityName().equals(yellowImageName6)) {
                 xcoord6 = cities.getX();
                 ycoord6 = cities.getY();
+                  qp6=cities.getQuadrant();
             }
         }
 
@@ -788,60 +838,93 @@ public class JTEUI extends Pane {
 //
 //        System.out.println(xcoord3 + "," + ycoord3);
 //    }
-    public void drawHomeFlags() {
+    public void drawHomeFlag1() {
         gc = canvas1.getGraphicsContext2D();
-//        gc2 = canvas2.getGraphicsContext2D();
-//        gc3 = canvas3.getGraphicsContext2D();
-//        gc4 = canvas4.getGraphicsContext2D();
-//        gc5 = canvas5.getGraphicsContext2D();
-//        gc6 = canvas6.getGraphicsContext2D();
-        Image blackflag = loadImage("flag_blackhq.png");
-        Image blueflag = loadImage("flag_bluehq.png");
-        Image greenflag = loadImage("flag_greenhq.png");
-        Image redflag = loadImage("flag_redhq.png");
-        Image whiteflag = loadImage("flag_whitehq.png");
-        Image yellowflag = loadImage("flag_hq.png");
+       Image blackflag = loadImage("flag_blackhq.png");
         gc.drawImage(blackflag, xcoord1 - 30.0, ycoord1 - 60.0);
+
+    }
+    public void drawHomeFlag2()
+    {
         gc = canvas2.getGraphicsContext2D();
+        Image blueflag = loadImage("flag_bluehq.png");
         gc.drawImage(blueflag, xcoord2 - 30.0, ycoord2 - 60.0);
+        
+    }
+     public void drawHomeFlag3()
+    {
         gc = canvas3.getGraphicsContext2D();
+        Image greenflag = loadImage("flag_greenhq.png");
         gc.drawImage(greenflag, xcoord3 - 30.0, ycoord3 - 60.0);
+        
+    }
+      public void drawHomeFlag4()
+    {
         gc = canvas4.getGraphicsContext2D();
+        Image redflag = loadImage("flag_redhq.png");
         gc.drawImage(redflag, xcoord4 - 30.0, ycoord4 - 60.0);
+        
+    }
+       public void drawHomeFlag5()
+    {
         gc = canvas5.getGraphicsContext2D();
+        Image whiteflag = loadImage("flag_whitehq.png");
         gc.drawImage(whiteflag, xcoord5 - 30.0, ycoord5 - 60.0);
+        
+    }
+          public void drawHomeFlag6()
+    {
         gc = canvas6.getGraphicsContext2D();
+        Image yellowflag = loadImage("flag_yellowhq.png");
         gc.drawImage(yellowflag, xcoord6 - 30.0, ycoord6 - 60.0);
+        
     }
-//   public void drawFlag1()
-//   {
-//        gc=canvas.getGraphicsContext2D();
-//        Image blackflag1 = loadImage("flag_blackhq.png");
-//        Image blueflag1 = loadImage("flag_bluehq.png");
-//       Image greenflag1 = loadImage("flag_greenhq.png");
-//       gc.drawImage(blackflag1,xcoord2-30.0,ycoord2-60.0);  
-//   }
-//    public void drawFlag2()
-//   {
-//        gc=canvas.getGraphicsContext2D();
-//        Image blackflag2 = loadImage("flag_blackhq.png");
-//        Image blueflag2 = loadImage("flag_bluehq.png");
-//       Image greenflag2 = loadImage("flag_greenhq.png");
-//       gc.drawImage(blackflag2,xcoord3-30.0,ycoord3-60.0);   
-//   }
 
-    public void drawPiece() {
+    public void drawPiece1() {
 
-        gc = canvas1.getGraphicsContext2D();
-        System.out.println("Printing in drawhomepiece" + xcoord1 + "," + ycoord1);
-        gc.drawImage(blackPiece, xcoord1 - 15.0, ycoord1 - 40.0);
-        gc.drawImage(bluePiece, xcoord2 - 15.0, ycoord2 - 40.0);
-        gc.drawImage(greenPiece, xcoord3 - 15.0, ycoord3 - 40.0);
-        gc.drawImage(redPiece, xcoord4 - 15.0, ycoord4 - 40.0);
-        gc.drawImage(whitePiece, xcoord5 - 15.0, ycoord5 - 40.0);
-        gc.drawImage(yellowPiece, xcoord6 - 15.0, ycoord6 - 40.0);
+        
+        System.out.println("Printing in drawhomepiece1" + xcoord1 + "," + ycoord1);
+       if(player1.turn==1)
+        travelAnimation(blackPieceView, (int)(xcoord1 - 15), (int)(ycoord1 - 40));
+       else 
+            travelAnimation(blackPieceView, (int)(xhist1 - 10), (int)(yhist1 -10));
+
 
     }
+    public void drawPiece2() {
+
+        
+        System.out.println("Printing in drawhomepiece2" + xcoord2 + "," + ycoord2);
+         if(player2.turn==1)
+        travelAnimation(bluePieceView, (int)(xcoord2 - 15), (int)(ycoord2 - 40));
+       else 
+            travelAnimation(bluePieceView, (int)(xhist2 - 15), (int)(yhist2 - 40));
+       
+    }
+    public void drawPiece3() {
+
+       
+        System.out.println("Printing in drawhomepiece3" + xcoord3 + "," + ycoord3);
+        
+        travelAnimation(greenPieceView, (int)(xcoord3 - 15), (int)(ycoord3 - 40));
+    }
+    public void drawPiece4() {
+
+       
+        System.out.println("Printing in drawhomepiece4" + xcoord4 + "," + ycoord4);
+       travelAnimation(redPieceView, (int)(xcoord4 - 15), (int)(ycoord4 - 40));
+    }
+    public void drawPiece5() {
+
+       
+        System.out.println("Printing in drawhomepiece5" + xcoord5 + "," + ycoord5);
+         travelAnimation(whitePieceView, (int)(xcoord5 - 15), (int)(ycoord5 - 40));
+    }
+    public void drawPiece6() {    
+        System.out.println("Printing in drawhomepiece6" + xcoord6 + "," + ycoord6);
+       travelAnimation(yellowPieceView, (int)(xcoord6 - 15), (int)(ycoord6 - 40));
+    }
+   
 
 //    public void repaint() {
 //        gc = canvas1.getGraphicsContext2D();
@@ -924,9 +1007,7 @@ public class JTEUI extends Pane {
 //
 //    }
 
-    public void enableDieButton() {
-        die.setDisable(false);
-    }
+  
 //    public void toggleSideBar(int playerNo) {
 ////    player1.sideBar.setVisible(false);
 ////    player2.sideBar.setVisible(false);
@@ -988,7 +1069,6 @@ public class JTEUI extends Pane {
 
     public void initPlayerControl() {
 
-    
         initGameScreen();
         cardAnimation1();
          //playerController();
@@ -1053,8 +1133,10 @@ public class JTEUI extends Pane {
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
-                mainPane.getChildren().clear();
                 inithistPane();
+               Stage stage = new Stage();
+                stage.setScene(new Scene(new Group(histPane)));
+                stage.show();
 
             }
         });
@@ -1063,15 +1145,14 @@ public class JTEUI extends Pane {
         ImageView view3 = new ImageView(flightbuttonimg);
         flightButton = new Button(" ", view3);
         flightButton.setStyle("-fx-focus-color: transparent;");
-        Image flightplan = loadImage("Flight_Plan.JPG");
-        ImageView flightview = new ImageView(flightplan);
+        
         flightButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
                 // TODO Auto-generated method stub
                 Stage stage = new Stage();
-                stage.setScene(new Scene(new Group(flightview)));
+                stage.setScene(new Scene(new Group(flightplan)));
                 stage.show();
             }
         });
@@ -1146,7 +1227,7 @@ public class JTEUI extends Pane {
 
         });
 
-        vbox.getChildren().addAll(turnLabel, endTurn, grd, die, flightButton, histButton, abtButton, saveButton);
+        vbox.getChildren().addAll(turnLabel, endTurn, grd, fixedMovesLabel,die, flightButton, histButton, abtButton, saveButton);
         vbox.setSpacing(10);
         canvasHandler1();
         pane.setLeft(sideBar);
@@ -1156,10 +1237,14 @@ public class JTEUI extends Pane {
 
     }
 
-   
-
-    public void canvasHandler1() {
-        
+   public void canvasHandler1() {
+        if(player1.turn!=1)
+        {
+           xhist1=player1.citiesVisitedXCoord.get(player1.citiesVisitedXCoord.size()-1);
+           yhist1=player1.citiesVisitedYCoord.get(player1.citiesVisitedYCoord.size()-1);
+           die.setDisable(false);
+           travelAnimation(blackPieceView,xhist1,yhist1);
+        }
         gc=canvas1.getGraphicsContext2D();
          die.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -1170,9 +1255,9 @@ public class JTEUI extends Pane {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player1.moves = randomNum;
-                System.out.println(player1.moves);
-
+                player1.movesLeft = randomNum;
+                System.out.println("In die handler player 1: "+player1.movesLeft);
+                fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
             }
         });
         b1.setOnAction(new EventHandler<ActionEvent>() {
@@ -1183,9 +1268,12 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas1);
                 quad = 1;
-                
-                    drawHomeFlags();
-                    drawPiece();
+                    if(qp1==1)
+                    {
+                        //if()
+                    drawHomeFlag1();
+                    drawPiece1();
+                    }
                 
                
             }
@@ -1199,9 +1287,12 @@ public class JTEUI extends Pane {
                 quad = 2;
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas1);
-                
-                    drawHomeFlags();
-                    drawPiece();
+                 if(qp1==2)
+                    {
+                    drawHomeFlag1();
+                    drawPiece1();
+                    }
+                  
             }
                
         });
@@ -1214,10 +1305,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas1);
                 quad = 3;
-               
-                    drawHomeFlags();
-                    drawPiece();
-                
+                 if(qp1==3)
+                    {
+                    drawHomeFlag1();
+                    drawPiece1();
+                    }
                 
             }
         });
@@ -1231,15 +1323,18 @@ public class JTEUI extends Pane {
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
                 
-                    drawHomeFlags();
-                    drawPiece();
+                  if(qp1==4)
+                    {
+                    drawHomeFlag1();
+                    drawPiece1();
+                    }
                 
                 
 
             }
         });
         gc.setStroke(Color.RED);
-        gc.setLineWidth(4);
+        gc.setLineWidth(2);
         canvas1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
@@ -1250,50 +1345,84 @@ public class JTEUI extends Pane {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                    
-                    if (player1.moves > 0&&(Integer.parseInt(noOfPlayers)>1)) {
+                    if(player1.movesLeft==0&&(Integer.parseInt(noOfPlayers)>1))
+                    {
+//                        if(Integer.parseInt(noOfPlayers)<2)
+//                        {
+//                             turnLabel.setText("Player 2 Turn");
+//                            canvasHandler2();
+//                            cardAnimation2();
+//                            break;
+//                        }
+                         
+                        die.setDisable(false);
+                        player1.turn++;
+                        canvasHandler2();
+                        cardAnimation2();
+                         turnLabel.setText("Player 2 Turn");
+                        break;
+                    }
+                    if (player1.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>1)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
+                                
+                            
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player1.moves--;
-                                    
+                                    player1.movesLeft--;
+                                    histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
+                                    fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         // if(Neighbors.getCityName()!=)
-                                        //b1.fire();
+                                       // b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player1.moves);
+                                         player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                           
+                                        System.out.println("In templand quad 1"+player1.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                        //player.moves--;
-                                        // System.out.println(player.moves);
+                                         player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                       
+                                         System.out.println("In tempsea quad 1"+player1.movesLeft);
 
                                     }
                                     String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
-                                    player1.citiesVisited.add(ct.getCityName());
-
+                                  
                                     //JOptionPane.showMessageDialog(null,data1);
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player1.moves--;
+                                   player1.movesLeft--;
+                                   histArea.appendText("\nPlayer 1 moved to "+ct.getCityName());
+                                   fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
+                                        
+                                         player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                           
+                                            
+                                                  
                                         //b2.fire();
-                                        System.out.println(player1.moves);
+                                       System.out.println("In templand quad 2 p1"+player1.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1301,8 +1430,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                        //player1.moves--;
-                                        //System.out.println(player1.moves);
+                                         player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                             
+                                        //player1.movesLeft--;
+                                        System.out.println("In tempsea quad2 player 1"+player1.movesLeft);
                                         // diceController();
                                     }
                                     String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -1311,16 +1444,22 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player1.moves--;
+                                    player1.movesLeft--;
+                                     histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
+                                    fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-
-                                       // b3.fire();
-                                        System.out.println(player1.moves);
+                                        
+                                          player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                      //  b3.fire();
+                                        System.out.println("In templand quad 3 p1 "+player1.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1329,8 +1468,13 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                        //player1.moves--;
-                                        System.out.println(player1.moves);
+                                          player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                         System.out.println("In tempsea quad 3 p1 "+player1.movesLeft);
+                                        //player1.movesLeft--;
+                                        //System.out.println(player1.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -1339,15 +1483,22 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player1.moves--;
+                                      player1.movesLeft--;
+                                      histArea.appendText("\nPlayer 1 moved to"+ct.getCityName());
+                                      fixedMovesLabel.setText("Moves Left:"+player1.movesLeft);
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player1.moves);
+                                      
+                                          player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                             
+                                         System.out.println("In templand quad 4 p1 "+player1.movesLeft);
+                                        
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1355,34 +1506,40 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                                        //player1.moves--;
-                                        System.out.println(player1.moves);
+                                          player1.citiesVisited.add(ct.getCityName());
+                                        player1.citiesVisitedXCoord.add(ct.getX());
+                                            player1.citiesVisitedYCoord.add(ct.getY());
+                                     
+                                    System.out.println("In templand quad 4 p1 "+player1.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
                                     //JOptionPane.showMessageDialog(null,data4);
-                                    
+                                   
                                 }
                             }
                         }
                     }
-                        if(player1.moves==0)
-                    {
-                        die.setDisable(false);
-                        canvasHandler2();
-                        //travelAnimation(blackPieceView, ct.getX(), ct.getY());
-                        break;
-                    }
+
                 }
-                                
+
             }
         });
         canvasPane.setCenter(canvas1);
         pane.setCenter(canvasPane);
     }
 
+    
+
     public void canvasHandler2() {
+        if(player2.turn!=1)
+        {
+           xhist2=player2.citiesVisitedXCoord.get(player2.citiesVisitedXCoord.size()-1);
+       yhist2=player2.citiesVisitedYCoord.get(player2.citiesVisitedYCoord.size()-1);
+        travelAnimation(bluePieceView,xhist2,yhist2);
+        }
+        
         gc=canvas2.getGraphicsContext2D();
         gc.drawImage(img1, 0, 0, 571, 700);
          die.setOnAction(new EventHandler<ActionEvent>() {
@@ -1394,9 +1551,9 @@ public class JTEUI extends Pane {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player2.moves = randomNum;
-                
-                System.out.println("in canvas handler 2"+player2.moves);
+                player2.movesLeft = randomNum;
+                fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
+                System.out.println("in canvas handler 2"+player2.movesLeft);
 
             }
         });
@@ -1409,10 +1566,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas2);
                 quad = 1;
-                
-                    drawHomeFlags();
-                    drawPiece();
-                
+                 if(qp2==1)
+                    {
+                    drawHomeFlag2();
+                    drawPiece2();
+                    }
                 
             }
         });
@@ -1426,9 +1584,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas2);
                
-                    drawHomeFlags();
-                    drawPiece();
-                
+                    if(qp2==2)
+                    {
+                    drawHomeFlag2();
+                    drawPiece2();
+                    }
                 
             }
         });
@@ -1442,10 +1602,11 @@ public class JTEUI extends Pane {
                 canvasPane.setCenter(canvas2);
                 quad = 3;
                
-                    drawHomeFlags();
-                    drawPiece();
-                
-                
+                 if(qp2==3)
+                    {
+                    drawHomeFlag2();
+                    drawPiece2();
+                    }
 
             }
         });
@@ -1459,14 +1620,17 @@ public class JTEUI extends Pane {
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
                 
-                    drawHomeFlags();
-                    drawPiece();
+                if(qp2==4)
+                    {
+                    drawHomeFlag2();
+                    drawPiece2();
+                    }
                
 
             }
         });
         gc.setStroke(Color.RED);
-        gc.setLineWidth(4);
+        gc.setLineWidth(2);
         canvas2.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent e) {
@@ -1477,61 +1641,82 @@ public class JTEUI extends Pane {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                    if(player2.moves==0&&(Integer.parseInt(noOfPlayers)>1))
+                    if(player2.movesLeft==0&&(Integer.parseInt(noOfPlayers)>1))
                     {
+                        player2.turn++;
                         if(Integer.parseInt(noOfPlayers)<3)
                         {
+                            player1.turn++;
+                             turnLabel.setText("Player 1 Turn");
                             canvasHandler1();
                             break;
                         }
+                        
+                        cardAnimation3();
                         die.setDisable(false);
                         canvasHandler3();
+                         turnLabel.setText("Player 3 Turn");
                         break;
                     }
-                    if (player2.moves > 0&&(Integer.parseInt(noOfPlayers)>1)) {
+                    if (player2.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>1)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player2.moves--;
+                                    player2.movesLeft--;
+                                     histArea.appendText("\nPlayer 2 moved to "+ct.getCityName());
+                                    fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         // if(Neighbors.getCityName()!=)
                                        // b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player2.moves);
+                                         
+                                         player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                        System.out.println(player2.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-                                        //player2.moves--;
-                                        // System.out.println(player2.moves);
+                                         player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                         System.out.println(player2.movesLeft);
 
                                     }
                                     String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
-                                    player2.citiesVisited.add(ct.getCityName());
-
+                                  
                                     //JOptionPane.showMessageDialog(null,data1);
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player2.moves--;
+                                    player2.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
+                                    histArea.appendText("\nPlayer 2 moved to "+ct.getCityName());
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-
+                                        
+                                         player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //b2.fire();
-                                        System.out.println(player2.moves);
+                                        System.out.println(player2.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1539,8 +1724,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-                                        //player2.moves--;
-                                        //System.out.println(player2.moves);
+                                         player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                             
+                                        //player2.movesLeft--;
+                                        System.out.println(player2.movesLeft);
                                         // diceController();
                                     }
                                     String data2 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -1549,16 +1738,22 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player2.moves--;
+                                    player2.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
+                                    histArea.appendText("\nPlayer 2 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-
+                                        
+                                          player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                             
                                       //  b3.fire();
-                                        System.out.println(player2.moves);
+                                        System.out.println(player2.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1567,8 +1762,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-                                        //player2.moves--;
-                                        System.out.println(player2.moves);
+                                          player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                         
+                                        //player2.movesLeft--;
+                                        System.out.println(player2.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -1577,15 +1776,22 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player2.moves--;
+                                      player2.movesLeft--;
+                                      fixedMovesLabel.setText("Moves Left:"+player2.movesLeft);
+                                       histArea.appendText("\nPlayer 2 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player2.moves);
+                                      
+                                          player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                             
+                                            
+                                        System.out.println(player2.movesLeft);
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1593,14 +1799,18 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(bluePieceView, ct.getX(), ct.getY());
-                                        //player2.moves--;
-                                        System.out.println(player2.moves);
+                                          player2.citiesVisited.add(ct.getCityName());
+                                        player2.citiesVisitedXCoord.add(ct.getX());
+                                            player2.citiesVisitedYCoord.add(ct.getY());
+                                              
+                                       //player2.movesLeft--;
+                                        System.out.println(player2.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
                                     //JOptionPane.showMessageDialog(null,data4);
-                                    continue;
+                                   
                                 }
                             }
                         }
@@ -1615,6 +1825,13 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler3() {
+        if(player3.turn!=1)
+        {
+           xhist3=player3.citiesVisitedXCoord.get(player3.citiesVisitedXCoord.size()-1);
+       yhist3=player3.citiesVisitedYCoord.get(player3.citiesVisitedYCoord.size()-1);
+        travelAnimation(greenPieceView,xhist3,yhist3);
+        
+        }
          die.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -1624,8 +1841,9 @@ public class JTEUI extends Pane {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player3.moves = randomNum;
-                System.out.println(player3.moves);
+                player3.movesLeft = randomNum;
+                System.out.println(player3.movesLeft);
+                fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
 
             }
         });
@@ -1640,8 +1858,11 @@ public class JTEUI extends Pane {
                 canvasPane.setCenter(canvas3);
                 quad = 1;
                 
-                    drawHomeFlags();
-                    drawPiece();
+                    if(qp3==1)
+                    {
+                    drawHomeFlag3();
+                    drawPiece3();
+                    }
                 
             }
         });
@@ -1655,9 +1876,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas3);
                 
-                    drawHomeFlags();
-                    drawPiece();
-                
+                     if(qp3==2)
+                    {
+                    drawHomeFlag3();
+                    drawPiece3();
+                    }
                 
             }
         });
@@ -1670,10 +1893,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas3);
                 quad = 3;
-                
-                    drawHomeFlags();
-                    drawPiece();
-                
+                 if(qp3==3)
+                    {
+                    drawHomeFlag3();
+                    drawPiece3();
+                    }
                 
 
             }
@@ -1688,9 +1912,11 @@ public class JTEUI extends Pane {
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
                 
-                    drawHomeFlags();
-                    drawPiece();
-                
+                if(qp3==4)
+                    {
+                    drawHomeFlag3();
+                    drawPiece3();
+                    }
 
             }
         });
@@ -1706,25 +1932,32 @@ public class JTEUI extends Pane {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                    if(player3.moves==0&&(Integer.parseInt(noOfPlayers)>2))
+                    if(player3.movesLeft==0&&(Integer.parseInt(noOfPlayers)>2))
                     {
+                        
+                        player3.turn++;
                         if(Integer.parseInt(noOfPlayers)<4)
                         {
+                            player1.turn++;
                             canvasHandler1();
+                             turnLabel.setText("Player 1 Turn");
                             break;
                         }
                         die.setDisable(false);
-                        travelAnimation(randomRed4,randomGreen4,randomYellow4);
+                        cardAnimation4();
+                          turnLabel.setText("Player 4 Turn");       
                         canvasHandler4();
                         break;
                     }
-                    if (player3.moves > 0&&(Integer.parseInt(noOfPlayers)>2)) {
+                    if (player3.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>2)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player3.moves--;
+                                    player3.movesLeft--;
+                                    histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
+                                    fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
@@ -1732,14 +1965,21 @@ public class JTEUI extends Pane {
                                         //b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player3.moves);
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                          
+                                            player3.citiesVisitedYCoord.add(ct.getY());
+                                        System.out.println(player3.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                            player3.citiesVisitedYCoord.add(ct.getY());
+                                             
                                         //player3.moves--;
                                         // System.out.println(player3.moves);
 
@@ -1752,23 +1992,31 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player3.moves--;
+                                    player3.movesLeft--;
+                                    histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
+                                     fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                            player3.citiesVisitedYCoord.add(ct.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
-
+                                          
                                        // b2.fire();
-                                        System.out.println(player3.moves);
+                                        System.out.println(player3.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                        player3.citiesVisitedYCoord.add(ct.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                         
                                         //player3.moves--;
                                         //System.out.println(player3.moves);
                                         // diceController();
@@ -1779,16 +2027,21 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player3.moves--;
+                                    player3.movesLeft--;
+                                     fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
+                                     histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
-
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                            player3.citiesVisitedYCoord.add(ct.getY());
+                                              
                                        // b3.fire();
-                                        System.out.println(player3.moves);
+                                        System.out.println(player3.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1797,8 +2050,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                        player3.citiesVisitedYCoord.add(ct.getY());
+                                         
                                         //player3.moves--;
-                                        System.out.println(player3.moves);
+                                        System.out.println(player3.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -1807,15 +2064,20 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player3.moves--;
+                                    player3.movesLeft--;
+                                    histArea.appendText("\nPlayer 3 moved to"+ct.getCityName());
+                                     fixedMovesLabel.setText("Moves Left:"+player3.movesLeft);
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player3.moves);
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                         player3.citiesVisitedYCoord.add(ct.getY());
+                                           
+                                        System.out.println(player3.movesLeft);
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -1823,14 +2085,17 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(greenPieceView, ct.getX(), ct.getY());
+                                        player3.citiesVisited.add(ct.getCityName());
+                                        player3.citiesVisitedXCoord.add(ct.getX());
+                                            player3.citiesVisitedYCoord.add(ct.getY());
                                         //player3.moves--;
-                                        System.out.println(player3.moves);
+                                        System.out.println(player3.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
                                     //JOptionPane.showMessageDialog(null,data4);
-                                    continue;
+                                   
                                 }
                             }
                         }
@@ -1845,6 +2110,12 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler4() {
+         if(player4.turn!=1)
+        {
+           xhist4=player4.citiesVisitedXCoord.get(player4.citiesVisitedXCoord.size()-1);
+       yhist4=player4.citiesVisitedYCoord.get(player4.citiesVisitedYCoord.size()-1);
+        travelAnimation(bluePieceView,xhist4,yhist4);
+        }
          die.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -1854,8 +2125,9 @@ public class JTEUI extends Pane {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player4.moves = randomNum;
-                System.out.println(player4.moves);
+                player4.movesLeft = randomNum;
+                System.out.println(player4.movesLeft);
+                fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
 
             }
         });
@@ -1869,9 +2141,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas4);
                 quad = 1;
-               
-                    drawHomeFlags();
-                    drawPiece();
+                if(qp4==1)
+                    {
+                    drawHomeFlag4();
+                    drawPiece4();
+                    }
                 
                 
             }
@@ -1885,10 +2159,11 @@ public class JTEUI extends Pane {
                 quad = 2;
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas4);
-               
-                    drawHomeFlags();
-                    drawPiece();
-                
+               if(qp4==2)
+                    {
+                    drawHomeFlag4();
+                    drawPiece4();
+                    }
                
             }
         });
@@ -1901,10 +2176,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas4);
                 quad = 3;
-              
-                    drawHomeFlags();
-                    drawPiece();
-                
+              if(qp4==3)
+                    {
+                    drawHomeFlag4();
+                    drawPiece4();
+                    }
                
 
             }
@@ -1919,8 +2195,11 @@ public class JTEUI extends Pane {
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
                 
-                    drawHomeFlags();
-                    drawPiece();
+               if(qp4==4)
+                    {
+                    drawHomeFlag4();
+                    drawPiece4();
+                    }
                 
                 
 
@@ -1938,26 +2217,32 @@ public class JTEUI extends Pane {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                   if(player4.moves==0&&(Integer.parseInt(noOfPlayers)>3))
+                   if(player4.movesLeft==0&&(Integer.parseInt(noOfPlayers)>3))
                     {
+                        player4.turn++;
                          if(Integer.parseInt(noOfPlayers)<5)
                         {
+                            player1.turn++;
                             canvasHandler1();
+                             turnLabel.setText("Player 1 Turn");
                             break;
                         }
                        
-                        travelAnimation(randomGreen5,randomYellow5,randomRed5);
+                        cardAnimation5();
                         die.setDisable(false);
                         canvasHandler5();
+                         turnLabel.setText("Player 5 Turn");
                         break;
                     }
-                    if (player4.moves > 0&&(Integer.parseInt(noOfPlayers)>3)) {
+                    if (player4.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>3)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player4.moves--;
+                                    player4.movesLeft--;
+                                    histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
+                                     fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
@@ -1965,14 +2250,22 @@ public class JTEUI extends Pane {
                                        // b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                              
 
-                                        System.out.println(player4.moves);
+                                        System.out.println(player4.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player4.moves--;
                                         // System.out.println(player4.moves);
 
@@ -1985,16 +2278,21 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player4.moves--;
+                                    player4.movesLeft--;
+                                    histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
+                                     fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
-
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                        player4.citiesVisitedYCoord.add(ct.getY());
+                                        
                                        // b2.fire();
-                                        System.out.println(player4.moves);
+                                        System.out.println(player4.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2002,6 +2300,10 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player4.moves--;
                                         //System.out.println(player4.moves);
                                         // diceController();
@@ -2012,16 +2314,21 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player4.moves--;
+                                    player4.movesLeft--;
+                                     fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
+                                      histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
-
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                           
                                         //b3.fire();
-                                        System.out.println(player4.moves);
+                                        System.out.println(player4.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2030,8 +2337,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player4.moves--;
-                                        System.out.println(player4.moves);
+                                        System.out.println(player4.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2040,15 +2351,20 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player4.moves--;
+                                    player4.movesLeft--;
+                                     fixedMovesLabel.setText("Moves Left:"+player4.movesLeft);
+                                     histArea.appendText("\nPlayer 4 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player4.moves);
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                        player4.citiesVisitedYCoord.add(ct.getY());
+                                        
+                                        System.out.println(player4.movesLeft);
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2056,8 +2372,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(redPieceView, ct.getX(), ct.getY());
+                                        player4.citiesVisited.add(ct.getCityName());
+                                        player4.citiesVisitedXCoord.add(ct.getX());
+                                            player4.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player4.moves--;
-                                        System.out.println(player4.moves);
+                                        System.out.println(player4.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2078,6 +2398,12 @@ public class JTEUI extends Pane {
     }
 
     public void canvasHandler5() {
+         if(player5.turn!=1)
+        {
+           xhist5=player5.citiesVisitedXCoord.get(player5.citiesVisitedXCoord.size()-1);
+       yhist5=player5.citiesVisitedYCoord.get(player5.citiesVisitedYCoord.size()-1);
+        travelAnimation(whitePieceView,xhist5,yhist5);
+        }
          die.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -2087,9 +2413,9 @@ public class JTEUI extends Pane {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player5.moves = randomNum;
-                System.out.println(player5.moves);
-
+                player5.movesLeft = randomNum;
+                System.out.println(player5.movesLeft);
+                fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
             }
         });
         gc=canvas5.getGraphicsContext2D();
@@ -2102,9 +2428,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas5);
                 quad = 1;
-               
-                    drawHomeFlags();
-                    drawPiece();
+               if(qp5==1)
+                    {
+                    drawHomeFlag5();
+                    drawPiece5();
+                    }
                 
                 
             }
@@ -2118,9 +2446,11 @@ public class JTEUI extends Pane {
                 quad = 2;
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas5);
-               
-                    drawHomeFlags();
-                    drawPiece();
+               if(qp5==2)
+                    {
+                    drawHomeFlag5();
+                    drawPiece5();
+                    }
                 
                
             }
@@ -2134,10 +2464,11 @@ public class JTEUI extends Pane {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas5);
                 quad = 3;
-              
-                    drawHomeFlags();
-                    drawPiece();
-                
+               if(qp5==3)
+                    {
+                    drawHomeFlag5();
+                    drawPiece5();
+                    }
                
 
             }
@@ -2151,12 +2482,11 @@ public class JTEUI extends Pane {
                 canvasPane.setCenter(canvas5);
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
-                
-                    drawHomeFlags();
-                    drawPiece();
-                
-                
-
+                if(qp5==4)
+                    {
+                    drawHomeFlag5();
+                    drawPiece5();
+                    }
             }
         });
         gc.setStroke(Color.RED);
@@ -2171,25 +2501,31 @@ public class JTEUI extends Pane {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                   if(player5.moves==0&&(Integer.parseInt(noOfPlayers)>4))
+                   if(player5.movesLeft==0&&(Integer.parseInt(noOfPlayers)>4))
                     {
+                        player5.turn++;
                         if(Integer.parseInt(noOfPlayers)<6)
                         {
+                            player1.turn++;
                             canvasHandler1();
+                             turnLabel.setText("Player 1 Turn");
                             break;
                         }
-                        travelAnimation(randomYellow6,randomRed6,randomGreen6);
+                        cardAnimation6();
                         die.setDisable(false);
                         canvasHandler6();
+                         turnLabel.setText("Player 6 Turn");
                         break;
                     }
-                    if (player5.moves > 0&&(Integer.parseInt(noOfPlayers)>4)) {
+                    if (player5.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>4)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player5.moves--;
+                                    player5.movesLeft--;
+                                     fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
+                                     histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
@@ -2197,36 +2533,47 @@ public class JTEUI extends Pane {
                                        // b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player5.moves);
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                            player5.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                        System.out.println(player5.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                         player5.citiesVisitedYCoord.add(ct.getY());
+                                         
                                         //player5.moves--;
                                         // System.out.println(player5.moves);
 
                                     }
                                     String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
-                                    player5.citiesVisited.add(ct.getCityName());
+                                    //player5.citiesVisited.add(ct.getCityName());
 
                                     //JOptionPane.showMessageDialog(null,data1);
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player5.moves--;
+                                    player5.movesLeft--;
+                                     fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
+                                     histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                          player5.citiesVisitedYCoord.add(ct.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
-
+                                        
                                        // b2.fire();
-                                        System.out.println(player5.moves);
+                                        System.out.println(player5.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2234,6 +2581,10 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                         player5.citiesVisitedYCoord.add(ct.getY());
+                                         
                                         //player5.moves--;
                                         //System.out.println(player5.moves);
                                         // diceController();
@@ -2244,16 +2595,21 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player5.moves--;
+                                    player5.movesLeft--;
+                                     histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
+                                     fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                            player5.citiesVisitedYCoord.add(ct.getY());
+                                           
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
 
                                       //  b3.fire();
-                                        System.out.println(player5.moves);
+                                        System.out.println(player5.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2262,8 +2618,12 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                            player5.citiesVisitedYCoord.add(ct.getY());
+                                           
                                         //player5.moves--;
-                                        System.out.println(player5.moves);
+                                        System.out.println(player5.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2272,15 +2632,18 @@ public class JTEUI extends Pane {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player5.moves--;
+                                    player5.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player5.movesLeft);
+                                     histArea.appendText("\nPlayer 5 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player5.moves);
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                            player5.citiesVisitedYCoord.add(ct.getY());
+                                        System.out.println(player5.movesLeft);
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2288,8 +2651,13 @@ public class JTEUI extends Pane {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(whitePieceView, ct.getX(), ct.getY());
+                                        player5.citiesVisited.add(ct.getCityName());
+                                        player5.citiesVisitedXCoord.add(ct.getX());
+                                            player5.citiesVisitedYCoord.add(ct.getY());
+                                           
+                                        
                                         //player5.moves--;
-                                        System.out.println(player5.moves);
+                                        System.out.println(player5.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2308,7 +2676,14 @@ public class JTEUI extends Pane {
         canvasPane.setCenter(canvas5);
         pane.setCenter(canvasPane);
     }
+    public void drawHomeFlags(){}
 public void canvasHandler6() {
+     if(player6.turn!=1)
+        {
+           xhist6=player6.citiesVisitedXCoord.get(player6.citiesVisitedXCoord.size()-1);
+       yhist6=player6.citiesVisitedYCoord.get(player6.citiesVisitedYCoord.size()-1);
+        travelAnimation(yellowPieceView,xhist6,yhist6);
+        }
          die.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
@@ -2318,9 +2693,9 @@ public void canvasHandler6() {
                 ImageView dieimageview = new ImageView(dieimage);
                 die.setGraphic(dieimageview);
                 die.setDisable(true);
-                player6.moves = randomNum;
-                System.out.println(player6.moves);
-
+                player6.movesLeft = randomNum;
+                System.out.println(player6.movesLeft);
+                fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
             }
         });
         gc=canvas6.getGraphicsContext2D();
@@ -2333,9 +2708,11 @@ public void canvasHandler6() {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas6);
                 quad = 1;
-               
-                    drawHomeFlags();
-                    drawPiece();
+               if(qp6==1)
+                    {
+                    drawHomeFlag6();
+                    drawPiece6();
+                    }
                 
                 
             }
@@ -2349,10 +2726,11 @@ public void canvasHandler6() {
                 quad = 2;
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas6);
-               
-                    drawHomeFlags();
-                    drawPiece();
-                
+                 if(qp6==2)
+                    {
+                    drawHomeFlag6();
+                    drawPiece6();
+                    }
                
             }
         });
@@ -2365,9 +2743,11 @@ public void canvasHandler6() {
                 canvasPane.getChildren().clear();
                 canvasPane.setCenter(canvas6);
                 quad = 3;
-              
-                    drawHomeFlags();
-                    drawPiece();
+                if(qp6==3)
+                    {
+                    drawHomeFlag6();
+                    drawPiece6();
+                    }
                 
                
 
@@ -2382,9 +2762,11 @@ public void canvasHandler6() {
                 canvasPane.setCenter(canvas6);
                 gc.drawImage(img4, 0, 0, 571, 700);
                 quad = 4;
-                
-                    drawHomeFlags();
-                    drawPiece();
+               if(qp6==4)
+                    {
+                    drawHomeFlag6();
+                    drawPiece6();
+                    }
                 
                 
 
@@ -2402,21 +2784,25 @@ public void canvasHandler6() {
                 System.out.println(x + " " + y);
                 for (int i = 0; i < lis.size(); i++) {
                     ct = lis.get(i);
-                   if(player6.moves==0&&(Integer.parseInt(noOfPlayers)>5))
+                   if(player6.movesLeft==0&&(Integer.parseInt(noOfPlayers)>5))
                     {
-                        
-                        travelAnimation(randomRed1,randomGreen1,randomYellow1);
+                        player6.turn++;
+                        player1.turn++;
+                        cardAnimation1();
+                         turnLabel.setText("Player 1 Turn");
                         die.setDisable(false);
                         canvasHandler1();
                         break;
                     }
-                    if (player6.moves > 0&&(Integer.parseInt(noOfPlayers)>5)) {
+                    if (player6.movesLeft > 0&&(Integer.parseInt(noOfPlayers)>5)) {
                         if (x > (ct.getX() - 10) && x < (ct.getX() + 10)) {
                             if (y > (ct.getY() - 10) && y < (ct.getY() + 10)) {
                                 List<Cities> tempLand = ct.fetchLandNeighbour();
                                 List<Cities> tempSea = ct.fetchSeaNeighbour();
                                 if (ct.getQuadrant() == 1 && quad == 1) {
-                                    player6.moves--;
+                                    player6.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
+                                    histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 1;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
@@ -2424,36 +2810,48 @@ public void canvasHandler6() {
                                        // b1.fire();
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player6.moves);
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                        System.out.println(player6.movesLeft);
                                     }
 
                                     for (Cities Neighbors : tempSea) {
                                         System.out.println(Neighbors.getX() + "," + Neighbors.getY() + "," + ct.getX() + "," + ct.getY());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player6.moves--;
                                         // System.out.println(player6.moves);
 
                                     }
                                     String data1 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
                                     System.out.println(ct.getCityName());
-                                    player6.citiesVisited.add(ct.getCityName());
+                                    //player6.citiesVisited.add(ct.getCityName());
 
                                     //JOptionPane.showMessageDialog(null,data1);
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 2 && quad == 2) {
-                                    player6.moves--;
+                                    player6.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
+                                    histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 2;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
-
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
                                        // b2.fire();
-                                        System.out.println(player6.moves);
+                                        System.out.println(player6.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2461,6 +2859,10 @@ public void canvasHandler6() {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player6.moves--;
                                         //System.out.println(player6.moves);
                                         // diceController();
@@ -2471,16 +2873,21 @@ public void canvasHandler6() {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 3 && quad == 3) {
-                                    player6.moves--;
+                                    player6.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
+                                    histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
-
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                           
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
 
                                       //  b3.fire();
-                                        System.out.println(player6.moves);
+                                        System.out.println(player6.movesLeft);
 
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2489,8 +2896,12 @@ public void canvasHandler6() {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                           
                                         //player6.moves--;
-                                        System.out.println(player6.moves);
+                                        System.out.println(player6.movesLeft);
 
                                     }
                                     String data3 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2499,15 +2910,20 @@ public void canvasHandler6() {
                                     continue;
                                 }
                                 if (ct.getQuadrant() == 4 && quad == 4) {
-                                    player6.moves--;
+                                    player6.movesLeft--;
+                                    fixedMovesLabel.setText("Moves Left:"+player6.movesLeft);
+                                    histArea.appendText("\nPlayer 6 moved to"+ct.getCityName());
                                     q = 0;
                                     for (Cities Neighbors : tempLand) {
                                         System.out.println(Neighbors.getX());
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
 
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
-
-                                        System.out.println(player6.moves);
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
+                                        System.out.println(player6.movesLeft);
                                         // b4.fire();
                                     }
                                     for (Cities Neighbors : tempSea) {
@@ -2515,8 +2931,12 @@ public void canvasHandler6() {
                                         // if(Neighbors.getCityName()!=)
                                         gc.strokeLine(ct.getX(), ct.getY(), Neighbors.getX(), Neighbors.getY());
                                         travelAnimation(yellowPieceView, ct.getX(), ct.getY());
+                                        player6.citiesVisited.add(ct.getCityName());
+                                        player6.citiesVisitedXCoord.add(ct.getX());
+                                            player6.citiesVisitedYCoord.add(ct.getY());
+                                            
                                         //player6.moves--;
-                                        System.out.println(player6.moves);
+                                        System.out.println(player6.movesLeft);
 
                                     }
                                     String data4 = ct.getCityName() + "," + (ct.getX()) + "," + (ct.getY());
@@ -2543,19 +2963,11 @@ public void canvasHandler6() {
 //    }
 
     public void inithistPane() {
-        histPane = new StackPane();
-        closeButton = new Button("Close");
-        closeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-                mainPane.getChildren().clear();
-                mainPane.setCenter(pane);
-
-            }
-        });
-        histPane.getChildren().add(closeButton);
-        mainPane.setCenter(histPane);
+        
+        histPane = new ScrollPane();
+       
+        histArea.setEditable(false);
+        histPane.setContent(histArea);
 
     }
 
@@ -2572,8 +2984,8 @@ public void canvasHandler6() {
                 + "\n"
                 + "They must plan a route between each of the cities in their hand of cards.\n"
                 + "On each turn they throw a die and move between the cities, \n"
-                + "The winner is the first player to visit each of their cities and then return to their home base.\n"
-                + "HangMan was firstly mentioned in 1894. See Wikipedia for more.");
+                + "The winner is the first player to visit each of their cities and then return to their home base.\n");
+                
         ta4.setEditable(false);
 
         bckButton = new Button("Back");
